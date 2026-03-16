@@ -4,13 +4,12 @@
     "version": "0.0.1",
     "type": "module",
     "scripts": {
-        "dev": "vite --config client/vite.config.ts",
-        "build": "tsc -b && vite build --config client/vite.config.ts",
+        "dev": "bun run build && wrangler dev",
+        "build": "tsc -b && vite build",
         "lint": "biome lint .",
         "format": "biome format --write .",
         "check": "biome check --write .",
         "typecheck": "tsc --noEmit",
-        "preview": "vite preview --config client/vite.config.ts",
         "deploy": "bun run build && wrangler deploy"
     },
     "dependencies": {
@@ -40,6 +39,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "^2.4.7",
+        "@cloudflare/vite-plugin": "^1.28.0",
         "@cloudflare/workers-types": "^4.20260316.1",
         "@types/node": "^24.10.1",
         "@types/react": "^19.2.5",
