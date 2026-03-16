@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "type": "module",
     "scripts": {
-        "dev": "bun run build && wrangler dev",
+        "dev": "bunx concurrently -k -n backend,frontend -c cyan,green \"wrangler dev --port 8787\" \"vite\"",
         "build": "tsc -b && vite build",
         "lint": "biome lint .",
         "format": "biome format --write .",
@@ -45,6 +45,7 @@
         "@types/react": "^19.2.5",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^5.1.1",
+        "concurrently": "^9.2.1",
         "typescript": "~5.9.3",
         "vite": "^7.2.4",
         "wrangler": "^4.73.0"
