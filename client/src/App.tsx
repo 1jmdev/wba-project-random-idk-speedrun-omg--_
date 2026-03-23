@@ -1,17 +1,159 @@
-import { Routes, Route } from "react-router"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { Route, Routes } from "react-router"
+import { ApiError, type ApiFamily, apiClient } from "@/lib/api"
+import { mapProfile, type Profile } from "@/lib/netflix"
+import AuthScreen from "@/pages/AuthScreen"
 import Browse from "@/pages/Browse"
-import ProfileSelect from "@/pages/ProfileSelect"
-import TitleDetail from "@/pages/TitleDetail"
-import Search from "@/pages/Search"
 import MyList from "@/pages/MyList"
-import type { Profile } from "@/data/mock"
+import ProfileSelect from "@/pages/ProfileSelect"
+import Search from "@/pages/Search"
+import TitleDetail from "@/pages/TitleDetail"
 
 export default function App() {
+    const [family, setFamily] = useState<ApiFamily | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [authLoading, setAuthLoading] = useState(false)
+    const [authError, setAuthError] = useState<string | null>(null)
+    const [profiles, setProfiles] = useState<Profile[]>([])
     const [profile, setProfile] = useState<Profile | null>(null)
 
+    const loadSession = useCallback(async () => {
+        setLoading(true)
+
+        try {
+            const session = await apiClient.getMe()
+            const mappedProfiles = session.profiles.map(mapProfile)
+
+            setFamily(session.family)
+            setProfiles(mappedProfiles)
+            setProfile(
+                session.selectedProfile
+                    ? mapProfile(session.selectedProfile)
+                    : null
+            )
+            setAuthError(null)
+        } catch (error) {
+            if (error instanceof ApiError && error.status === 401) {
+                setFamily(null)
+                setProfiles([])
+                setProfile(null)
+                setAuthError(null)
+            } else {
+                setAuthError(
+                    error instanceof Error
+                        ? error.message
+                        : "Failed to load session"
+                )
+            }
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        void loadSession()
+    }, [loadSession])
+
+    const handleLogin = async (payload: {
+        email: string
+        password: string
+    }) => {
+        setAuthLoading(true)
+        setAuthError(null)
+
+        try {
+            await apiClient.login(payload)
+            await loadSession()
+        } catch (error) {
+            setAuthError(
+                error instanceof Error ? error.message : "Login failed"
+            )
+        } finally {
+            setAuthLoading(false)
+        }
+    }
+
+    const handleRegister = async (payload: {
+        email: string
+        password: string
+        name: string
+    }) => {
+        setAuthLoading(true)
+        setAuthError(null)
+
+        try {
+            await apiClient.register(payload)
+            await loadSession()
+        } catch (error) {
+            setAuthError(
+                error instanceof Error ? error.message : "Registration failed"
+            )
+        } finally {
+            setAuthLoading(false)
+        }
+    }
+
+    const handleSelectProfile = async (nextProfile: Profile) => {
+        await apiClient.selectProfile(nextProfile.id)
+        setProfile(nextProfile)
+    }
+
+    const handleCreateProfile = async (payload: {
+        email: string
+        name: string
+        profileName?: string
+        avatarUrl?: string
+    }) => {
+        await apiClient.createProfile(payload)
+        await loadSession()
+    }
+
+    const handleSwitchProfile = async () => {
+        await apiClient.clearSelectedProfile()
+        await loadSession()
+    }
+
+    const handleLogout = async () => {
+        await apiClient.logout()
+        setFamily(null)
+        setProfiles([])
+        setProfile(null)
+    }
+
+    if (loading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-background text-white">
+                <div className="text-center">
+                    <div className="mb-4 text-4xl font-black tracking-[0.3em] text-netflix-red">
+                        NETFLIX
+                    </div>
+                    <p className="text-sm text-white/55">Loading session...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (!family) {
+        return (
+            <AuthScreen
+                onLogin={handleLogin}
+                onRegister={handleRegister}
+                loading={authLoading}
+                error={authError}
+            />
+        )
+    }
+
     if (!profile) {
-        return <ProfileSelect onSelect={setProfile} />
+        return (
+            <ProfileSelect
+                familyName={family.name}
+                profiles={profiles}
+                onSelect={handleSelectProfile}
+                onCreateProfile={handleCreateProfile}
+                onLogout={handleLogout}
+            />
+        )
     }
 
     return (
@@ -21,7 +163,8 @@ export default function App() {
                 element={
                     <Browse
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                     />
                 }
             />
@@ -30,7 +173,8 @@ export default function App() {
                 element={
                     <TitleDetail
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                     />
                 }
             />
@@ -39,7 +183,8 @@ export default function App() {
                 element={
                     <Search
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                     />
                 }
             />
@@ -48,7 +193,8 @@ export default function App() {
                 element={
                     <MyList
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                     />
                 }
             />
@@ -57,7 +203,8 @@ export default function App() {
                 element={
                     <Browse
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                         filter="series"
                     />
                 }
@@ -67,7 +214,8 @@ export default function App() {
                 element={
                     <Browse
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                         filter="movie"
                     />
                 }
@@ -77,7 +225,8 @@ export default function App() {
                 element={
                     <Browse
                         profile={profile}
-                        onSwitchProfile={() => setProfile(null)}
+                        onSwitchProfile={handleSwitchProfile}
+                        onLogout={handleLogout}
                         filter="new"
                     />
                 }

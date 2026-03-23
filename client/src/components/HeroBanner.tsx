@@ -1,7 +1,7 @@
-import { Play, Info } from "lucide-react"
+import { Info, Play } from "lucide-react"
 import { useNavigate } from "react-router"
 import { Button } from "@/components/ui/button"
-import type { Movie } from "@/data/mock"
+import type { Movie } from "@/lib/netflix"
 
 interface HeroBannerProps {
     movie: Movie

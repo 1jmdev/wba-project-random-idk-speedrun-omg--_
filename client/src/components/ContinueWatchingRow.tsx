@@ -1,7 +1,7 @@
+import { ChevronLeft, ChevronRight, Info, Play } from "lucide-react"
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router"
-import { ChevronLeft, ChevronRight, Play, Info } from "lucide-react"
-import type { Movie } from "@/data/mock"
+import type { Movie } from "@/lib/netflix"
 
 interface ContinueWatchingRowProps {
     items: { movie: Movie; progress: number }[]
@@ -41,6 +41,7 @@ export default function ContinueWatchingRow({
             <div className="relative">
                 {canScrollLeft && (
                     <button
+                        type="button"
                         onClick={() => scroll("left")}
                         className="absolute left-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
@@ -54,7 +55,8 @@ export default function ContinueWatchingRow({
                     className="slider-row flex gap-1 overflow-x-scroll px-4 md:px-12 py-3"
                 >
                     {items.map(({ movie, progress }) => (
-                        <div
+                        <button
+                            type="button"
                             key={movie.id}
                             className="relative flex-shrink-0 w-[160px] md:w-[230px] cursor-pointer group/card"
                             onClick={() => navigate(`/title/${movie.id}`)}
@@ -70,10 +72,16 @@ export default function ContinueWatchingRow({
                                 {/* Hover overlay */}
                                 <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/40 transition-colors flex items-center justify-center">
                                     <div className="opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center gap-2">
-                                        <button className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center hover:bg-white">
+                                        <button
+                                            type="button"
+                                            className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center hover:bg-white"
+                                        >
                                             <Play className="w-5 h-5 fill-black text-black ml-0.5" />
                                         </button>
-                                        <button className="w-8 h-8 rounded-full border-2 border-white/50 flex items-center justify-center hover:border-white">
+                                        <button
+                                            type="button"
+                                            className="w-8 h-8 rounded-full border-2 border-white/50 flex items-center justify-center hover:border-white"
+                                        >
                                             <Info className="w-4 h-4 text-white" />
                                         </button>
                                     </div>
@@ -98,12 +106,13 @@ export default function ContinueWatchingRow({
                                         : `${progress}% watched`}
                                 </p>
                             </div>
-                        </div>
+                        </button>
                     ))}
                 </div>
 
                 {canScrollRight && (
                     <button
+                        type="button"
                         onClick={() => scroll("right")}
                         className="absolute right-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
