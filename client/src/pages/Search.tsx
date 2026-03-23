@@ -50,8 +50,12 @@ export default function Search({ profile, onSwitchProfile }: SearchProps) {
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center py-20">
-                        <p className="text-lg text-white/70 mb-2">No titles match your search.</p>
-                        <p className="text-sm text-white/40">Try different keywords or browse categories.</p>
+                        <p className="text-lg text-white/70 mb-2">
+                            No titles match your search.
+                        </p>
+                        <p className="text-sm text-white/40">
+                            Try different keywords or browse categories.
+                        </p>
                     </div>
                 )}
             </div>

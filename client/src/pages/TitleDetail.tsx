@@ -13,7 +13,10 @@ interface TitleDetailProps {
     onSwitchProfile: () => void
 }
 
-export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailProps) {
+export default function TitleDetail({
+    profile,
+    onSwitchProfile,
+}: TitleDetailProps) {
     const { id } = useParams()
     const navigate = useNavigate()
     const [muted, setMuted] = useState(true)
@@ -25,20 +28,27 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
     const similarMovies = useMemo(() => {
         if (!movie) return []
         return movies
-            .filter((m) => m.id !== movie.id && m.genres.some((g) => movie.genres.includes(g)))
+            .filter(
+                (m) =>
+                    m.id !== movie.id &&
+                    m.genres.some((g) => movie.genres.includes(g))
+            )
             .slice(0, 12)
     }, [movie])
 
     // Mock episodes for series
     const episodes = useMemo(() => {
         if (!movie || movie.type !== "series") return []
-        return Array.from({ length: Math.min(movie.episodes ?? 10, 10) }, (_, i) => ({
-            id: i + 1,
-            title: `Episode ${i + 1}`,
-            description: `${movie.title} continues with unexpected twists and revelations that change everything the characters thought they knew.`,
-            duration: `${40 + Math.floor(Math.random() * 25)}m`,
-            image: `https://picsum.photos/seed/ep${movie.id}${i}/400/225`,
-        }))
+        return Array.from(
+            { length: Math.min(movie.episodes ?? 10, 10) },
+            (_, i) => ({
+                id: i + 1,
+                title: `Episode ${i + 1}`,
+                description: `${movie.title} continues with unexpected twists and revelations that change everything the characters thought they knew.`,
+                duration: `${40 + Math.floor(Math.random() * 25)}m`,
+                image: `https://picsum.photos/seed/ep${movie.id}${i}/400/225`,
+            })
+        )
     }, [movie])
 
     if (!movie) {
@@ -76,7 +86,11 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
                     onClick={() => setMuted(!muted)}
                     className="absolute bottom-[15%] right-16 z-20 w-9 h-9 rounded-full border border-white/40 flex items-center justify-center hover:border-white transition-colors"
                 >
-                    {muted ? <VolumeX className="w-4 h-4 text-white" /> : <Volume2 className="w-4 h-4 text-white" />}
+                    {muted ? (
+                        <VolumeX className="w-4 h-4 text-white" />
+                    ) : (
+                        <Volume2 className="w-4 h-4 text-white" />
+                    )}
                 </button>
 
                 {/* Rating badge */}
@@ -107,12 +121,18 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
                         <div className="flex-1">
                             {/* Metadata */}
                             <div className="flex items-center gap-3 mb-3 text-sm">
-                                <span className="text-[#46d369] font-semibold">{movie.match}% Match</span>
-                                <span className="text-white/70">{movie.year}</span>
+                                <span className="text-[#46d369] font-semibold">
+                                    {movie.match}% Match
+                                </span>
+                                <span className="text-white/70">
+                                    {movie.year}
+                                </span>
                                 <span className="border border-white/40 px-1.5 py-0.5 text-[11px] text-white/70 leading-none">
                                     {movie.rating}
                                 </span>
-                                <span className="text-white/70">{movie.duration}</span>
+                                <span className="text-white/70">
+                                    {movie.duration}
+                                </span>
                                 <span className="border border-white/40 px-1 py-0.5 text-[10px] text-white/60 leading-none">
                                     HD
                                 </span>
@@ -125,18 +145,30 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
                                     className="flex flex-col items-center gap-1"
                                 >
                                     <div className="w-10 h-10 rounded-full border-2 border-white/40 flex items-center justify-center hover:border-white transition-colors">
-                                        {inMyList ? <Check className="w-5 h-5 text-white" /> : <Plus className="w-5 h-5 text-white" />}
+                                        {inMyList ? (
+                                            <Check className="w-5 h-5 text-white" />
+                                        ) : (
+                                            <Plus className="w-5 h-5 text-white" />
+                                        )}
                                     </div>
-                                    <span className="text-[11px] text-white/60">My List</span>
+                                    <span className="text-[11px] text-white/60">
+                                        My List
+                                    </span>
                                 </button>
                                 <button
                                     onClick={() => setLiked(!liked)}
                                     className="flex flex-col items-center gap-1"
                                 >
-                                    <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-colors ${liked ? "border-white bg-white/10" : "border-white/40 hover:border-white"}`}>
-                                        <ThumbsUp className={`w-5 h-5 ${liked ? "text-white" : "text-white"}`} />
+                                    <div
+                                        className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-colors ${liked ? "border-white bg-white/10" : "border-white/40 hover:border-white"}`}
+                                    >
+                                        <ThumbsUp
+                                            className={`w-5 h-5 ${liked ? "text-white" : "text-white"}`}
+                                        />
                                     </div>
-                                    <span className="text-[11px] text-white/60">Rate</span>
+                                    <span className="text-[11px] text-white/60">
+                                        Rate
+                                    </span>
                                 </button>
                             </div>
 
@@ -149,16 +181,24 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
                         <div className="w-full md:w-[260px] flex-shrink-0 text-sm">
                             <p className="text-white/50 mb-2">
                                 <span className="text-white/30">Cast: </span>
-                                <span className="text-white/70">{movie.cast.join(", ")}</span>
+                                <span className="text-white/70">
+                                    {movie.cast.join(", ")}
+                                </span>
                             </p>
                             <p className="text-white/50 mb-2">
                                 <span className="text-white/30">Genres: </span>
-                                <span className="text-white/70">{movie.genres.join(", ")}</span>
+                                <span className="text-white/70">
+                                    {movie.genres.join(", ")}
+                                </span>
                             </p>
                             {movie.type === "series" && (
                                 <p className="text-white/50 mb-2">
-                                    <span className="text-white/30">Seasons: </span>
-                                    <span className="text-white/70">{movie.seasons}</span>
+                                    <span className="text-white/30">
+                                        Seasons:{" "}
+                                    </span>
+                                    <span className="text-white/70">
+                                        {movie.seasons}
+                                    </span>
                                 </p>
                             )}
                         </div>
@@ -168,8 +208,12 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
                     {movie.type === "series" && (
                         <div className="mt-10">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-xl font-semibold text-white">Episodes</h2>
-                                <span className="text-sm text-white/60">Season 1</span>
+                                <h2 className="text-xl font-semibold text-white">
+                                    Episodes
+                                </h2>
+                                <span className="text-sm text-white/60">
+                                    Season 1
+                                </span>
                             </div>
 
                             <div className="space-y-3">
@@ -196,8 +240,12 @@ export default function TitleDetail({ profile, onSwitchProfile }: TitleDetailPro
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-1">
-                                                <h3 className="text-sm font-medium text-white">{episode.title}</h3>
-                                                <span className="text-xs text-white/50">{episode.duration}</span>
+                                                <h3 className="text-sm font-medium text-white">
+                                                    {episode.title}
+                                                </h3>
+                                                <span className="text-xs text-white/50">
+                                                    {episode.duration}
+                                                </span>
                                             </div>
                                             <p className="text-xs text-white/50 line-clamp-2 leading-relaxed">
                                                 {episode.description}

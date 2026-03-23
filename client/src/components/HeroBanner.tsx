@@ -32,7 +32,9 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
                 </h1>
 
                 <div className="flex items-center gap-2 mb-3 text-sm">
-                    <span className="text-[#46d369] font-semibold">{movie.match}% Match</span>
+                    <span className="text-[#46d369] font-semibold">
+                        {movie.match}% Match
+                    </span>
                     <span className="text-white/70">{movie.year}</span>
                     <span className="border border-white/40 px-1.5 py-0.5 text-[11px] text-white/70 leading-none">
                         {movie.rating}

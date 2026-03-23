@@ -62,7 +62,8 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                                 className="text-[120px] md:text-[160px] font-black leading-none select-none mr-[-20px] z-10"
                                 style={{
                                     color: "transparent",
-                                    WebkitTextStroke: "3px rgba(255,255,255,0.5)",
+                                    WebkitTextStroke:
+                                        "3px rgba(255,255,255,0.5)",
                                     paintOrder: "stroke fill",
                                 }}
                             >
