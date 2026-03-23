@@ -1,32 +1,25 @@
-import { Hono } from 'hono';
-import * as authController from '../controllers/family.controller';
-import { validate } from '../middlewares/validation.middleware';
-import { authRequired } from '../middlewares/auth.middleware';
+import { Hono } from "hono"
+import * as familyController from "../controllers/family.controller"
+import { authRequired } from "../middleware/auth.middleware"
+import { validate } from "../middleware/validation.middleware"
+import type { AppEnv } from "../types"
 import {
-    loginSchema,
     changePasswordSchema,
-} from '../validations/family.validation';
-import type { AppEnv } from '../types';
+    loginSchema,
+    registerSchema,
+} from "../validations/family.validation"
 
-const router = new Hono<AppEnv>();
+const router = new Hono<AppEnv>()
 
-// Public
+router.post("/register", validate(registerSchema), familyController.register)
+router.post("/login", validate(loginSchema), familyController.login)
+router.post("/logout", familyController.logout)
+router.get("/me", authRequired, familyController.me)
 router.post(
-    '/login',
-    validate(loginSchema),
-    authController.login
-);
-
-// Protected
-router.post('/logout', authController.logout);
-
-router.get('/me', authRequired, authController.me);
-
-router.post(
-    '/change-password',
-    validate(changePasswordSchema),
+    "/change-password",
     authRequired,
-    authController.changePassword
-);
+    validate(changePasswordSchema),
+    familyController.changePassword
+)
 
-export default router;
+export default router

@@ -1,47 +1,22 @@
-import { Context } from 'hono';
-import { setCookie, deleteCookie } from 'hono/cookie';
-import { env } from '../config/env';
-import { CookieOptions } from 'hono/utils/cookie';
+import type { Context } from "hono"
+import { deleteCookie, setCookie } from "hono/cookie"
 
-const isProduction = env.nodeEnv === 'production';
-const frontendDomain = env.frontendUrl
-    ? new URL(env.frontendUrl).hostname
-    : undefined;
+const isProduction = process.env.NODE_ENV === "production"
 
-const rootDomain = frontendDomain
-    ? '.' + frontendDomain.split('.').slice(-2).join('.')
-    : undefined;
-
-const cookieOptions: CookieOptions = {
+const cookieOptions = {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'Strict',
-    path: '/',
-    ...(rootDomain && { domain: rootDomain }),
-};
+    sameSite: "lax" as const,
+    path: "/",
+}
 
-export const setAccessTokenCookie = (c: Context, accessToken: string) => {
-    setCookie(c, 'accessToken', accessToken, {
+export const setAuthCookie = (c: Context, token: string) => {
+    setCookie(c, "session", token, {
         ...cookieOptions,
-        maxAge: 15 * 60, // 15 minutes in seconds
-    });
-};
+        maxAge: 60 * 60 * 24 * 7,
+    })
+}
 
-export const setRefreshTokenCookie = (c: Context, refreshToken: string) => {
-    setCookie(c, 'refreshToken', refreshToken, {
-        ...cookieOptions,
-        maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
-    });
-};
-
-export const clearAuthCookies = (c: Context) => {
-    deleteCookie(c, 'accessToken', cookieOptions);
-    deleteCookie(c, 'refreshToken', cookieOptions);
-};
-
-export const setFilesTokenCookie = (c: Context, filesToken: string) => {
-    setCookie(c, 'filesToken', filesToken, {
-        ...cookieOptions,
-        maxAge: 3 * 60 * 60, // 3 hours in seconds
-    });
-};
+export const clearAuthCookie = (c: Context) => {
+    deleteCookie(c, "session", cookieOptions)
+}

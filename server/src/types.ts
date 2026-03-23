@@ -1,29 +1,27 @@
-import type { Context } from 'hono';
+import type { Context } from "hono"
 
-export interface User {
-    id: string;
-    email: string;
-    role: string;
-    organizationId?: string;
-    status: string;
+export interface AuthUser {
+    familyId: number
+    email: string
+    profileId?: number
 }
 
-export interface AuthPayload {
-    sub: string;
-    email: string;
-    role: string;
-    status: string;
+export interface AuthTokenPayload {
+    familyId: number
+    email: string
+    profileId?: number
+    exp?: number
+    iat?: number
 }
 
 export type Variables = {
-    user: User;
-    requestId: string;
-    validated: Record<string, unknown>;
-    wideEvent: Record<string, unknown>;
-};
+    user: AuthUser
+    requestId: string
+    validated: Record<string, unknown>
+}
 
 export type AppEnv = {
-    Variables: Variables;
-};
+    Variables: Variables
+}
 
-export type AppContext = Context<AppEnv>;
+export type AppContext = Context<AppEnv>

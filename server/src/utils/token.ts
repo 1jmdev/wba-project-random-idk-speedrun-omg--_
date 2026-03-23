@@ -1,35 +1,31 @@
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import { randomUUIDv7 as uuidv7 } from 'bun';
-import { env } from '../config/env';
-import { User } from '../types';
+import { sign, verify } from "hono/jwt"
+import type { AuthTokenPayload, AuthUser } from "../types"
 
-export const generateAccessToken = (user: User) => {
-    return jwt.sign(
+const JWT_SECRET = process.env.JWT_SECRET ?? "dev-secret-change-me"
+
+export const createAuthToken = async (user: AuthUser) => {
+    return sign(
         {
-            sub: user.id,
+            familyId: user.familyId,
             email: user.email,
-            role: user.role,
-            orgId: user.organizationId,
-            status: user.status,
+            profileId: user.profileId,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
         },
-        env.jwtAccessSecret,
-        { expiresIn: '15m' }
-    );
-};
+        JWT_SECRET
+    )
+}
 
-export const generateRefreshToken = (user: User) => {
-    // Adding more randomless for security using uuidv4
-    return jwt.sign(
-        {
-            sub: user.id,
-            jti: uuidv7(),
-        },
-        env.jwtRefreshSecret,
-        { expiresIn: '7d' }
-    );
-};
-
-export const generateRefreshTokenHash = (refreshToken: string) => {
-    return crypto.createHash('sha256').update(refreshToken).digest('hex');
-};
+export const verifyAuthToken = async (
+    token: string
+): Promise<AuthTokenPayload | null> => {
+    try {
+        const payload = (await verify(
+            token,
+            JWT_SECRET,
+            "HS256"
+        )) as unknown as AuthTokenPayload
+        return payload
+    } catch {
+        return null
+    }
+}

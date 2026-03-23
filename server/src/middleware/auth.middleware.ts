@@ -1,111 +1,83 @@
-import { Context, Next } from 'hono';
-import { getCookie } from 'hono/cookie';
-import jwt from 'jsonwebtoken';
-import prisma from '../lib/db';
-import { setAccessTokenCookie, clearAuthCookies } from '../utils/cookie';
-import { generateAccessToken, generateRefreshTokenHash } from '../utils/token';
-import { logs } from '../utils/logger';
-import { env } from '../config/env';
-import { AuthPayload, User } from '../types';
+import type { Context, Next } from "hono"
+import { getCookie } from "hono/cookie"
+import { prisma } from "../lib/prisma"
+import type { AppEnv } from "../types"
+import { clearAuthCookie } from "../utils/cookie"
+import { verifyAuthToken } from "../utils/token"
 
-export const authRequired = async (c: Context, next: Next) => {
-    const accessToken = getCookie(c, 'accessToken');
-    const refreshToken = getCookie(c, 'refreshToken');
+export const authRequired = async (c: Context<AppEnv>, next: Next) => {
+    const token = getCookie(c, "session")
 
-    try {
-        if (accessToken) {
-            const decoded = jwt.verify(
-                accessToken,
-                env.jwtAccessSecret
-            ) as AuthPayload;
-
-            const user: User = {
-                id: decoded.sub,
-                email: decoded.email,
-                role: decoded.role,
-                organizationId: decoded.orgId,
-                status: decoded.status,
-            };
-
-            c.set('user', user);
-            return next();
-        }
-    } catch {
-        // Fallthrough to refresh logic
+    if (!token) {
+        return c.json(
+            {
+                success: false,
+                message: "Authentication required",
+            },
+            401
+        )
     }
 
-    if (!refreshToken) {
-        logs(c, { 'auth.error': 'no_token_found' });
-        return c.json({ message: 'Unauthorized: No token found' }, 401);
+    const payload = await verifyAuthToken(token)
+
+    if (!payload) {
+        clearAuthCookie(c)
+        return c.json(
+            {
+                success: false,
+                message: "Invalid or expired session",
+            },
+            401
+        )
     }
 
-    try {
-        jwt.verify(refreshToken, env.jwtRefreshSecret);
+    const family = await prisma.family.findUnique({
+        where: { id: payload.familyId },
+        select: {
+            id: true,
+            email: true,
+            isActive: true,
+        },
+    })
 
-        const tokenHash = generateRefreshTokenHash(refreshToken);
+    if (!family || !family.isActive) {
+        clearAuthCookie(c)
+        return c.json(
+            {
+                success: false,
+                message: "Family account is not available",
+            },
+            401
+        )
+    }
 
-        const storedToken = await prisma.refreshToken.findUnique({
+    if (payload.profileId) {
+        const profile = await prisma.profile.findFirst({
             where: {
-                tokenHash: tokenHash,
+                id: payload.profileId,
+                familyId: payload.familyId,
+                isActive: true,
             },
-            include: {
-                user: true,
-            },
-        });
+            select: { id: true },
+        })
 
-        if (!storedToken || storedToken.expiresAt < new Date()) {
-            logs(c, {
-                'auth.error': 'invalid_session',
-                'auth.expired': !!(
-                    storedToken && storedToken.expiresAt < new Date()
-                ),
-                'auth.token_found': !!storedToken,
-            });
-            clearAuthCookies(c);
-            return c.json({ message: 'Unauthorized: Invalid session' }, 403);
+        if (!profile) {
+            clearAuthCookie(c)
+            return c.json(
+                {
+                    success: false,
+                    message: "Selected profile is no longer available",
+                },
+                401
+            )
         }
-
-        // Map Prisma user to our User type
-        const user: User = {
-            id: storedToken.user.id,
-            email: storedToken.user.email,
-            role: storedToken.user.role,
-            organizationId: storedToken.user.organizationId || undefined, // Handle null vs undefined
-            status: storedToken.user.status,
-        };
-
-        const newAccessToken = generateAccessToken(user);
-
-        // 6. Set New Cookie
-        setAccessTokenCookie(c, newAccessToken);
-
-        c.set('user', user);
-
-        logs(c, {
-            'auth.success': true,
-            'auth.refresh': true,
-            'user.id': user.id,
-            'user.role': user.role,
-            'user.status': user.status,
-        });
-
-        return next();
-    } catch (error) {
-        logs(c, { 'auth.error': 'exception_during_refresh' });
-        logs(c, { 'auth.error.message': error });
-        return c.json({ message: 'Unauthorized' }, 401);
     }
-};
 
-export const adminRequired = async (c: Context, next: Next) => {
-    const user = c.get('user') as User | undefined;
-    if (!user || user.role !== 'ADMIN') {
-        logs(c, {
-            'auth.error': 'admin_access_denied',
-            'user.id': user?.id,
-            'user.role': user?.role,
-        });
-        return c.json({ message: 'Access denied. Admins only.' }, 403);
-    }
-    await next();
-};
+    c.set("user", {
+        familyId: family.id,
+        email: family.email,
+        profileId: payload.profileId,
+    })
+
+    await next()
+}
