@@ -1,23 +1,92 @@
 generator client {
   provider = "prisma-client"
   output   = "generated"
+  engineType = "client"
+  runtime = "bun"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+enum ProviderType {
+  PREHRAJTO
 }
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+
+enum Genre {
+  ACTION
+  ADULT
+  ADVENTURE
+  ANIMATION
+  BIOGRAPHY
+  COMEDY
+  CRIME
+  DOCUMENTARY
+  DRAMA
+  FAMILY
+  FANTASY
+  GAMESHOW
+  HISTORY
+  HORROR
+  MUSIC
+  MUSICAL
+  MYSTERY
+  NEWS
+  REALITYTV
+  ROMANCE
+  SCIFI
+  SHORT
+  SPORT
+  TALKSHOW
+  SCIENCE_FICTION
+  THRILLER
+  WAR
+  WESTERN
+}
+
+model Profile {
+  @@map("profile")
+
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  name        String
+  avatarUrl   String?
+  profileName String?
+  isActive    Boolean  @default(true)
+
+  familyId    Int
+  family      Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model Family {
+  @@map("family")
+
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  name        String
+  isActive    Boolean  @default(true)
+
+  profiles    Profile[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Movie {
+  @@map("movie")
+
+  id           Int          @id @default(autoincrement())
+  name         String
+  year         Int
+  length       Int
+  genres       Genre[]
+  providerType ProviderType
+  providerId   String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@unique([providerType, providerId])
+  @@index([name])
+  @@index([year])
 }
