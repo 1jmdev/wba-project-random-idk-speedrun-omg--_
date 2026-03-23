@@ -1,5 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080"
-
 export class ApiError extends Error {
     status: number
     data: unknown
@@ -19,7 +17,7 @@ async function request<T>(
     path: string,
     options: RequestOptions = {}
 ): Promise<T> {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    const response = await fetch(path, {
         ...options,
         credentials: "include",
         headers: {
