@@ -30,16 +30,21 @@ export default function MyList({
                     return
                 }
 
-                const allMovies = await apiClient.listMovies({
-                    take: 100,
-                    sortBy: "year",
-                    sortOrder: "desc",
-                })
-
                 setMovies(
-                    allMovies
-                        .map(mapMovie)
-                        .filter((movie) => ids.includes(movie.id))
+                    (
+                        await Promise.all(
+                            ids.map(async (movieId) => {
+                                try {
+                                    return mapMovie(
+                                        await apiClient.getMovie(movieId)
+                                    )
+                                } catch {
+                                    return null
+                                }
+                            })
+                        )
+                    )
+                        .filter((movie): movie is Movie => movie !== null)
                         .sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
                 )
             } finally {

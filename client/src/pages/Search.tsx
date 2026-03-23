@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
@@ -12,6 +12,8 @@ interface SearchProps {
     onLogout: () => Promise<void>
 }
 
+const PAGE_SIZE = 24
+
 export default function Search({
     profile,
     onSwitchProfile,
@@ -21,31 +23,52 @@ export default function Search({
     const query = searchParams.get("q") ?? ""
     const [results, setResults] = useState<Movie[]>([])
     const [loading, setLoading] = useState(true)
+    const [offset, setOffset] = useState(0)
+    const [total, setTotal] = useState(0)
+    const previousQueryRef = useRef(query)
 
     useEffect(() => {
+        if (previousQueryRef.current !== query) {
+            previousQueryRef.current = query
+            setOffset(0)
+            return
+        }
+
         const load = async () => {
             setLoading(true)
 
             try {
-                const movies = await apiClient.listMovies(
+                const response = await apiClient.listMovies(
                     query.trim()
                         ? {
                               q: query.trim(),
-                              take: 60,
+                              limit: PAGE_SIZE,
+                              offset,
                               sortBy: "year",
                               sortOrder: "desc",
                           }
-                        : { take: 24, sortBy: "createdAt", sortOrder: "desc" }
+                        : {
+                              limit: PAGE_SIZE,
+                              offset,
+                              sortBy: "createdAt",
+                              sortOrder: "desc",
+                          }
                 )
 
-                setResults(movies.map(mapMovie))
+                setResults(response.items.map(mapMovie))
+                setTotal(response.total)
             } finally {
                 setLoading(false)
             }
         }
 
         void load()
-    }, [query])
+    }, [query, offset])
+
+    const currentPage = Math.floor(offset / PAGE_SIZE) + 1
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+    const hasPreviousPage = offset > 0
+    const hasNextPage = offset + PAGE_SIZE < total
 
     return (
         <div className="min-h-screen bg-background">
@@ -71,17 +94,52 @@ export default function Search({
                 )}
 
                 {results.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-                        {results.map((movie) => (
-                            <div key={movie.id} className="relative">
-                                <TitleCard
-                                    movie={movie}
-                                    profileId={profile.id}
-                                    grid
-                                />
+                    <>
+                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                            {results.map((movie) => (
+                                <div key={movie.id} className="relative">
+                                    <TitleCard
+                                        movie={movie}
+                                        profileId={profile.id}
+                                        grid
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-white/70 md:flex-row md:items-center md:justify-between">
+                            <p className="text-sm">
+                                Page {currentPage} of {totalPages}. Showing{" "}
+                                {results.length} titles from offset {offset}.
+                            </p>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setOffset((current) =>
+                                            Math.max(0, current - PAGE_SIZE)
+                                        )
+                                    }
+                                    disabled={!hasPreviousPage || loading}
+                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setOffset(
+                                            (current) => current + PAGE_SIZE
+                                        )
+                                    }
+                                    disabled={!hasNextPage || loading}
+                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
+                                >
+                                    Next
+                                </button>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    </>
                 ) : (
                     <div className="flex flex-col items-center justify-center py-20">
                         <p className="mb-2 text-lg text-white/70">

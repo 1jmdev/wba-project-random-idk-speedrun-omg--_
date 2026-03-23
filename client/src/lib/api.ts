@@ -83,6 +83,14 @@ export interface ApiMovie {
     updatedAt: string
 }
 
+export interface PaginatedResponse<T> {
+    items: T[]
+    total: number
+    limit: number
+    offset: number
+    hasMore: boolean
+}
+
 interface ApiEnvelope<T> {
     success: boolean
     data: T
@@ -190,9 +198,9 @@ export const apiClient = {
         }
 
         const query = searchParams.toString()
-        const response = await request<ApiEnvelope<ApiMovie[]>>(
-            `/api/movies${query ? `?${query}` : ""}`
-        )
+        const response = await request<
+            ApiEnvelope<PaginatedResponse<ApiMovie>>
+        >(`/api/movies${query ? `?${query}` : ""}`)
 
         return response.data
     },
