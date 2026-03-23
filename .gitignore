@@ -25,3 +25,6 @@ dist-ssr
 
 .wrangler
 .vercel
+
+/prisma/generated
+.env
