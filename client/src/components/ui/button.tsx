@@ -16,12 +16,10 @@ const buttonVariants = cva(
                     "bg-[rgba(109,109,110,0.7)] text-white hover:bg-[rgba(109,109,110,0.4)] active:bg-[rgba(109,109,110,0.3)] rounded-[4px]",
                 outline:
                     "border border-[rgba(255,255,255,0.5)] bg-transparent text-white hover:border-white hover:bg-[rgba(255,255,255,0.05)] rounded-[4px]",
-                ghost:
-                    "text-white hover:bg-[rgba(255,255,255,0.1)] active:bg-[rgba(255,255,255,0.05)] rounded-[4px]",
+                ghost: "text-white hover:bg-[rgba(255,255,255,0.1)] active:bg-[rgba(255,255,255,0.05)] rounded-[4px]",
                 destructive:
                     "bg-[#e50914] text-white hover:bg-[#c11119] active:bg-[#a00d12] rounded-[4px]",
-                link:
-                    "text-white underline-offset-4 hover:underline hover:text-[#e5e5e5]",
+                link: "text-white underline-offset-4 hover:underline hover:text-[#e5e5e5]",
             },
             size: {
                 default: "h-9 gap-2 px-4 text-sm",

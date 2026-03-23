@@ -7,7 +7,9 @@ interface ContinueWatchingRowProps {
     items: { movie: Movie; progress: number }[]
 }
 
-export default function ContinueWatchingRow({ items }: ContinueWatchingRowProps) {
+export default function ContinueWatchingRow({
+    items,
+}: ContinueWatchingRowProps) {
     const rowRef = useRef<HTMLDivElement>(null)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
     const [canScrollRight, setCanScrollRight] = useState(true)
@@ -87,7 +89,9 @@ export default function ContinueWatchingRow({ items }: ContinueWatchingRowProps)
                             </div>
 
                             <div className="mt-1.5 px-0.5">
-                                <p className="text-xs text-white/90 font-medium truncate">{movie.title}</p>
+                                <p className="text-xs text-white/90 font-medium truncate">
+                                    {movie.title}
+                                </p>
                                 <p className="text-[10px] text-white/50">
                                     {movie.type === "series"
                                         ? `S${movie.seasons} E${Math.ceil(Math.random() * 10)}`

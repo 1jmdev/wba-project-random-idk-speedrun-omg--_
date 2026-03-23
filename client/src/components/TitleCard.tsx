@@ -78,7 +78,9 @@ export default function TitleCard({ movie, grid = false }: TitleCardProps) {
 
                                 {/* Metadata */}
                                 <div className="flex items-center gap-1.5 text-[10px] mb-1">
-                                    <span className="text-[#46d369] font-semibold">{movie.match}%</span>
+                                    <span className="text-[#46d369] font-semibold">
+                                        {movie.match}%
+                                    </span>
                                     <span className="border border-white/40 px-1 py-px text-[9px] text-white/70 leading-none">
                                         {movie.rating}
                                     </span>
@@ -94,14 +96,19 @@ export default function TitleCard({ movie, grid = false }: TitleCardProps) {
 
                                 {/* Genres */}
                                 <div className="flex items-center gap-1 text-[10px] text-white/70">
-                                    {movie.genres.slice(0, 3).map((genre, i) => (
-                                        <span key={genre} className="flex items-center gap-1">
-                                            {i > 0 && (
-                                                <span className="w-0.5 h-0.5 rounded-full bg-white/40" />
-                                            )}
-                                            {genre}
-                                        </span>
-                                    ))}
+                                    {movie.genres
+                                        .slice(0, 3)
+                                        .map((genre, i) => (
+                                            <span
+                                                key={genre}
+                                                className="flex items-center gap-1"
+                                            >
+                                                {i > 0 && (
+                                                    <span className="w-0.5 h-0.5 rounded-full bg-white/40" />
+                                                )}
+                                                {genre}
+                                            </span>
+                                        ))}
                                 </div>
                             </>
                         ) : (

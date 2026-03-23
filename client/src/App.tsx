@@ -16,13 +16,72 @@ export default function App() {
 
     return (
         <Routes>
-            <Route path="/" element={<Browse profile={profile} onSwitchProfile={() => setProfile(null)} />} />
-            <Route path="/title/:id" element={<TitleDetail profile={profile} onSwitchProfile={() => setProfile(null)} />} />
-            <Route path="/search" element={<Search profile={profile} onSwitchProfile={() => setProfile(null)} />} />
-            <Route path="/my-list" element={<MyList profile={profile} onSwitchProfile={() => setProfile(null)} />} />
-            <Route path="/tv-shows" element={<Browse profile={profile} onSwitchProfile={() => setProfile(null)} filter="series" />} />
-            <Route path="/movies" element={<Browse profile={profile} onSwitchProfile={() => setProfile(null)} filter="movie" />} />
-            <Route path="/new" element={<Browse profile={profile} onSwitchProfile={() => setProfile(null)} filter="new" />} />
+            <Route
+                path="/"
+                element={
+                    <Browse
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                    />
+                }
+            />
+            <Route
+                path="/title/:id"
+                element={
+                    <TitleDetail
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                    />
+                }
+            />
+            <Route
+                path="/search"
+                element={
+                    <Search
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                    />
+                }
+            />
+            <Route
+                path="/my-list"
+                element={
+                    <MyList
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                    />
+                }
+            />
+            <Route
+                path="/tv-shows"
+                element={
+                    <Browse
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                        filter="series"
+                    />
+                }
+            />
+            <Route
+                path="/movies"
+                element={
+                    <Browse
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                        filter="movie"
+                    />
+                }
+            />
+            <Route
+                path="/new"
+                element={
+                    <Browse
+                        profile={profile}
+                        onSwitchProfile={() => setProfile(null)}
+                        filter="new"
+                    />
+                }
+            />
         </Routes>
     )
 }

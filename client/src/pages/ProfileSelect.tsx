@@ -27,7 +27,9 @@ export default function ProfileSelect({ onSelect }: ProfileSelectProps) {
                     >
                         <div
                             className={`w-[100px] h-[100px] md:w-[140px] md:h-[140px] rounded-sm overflow-hidden transition-all ${
-                                hoveredId === profile.id ? "ring-2 ring-white" : "ring-0"
+                                hoveredId === profile.id
+                                    ? "ring-2 ring-white"
+                                    : "ring-0"
                             }`}
                         >
                             <img
@@ -38,7 +40,9 @@ export default function ProfileSelect({ onSelect }: ProfileSelectProps) {
                         </div>
                         <span
                             className={`text-sm md:text-base transition-colors ${
-                                hoveredId === profile.id ? "text-white" : "text-netflix-light-gray"
+                                hoveredId === profile.id
+                                    ? "text-white"
+                                    : "text-netflix-light-gray"
                             }`}
                         >
                             {profile.name}

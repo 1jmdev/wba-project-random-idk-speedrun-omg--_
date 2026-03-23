@@ -14,25 +14,33 @@ interface BrowseProps {
     filter?: "movie" | "series" | "new"
 }
 
-export default function Browse({ profile, onSwitchProfile, filter }: BrowseProps) {
+export default function Browse({
+    profile,
+    onSwitchProfile,
+    filter,
+}: BrowseProps) {
     const filteredCategories = useMemo(() => {
         if (!filter) return categories
 
         if (filter === "new") {
-            return categories.map((cat) => ({
-                ...cat,
-                movies: cat.movies.filter((m) => m.year === 2024),
-            })).filter((cat) => cat.movies.length > 0)
+            return categories
+                .map((cat) => ({
+                    ...cat,
+                    movies: cat.movies.filter((m) => m.year === 2024),
+                }))
+                .filter((cat) => cat.movies.length > 0)
         }
 
-        return categories.map((cat) => ({
-            ...cat,
-            movies: cat.movies.filter((m) => m.type === filter),
-        })).filter((cat) => cat.movies.length > 0)
+        return categories
+            .map((cat) => ({
+                ...cat,
+                movies: cat.movies.filter((m) => m.type === filter),
+            }))
+            .filter((cat) => cat.movies.length > 0)
     }, [filter])
 
     const heroMovie = filter
-        ? filteredCategories[0]?.movies[0] ?? movies[0]
+        ? (filteredCategories[0]?.movies[0] ?? movies[0])
         : movies[4] // The Last Kingdom: Rebirth as default hero
 
     return (

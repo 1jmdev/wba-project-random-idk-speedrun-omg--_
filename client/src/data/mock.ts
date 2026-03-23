@@ -25,20 +25,35 @@ export interface Profile {
 // High-quality placeholder images from picsum
 const img = (id: number, w = 300, h = 450) =>
     `https://picsum.photos/seed/netflix${id}/${w}/${h}`
-const backdrop = (id: number) =>
-    `https://picsum.photos/seed/nfbg${id}/1280/720`
+const backdrop = (id: number) => `https://picsum.photos/seed/nfbg${id}/1280/720`
 
 export const profiles: Profile[] = [
-    { id: 1, name: "User 1", avatar: `https://picsum.photos/seed/avatar1/128/128`, isKids: false },
-    { id: 2, name: "User 2", avatar: `https://picsum.photos/seed/avatar2/128/128`, isKids: false },
-    { id: 3, name: "Children", avatar: `https://picsum.photos/seed/avatar3/128/128`, isKids: true },
+    {
+        id: 1,
+        name: "User 1",
+        avatar: `https://picsum.photos/seed/avatar1/128/128`,
+        isKids: false,
+    },
+    {
+        id: 2,
+        name: "User 2",
+        avatar: `https://picsum.photos/seed/avatar2/128/128`,
+        isKids: false,
+    },
+    {
+        id: 3,
+        name: "Children",
+        avatar: `https://picsum.photos/seed/avatar3/128/128`,
+        isKids: true,
+    },
 ]
 
 export const movies: Movie[] = [
     {
         id: 1,
         title: "The Dark Horizon",
-        description: "A fearless astronaut embarks on a perilous mission beyond the solar system to save humanity from extinction. Along the way, she confronts the ghosts of her past and discovers that the greatest threat may be closer than she thinks.",
+        description:
+            "A fearless astronaut embarks on a perilous mission beyond the solar system to save humanity from extinction. Along the way, she confronts the ghosts of her past and discovers that the greatest threat may be closer than she thinks.",
         image: img(1),
         backdrop: backdrop(1),
         year: 2024,
@@ -52,7 +67,8 @@ export const movies: Movie[] = [
     {
         id: 2,
         title: "Crimson Streets",
-        description: "In the neon-soaked underbelly of a corrupt metropolis, a retired detective is pulled back into the world of crime when his daughter goes missing. Every clue leads deeper into a conspiracy that reaches the highest levels of power.",
+        description:
+            "In the neon-soaked underbelly of a corrupt metropolis, a retired detective is pulled back into the world of crime when his daughter goes missing. Every clue leads deeper into a conspiracy that reaches the highest levels of power.",
         image: img(2),
         backdrop: backdrop(2),
         year: 2024,
@@ -66,7 +82,8 @@ export const movies: Movie[] = [
     {
         id: 3,
         title: "Whispers in the Wind",
-        description: "Two strangers meet by chance in a small coastal town and form an unexpected bond that transforms both their lives. A deeply moving story about love, loss, and finding the courage to start again.",
+        description:
+            "Two strangers meet by chance in a small coastal town and form an unexpected bond that transforms both their lives. A deeply moving story about love, loss, and finding the courage to start again.",
         image: img(3),
         backdrop: backdrop(3),
         year: 2023,
@@ -80,7 +97,8 @@ export const movies: Movie[] = [
     {
         id: 4,
         title: "Shadow Protocol",
-        description: "When a covert intelligence agency is compromised from within, a lone operative must race against time to prevent a catastrophic global attack while trusting no one.",
+        description:
+            "When a covert intelligence agency is compromised from within, a lone operative must race against time to prevent a catastrophic global attack while trusting no one.",
         image: img(4),
         backdrop: backdrop(4),
         year: 2024,
@@ -94,7 +112,8 @@ export const movies: Movie[] = [
     {
         id: 5,
         title: "The Last Kingdom: Rebirth",
-        description: "In a world ravaged by war, a young warrior rises from the ashes of a fallen empire to unite the scattered kingdoms against an ancient evil that threatens to consume everything.",
+        description:
+            "In a world ravaged by war, a young warrior rises from the ashes of a fallen empire to unite the scattered kingdoms against an ancient evil that threatens to consume everything.",
         image: img(5),
         backdrop: backdrop(5),
         year: 2024,
@@ -108,7 +127,8 @@ export const movies: Movie[] = [
     {
         id: 6,
         title: "Echoes of Tomorrow",
-        description: "A brilliant physicist discovers a way to communicate with her future self, but each message she sends creates ripples that threaten to unravel the fabric of reality itself.",
+        description:
+            "A brilliant physicist discovers a way to communicate with her future self, but each message she sends creates ripples that threaten to unravel the fabric of reality itself.",
         image: img(6),
         backdrop: backdrop(6),
         year: 2023,
@@ -122,7 +142,8 @@ export const movies: Movie[] = [
     {
         id: 7,
         title: "Beneath the Surface",
-        description: "A deep-sea research team discovers an ancient civilization hidden in the ocean's darkest depths, awakening something that has slept for millennia.",
+        description:
+            "A deep-sea research team discovers an ancient civilization hidden in the ocean's darkest depths, awakening something that has slept for millennia.",
         image: img(7),
         backdrop: backdrop(7),
         year: 2024,
@@ -136,7 +157,8 @@ export const movies: Movie[] = [
     {
         id: 8,
         title: "The Iron Crown",
-        description: "A cunning political drama set in a medieval kingdom where three siblings vie for their dying father's throne, each willing to sacrifice everything for power.",
+        description:
+            "A cunning political drama set in a medieval kingdom where three siblings vie for their dying father's throne, each willing to sacrifice everything for power.",
         image: img(8),
         backdrop: backdrop(8),
         year: 2024,
@@ -152,7 +174,8 @@ export const movies: Movie[] = [
     {
         id: 9,
         title: "Neon Nights",
-        description: "In the electric nightlife of Tokyo, a struggling musician forms an unlikely partnership with a mysterious producer, plunging into a world of ambition, betrayal, and rhythm.",
+        description:
+            "In the electric nightlife of Tokyo, a struggling musician forms an unlikely partnership with a mysterious producer, plunging into a world of ambition, betrayal, and rhythm.",
         image: img(9),
         backdrop: backdrop(9),
         year: 2023,
@@ -168,7 +191,8 @@ export const movies: Movie[] = [
     {
         id: 10,
         title: "Frostbite",
-        description: "After a devastating blizzard cuts off a remote mountain resort, the trapped guests begin to realize the storm outside isn't the only danger lurking in the shadows.",
+        description:
+            "After a devastating blizzard cuts off a remote mountain resort, the trapped guests begin to realize the storm outside isn't the only danger lurking in the shadows.",
         image: img(10),
         backdrop: backdrop(10),
         year: 2024,
@@ -182,7 +206,8 @@ export const movies: Movie[] = [
     {
         id: 11,
         title: "Code Zero",
-        description: "A team of elite hackers is recruited by a shadowy government agency to prevent a cyber attack that could bring down every power grid on Earth simultaneously.",
+        description:
+            "A team of elite hackers is recruited by a shadowy government agency to prevent a cyber attack that could bring down every power grid on Earth simultaneously.",
         image: img(11),
         backdrop: backdrop(11),
         year: 2024,
@@ -196,7 +221,8 @@ export const movies: Movie[] = [
     {
         id: 12,
         title: "Wildlands",
-        description: "A breathtaking nature documentary following the last untouched wilderness areas on Earth, revealing the incredible resilience and beauty of life in its purest form.",
+        description:
+            "A breathtaking nature documentary following the last untouched wilderness areas on Earth, revealing the incredible resilience and beauty of life in its purest form.",
         image: img(12),
         backdrop: backdrop(12),
         year: 2023,
@@ -212,7 +238,8 @@ export const movies: Movie[] = [
     {
         id: 13,
         title: "The Alchemist's Apprentice",
-        description: "A young orphan discovers she has the rare gift of alchemy and is taken under the wing of a mysterious mentor, only to find herself at the center of an ancient prophecy.",
+        description:
+            "A young orphan discovers she has the rare gift of alchemy and is taken under the wing of a mysterious mentor, only to find herself at the center of an ancient prophecy.",
         image: img(13),
         backdrop: backdrop(13),
         year: 2024,
@@ -226,7 +253,8 @@ export const movies: Movie[] = [
     {
         id: 14,
         title: "Silent Witness",
-        description: "A deaf forensic analyst becomes the key witness to a high-profile murder, using her unique perception to uncover truths that everyone else has missed.",
+        description:
+            "A deaf forensic analyst becomes the key witness to a high-profile murder, using her unique perception to uncover truths that everyone else has missed.",
         image: img(14),
         backdrop: backdrop(14),
         year: 2024,
@@ -242,7 +270,8 @@ export const movies: Movie[] = [
     {
         id: 15,
         title: "Velocity",
-        description: "The true story of the fastest woman on Earth, who overcame unimaginable adversity to break every speed record and redefine what's possible in motorsport.",
+        description:
+            "The true story of the fastest woman on Earth, who overcame unimaginable adversity to break every speed record and redefine what's possible in motorsport.",
         image: img(15),
         backdrop: backdrop(15),
         year: 2023,
@@ -256,7 +285,8 @@ export const movies: Movie[] = [
     {
         id: 16,
         title: "Parallel Lines",
-        description: "Five interconnected stories spanning five decades explore how a single event in 1970s New York continues to ripple through the lives of strangers across generations.",
+        description:
+            "Five interconnected stories spanning five decades explore how a single event in 1970s New York continues to ripple through the lives of strangers across generations.",
         image: img(16),
         backdrop: backdrop(16),
         year: 2024,
@@ -270,7 +300,8 @@ export const movies: Movie[] = [
     {
         id: 17,
         title: "Starfall Academy",
-        description: "At an elite academy for gifted teenagers with extraordinary abilities, a new student discovers a dark conspiracy that threatens to destroy everything the school was built to protect.",
+        description:
+            "At an elite academy for gifted teenagers with extraordinary abilities, a new student discovers a dark conspiracy that threatens to destroy everything the school was built to protect.",
         image: img(17),
         backdrop: backdrop(17),
         year: 2024,
@@ -286,7 +317,8 @@ export const movies: Movie[] = [
     {
         id: 18,
         title: "The Butcher's Table",
-        description: "A celebrity chef's glamorous empire begins to crumble when a journalist starts digging into the dark secrets behind the world's most exclusive restaurant.",
+        description:
+            "A celebrity chef's glamorous empire begins to crumble when a journalist starts digging into the dark secrets behind the world's most exclusive restaurant.",
         image: img(18),
         backdrop: backdrop(18),
         year: 2023,
@@ -300,7 +332,8 @@ export const movies: Movie[] = [
     {
         id: 19,
         title: "Afterglow",
-        description: "In the aftermath of a global pandemic that gave survivors strange new abilities, a small community struggles to rebuild while outside forces close in.",
+        description:
+            "In the aftermath of a global pandemic that gave survivors strange new abilities, a small community struggles to rebuild while outside forces close in.",
         image: img(19),
         backdrop: backdrop(19),
         year: 2024,
@@ -316,7 +349,8 @@ export const movies: Movie[] = [
     {
         id: 20,
         title: "Glass Houses",
-        description: "A seemingly perfect suburban family's darkest secrets are exposed when a mysterious new neighbor moves in next door, triggering a chain of events that no one could predict.",
+        description:
+            "A seemingly perfect suburban family's darkest secrets are exposed when a mysterious new neighbor moves in next door, triggering a chain of events that no one could predict.",
         image: img(20),
         backdrop: backdrop(20),
         year: 2024,
@@ -330,7 +364,8 @@ export const movies: Movie[] = [
     {
         id: 21,
         title: "Rising Tide",
-        description: "A marine biologist races to save a rare species of whale from extinction while battling corporate greed and political corruption in a coastal fishing town.",
+        description:
+            "A marine biologist races to save a rare species of whale from extinction while battling corporate greed and political corruption in a coastal fishing town.",
         image: img(21),
         backdrop: backdrop(21),
         year: 2023,
@@ -344,7 +379,8 @@ export const movies: Movie[] = [
     {
         id: 22,
         title: "The Grand Illusion",
-        description: "A master illusionist plans the greatest heist in history, assembling a crew of misfits for one last job that will blur the line between magic and reality.",
+        description:
+            "A master illusionist plans the greatest heist in history, assembling a crew of misfits for one last job that will blur the line between magic and reality.",
         image: img(22),
         backdrop: backdrop(22),
         year: 2024,
@@ -358,7 +394,8 @@ export const movies: Movie[] = [
     {
         id: 23,
         title: "Midnight Express",
-        description: "A gripping limited series following the staff of a 24-hour diner in downtown Chicago, where every night brings new characters, confessions, and unexpected connections.",
+        description:
+            "A gripping limited series following the staff of a 24-hour diner in downtown Chicago, where every night brings new characters, confessions, and unexpected connections.",
         image: img(23),
         backdrop: backdrop(23),
         year: 2024,
@@ -374,7 +411,8 @@ export const movies: Movie[] = [
     {
         id: 24,
         title: "Obsidian",
-        description: "A supernatural thriller about a geologist who discovers a mysterious black mineral that grants terrifying visions of the future, forcing her to prevent disasters before they happen.",
+        description:
+            "A supernatural thriller about a geologist who discovers a mysterious black mineral that grants terrifying visions of the future, forcing her to prevent disasters before they happen.",
         image: img(24),
         backdrop: backdrop(24),
         year: 2024,
@@ -388,7 +426,8 @@ export const movies: Movie[] = [
     {
         id: 25,
         title: "Empire of Dust",
-        description: "An epic historical drama chronicling the rise and fall of a legendary dynasty in ancient Mesopotamia, where loyalty is tested and empires are built on sand.",
+        description:
+            "An epic historical drama chronicling the rise and fall of a legendary dynasty in ancient Mesopotamia, where loyalty is tested and empires are built on sand.",
         image: img(25),
         backdrop: backdrop(25),
         year: 2023,
@@ -404,7 +443,8 @@ export const movies: Movie[] = [
     {
         id: 26,
         title: "Laugh Track",
-        description: "A washed-up comedian gets one last shot at fame when a viral video turns her into an overnight sensation, but the pressures of internet fame may destroy her.",
+        description:
+            "A washed-up comedian gets one last shot at fame when a viral video turns her into an overnight sensation, but the pressures of internet fame may destroy her.",
         image: img(26),
         backdrop: backdrop(26),
         year: 2024,
@@ -418,7 +458,8 @@ export const movies: Movie[] = [
     {
         id: 27,
         title: "Phantom Signal",
-        description: "When a mysterious radio signal from deep space is decoded, it reveals coordinates to a location on Earth that has been hidden for centuries.",
+        description:
+            "When a mysterious radio signal from deep space is decoded, it reveals coordinates to a location on Earth that has been hidden for centuries.",
         image: img(27),
         backdrop: backdrop(27),
         year: 2024,
@@ -432,7 +473,8 @@ export const movies: Movie[] = [
     {
         id: 28,
         title: "Heartstrings",
-        description: "A heartwarming animated film about a lonely puppet who dreams of becoming a real musician, embarking on a magical journey through a world made entirely of music.",
+        description:
+            "A heartwarming animated film about a lonely puppet who dreams of becoming a real musician, embarking on a magical journey through a world made entirely of music.",
         image: img(28),
         backdrop: backdrop(28),
         year: 2023,
@@ -446,7 +488,8 @@ export const movies: Movie[] = [
     {
         id: 29,
         title: "The Reckoning",
-        description: "A small-town sheriff must confront his own troubled past when a series of disappearances leads him to a truth he's been running from his entire life.",
+        description:
+            "A small-town sheriff must confront his own troubled past when a series of disappearances leads him to a truth he's been running from his entire life.",
         image: img(29),
         backdrop: backdrop(29),
         year: 2024,
@@ -462,7 +505,8 @@ export const movies: Movie[] = [
     {
         id: 30,
         title: "Zenith",
-        description: "Humanity's first colony on Mars faces an existential crisis when contact with Earth is suddenly severed, leaving 10,000 colonists to fend for themselves on the red planet.",
+        description:
+            "Humanity's first colony on Mars faces an existential crisis when contact with Earth is suddenly severed, leaving 10,000 colonists to fend for themselves on the red planet.",
         image: img(30),
         backdrop: backdrop(30),
         year: 2024,
@@ -483,19 +527,110 @@ export interface Category {
 }
 
 export const categories: Category[] = [
-    { title: "Trending Now", movies: [movies[0], movies[3], movies[7], movies[10], movies[16], movies[22], movies[29]] },
-    { title: "Popular on Netflix", movies: [movies[1], movies[5], movies[8], movies[13], movies[18], movies[23], movies[27]] },
-    { title: "New Releases", movies: [movies[2], movies[6], movies[11], movies[15], movies[19], movies[24], movies[28]] },
-    { title: "Action & Adventure", movies: [movies[3], movies[4], movies[10], movies[21], movies[26], movies[29]] },
-    { title: "Critically Acclaimed", movies: [movies[7], movies[15], movies[22], movies[28], movies[8], movies[24]] },
-    { title: "Sci-Fi & Fantasy", movies: [movies[0], movies[5], movies[4], movies[16], movies[23], movies[26], movies[29]] },
-    { title: "Crime & Mystery", movies: [movies[1], movies[13], movies[19], movies[28], movies[9], movies[3]] },
-    { title: "Watch It Again", movies: [movies[2], movies[12], movies[20], movies[25], movies[17], movies[6]] },
+    {
+        title: "Trending Now",
+        movies: [
+            movies[0],
+            movies[3],
+            movies[7],
+            movies[10],
+            movies[16],
+            movies[22],
+            movies[29],
+        ],
+    },
+    {
+        title: "Popular on Netflix",
+        movies: [
+            movies[1],
+            movies[5],
+            movies[8],
+            movies[13],
+            movies[18],
+            movies[23],
+            movies[27],
+        ],
+    },
+    {
+        title: "New Releases",
+        movies: [
+            movies[2],
+            movies[6],
+            movies[11],
+            movies[15],
+            movies[19],
+            movies[24],
+            movies[28],
+        ],
+    },
+    {
+        title: "Action & Adventure",
+        movies: [
+            movies[3],
+            movies[4],
+            movies[10],
+            movies[21],
+            movies[26],
+            movies[29],
+        ],
+    },
+    {
+        title: "Critically Acclaimed",
+        movies: [
+            movies[7],
+            movies[15],
+            movies[22],
+            movies[28],
+            movies[8],
+            movies[24],
+        ],
+    },
+    {
+        title: "Sci-Fi & Fantasy",
+        movies: [
+            movies[0],
+            movies[5],
+            movies[4],
+            movies[16],
+            movies[23],
+            movies[26],
+            movies[29],
+        ],
+    },
+    {
+        title: "Crime & Mystery",
+        movies: [
+            movies[1],
+            movies[13],
+            movies[19],
+            movies[28],
+            movies[9],
+            movies[3],
+        ],
+    },
+    {
+        title: "Watch It Again",
+        movies: [
+            movies[2],
+            movies[12],
+            movies[20],
+            movies[25],
+            movies[17],
+            movies[6],
+        ],
+    },
     { title: "Documentaries", movies: [movies[11], movies[14], movies[20]] },
     { title: "TV Shows", movies: movies.filter((m) => m.type === "series") },
 ]
 
-export const myList: Movie[] = [movies[0], movies[4], movies[7], movies[12], movies[18], movies[29]]
+export const myList: Movie[] = [
+    movies[0],
+    movies[4],
+    movies[7],
+    movies[12],
+    movies[18],
+    movies[29],
+]
 
 export const continueWatching = [
     { movie: movies[7], progress: 65 },
