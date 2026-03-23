@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import ContentRow from "@/components/ContentRow"
 import ContinueWatchingRow from "@/components/ContinueWatchingRow"
 import HeroBanner from "@/components/HeroBanner"
@@ -20,6 +20,8 @@ interface BrowseProps {
     filter?: "movie" | "series" | "new"
 }
 
+const PAGE_SIZE = 24
+
 export default function Browse({
     profile,
     onSwitchProfile,
@@ -30,8 +32,17 @@ export default function Browse({
     const [rows, setRows] = useState<Category[]>([])
     const [allMovies, setAllMovies] = useState<Movie[]>([])
     const [loading, setLoading] = useState(true)
+    const [offset, setOffset] = useState(0)
+    const [total, setTotal] = useState(0)
+    const previousFilterRef = useRef(filter)
 
     useEffect(() => {
+        if (previousFilterRef.current !== filter) {
+            previousFilterRef.current = filter
+            setOffset(0)
+            return
+        }
+
         const load = async () => {
             setLoading(true)
 
@@ -46,17 +57,20 @@ export default function Browse({
                         }))
                     )
                     setAllMovies(response.trending.map(mapMovie))
+                    setTotal(response.trending.length)
                     return
                 }
 
                 const response = await apiClient.listMovies({
-                    take: 100,
+                    limit: PAGE_SIZE,
+                    offset,
                     sortBy: "year",
                     sortOrder: "desc",
                 })
-                const mappedMovies = response.map(mapMovie)
+                const mappedMovies = response.items.map(mapMovie)
                 setAllMovies(mappedMovies)
                 setHeroMovie(mappedMovies[0] ?? null)
+                setTotal(response.total)
                 setRows([])
             } finally {
                 setLoading(false)
@@ -64,7 +78,7 @@ export default function Browse({
         }
 
         void load()
-    }, [filter])
+    }, [filter, offset])
 
     const filteredCategories = useMemo(() => {
         if (!filter) {
@@ -104,6 +118,11 @@ export default function Browse({
         [allMovies]
     )
 
+    const currentPage = Math.floor(offset / PAGE_SIZE) + 1
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+    const hasPreviousPage = offset > 0
+    const hasNextPage = offset + PAGE_SIZE < total
+
     return (
         <div className="min-h-screen bg-background">
             <Navbar
@@ -142,6 +161,43 @@ export default function Browse({
                         movies={category.movies}
                     />
                 ))}
+
+                {filter && (
+                    <div className="px-4 py-10 md:px-12">
+                        <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-white/70 md:flex-row md:items-center md:justify-between">
+                            <p className="text-sm">
+                                Page {currentPage} of {totalPages}. Showing{" "}
+                                {allMovies.length} titles from offset {offset}.
+                            </p>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setOffset((current) =>
+                                            Math.max(0, current - PAGE_SIZE)
+                                        )
+                                    }
+                                    disabled={!hasPreviousPage || loading}
+                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setOffset(
+                                            (current) => current + PAGE_SIZE
+                                        )
+                                    }
+                                    disabled={!hasNextPage || loading}
+                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <Footer />

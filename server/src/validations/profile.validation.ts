@@ -27,9 +27,7 @@ export const createProfileSchema = z.object({
 export const updateProfileSchema = z.object({
     body: z
         .object({
-            email: z
-                .email("Valid email is required")
-                .optional(),
+            email: z.email("Valid email is required").optional(),
             name: z.string().trim().min(2).optional(),
             profileName: z.string().trim().max(40).optional(),
             avatarUrl: nullableUrl.optional(),

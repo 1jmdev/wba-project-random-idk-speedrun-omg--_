@@ -54,13 +54,13 @@ export default function TitleDetail({
                     .replaceAll(" ", "_")
                 const related = await apiClient.listMovies({
                     genre: genreQuery,
-                    take: 12,
+                    limit: 12,
                     sortBy: "year",
                     sortOrder: "desc",
                 })
 
                 setRelatedMovies(
-                    related
+                    related.items
                         .map(mapMovie)
                         .filter((candidate) => candidate.id !== movieId)
                         .slice(0, 12)

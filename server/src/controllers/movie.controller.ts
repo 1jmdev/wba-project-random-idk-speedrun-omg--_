@@ -22,38 +22,52 @@ export const list = async (c: Context<AppEnv>) => {
             genre?: Genre
             year?: number
             providerType?: "PREHRAJTO"
-            take?: number
-            skip?: number
+            limit?: number
+            offset?: number
             sortBy?: "createdAt" | "name" | "year"
             sortOrder?: "asc" | "desc"
         }
     }
 
-    const movies = await prisma.movie.findMany({
-        where: {
-            ...(query.q
-                ? {
-                      name: {
-                          contains: query.q,
-                          mode: "insensitive",
-                      },
-                  }
-                : {}),
-            ...(query.genre ? { genres: { has: query.genre } } : {}),
-            ...(typeof query.year === "number" ? { year: query.year } : {}),
-            ...(query.providerType ? { providerType: query.providerType } : {}),
-        },
-        orderBy: {
-            [query.sortBy ?? "createdAt"]: query.sortOrder ?? "desc",
-        },
-        take: query.take ?? 24,
-        skip: query.skip ?? 0,
-        select: movieSelect,
-    })
+    const where = {
+        ...(query.q
+            ? {
+                  name: {
+                      contains: query.q,
+                      mode: "insensitive" as const,
+                  },
+              }
+            : {}),
+        ...(query.genre ? { genres: { has: query.genre } } : {}),
+        ...(typeof query.year === "number" ? { year: query.year } : {}),
+        ...(query.providerType ? { providerType: query.providerType } : {}),
+    }
+
+    const limit = query.limit ?? 24
+    const offset = query.offset ?? 0
+
+    const [movies, total] = await Promise.all([
+        prisma.movie.findMany({
+            where,
+            orderBy: {
+                [query.sortBy ?? "createdAt"]: query.sortOrder ?? "desc",
+            },
+            take: limit,
+            skip: offset,
+            select: movieSelect,
+        }),
+        prisma.movie.count({ where }),
+    ])
 
     return c.json({
         success: true,
-        data: movies,
+        data: {
+            items: movies,
+            total,
+            limit,
+            offset,
+            hasMore: offset + movies.length < total,
+        },
     })
 }
 
@@ -80,34 +94,52 @@ export const browseHome = async (c: Context<AppEnv>) => {
         }
     }
 
-    const allMovies = await prisma.movie.findMany({
-        orderBy: [{ year: "desc" }, { createdAt: "desc" }],
-        select: movieSelect,
-    })
+    const takePerGenre = query.takePerGenre ?? 12
+    const featuredTake = Math.max(10, takePerGenre)
+    const genreCandidates = [
+        Genre.ACTION,
+        Genre.DRAMA,
+        Genre.COMEDY,
+        Genre.THRILLER,
+        Genre.SCIFI,
+        Genre.ROMANCE,
+        Genre.HORROR,
+        Genre.DOCUMENTARY,
+    ]
 
-    const genreMap = new Map<Genre, typeof allMovies>()
+    const [featuredMovies, rowGroups] = await Promise.all([
+        prisma.movie.findMany({
+            orderBy: [{ year: "desc" }, { createdAt: "desc" }],
+            take: featuredTake,
+            select: movieSelect,
+        }),
+        Promise.all(
+            genreCandidates.map(async (genre) => ({
+                genre,
+                items: await prisma.movie.findMany({
+                    where: { genres: { has: genre } },
+                    orderBy: [{ year: "desc" }, { createdAt: "desc" }],
+                    take: takePerGenre,
+                    select: movieSelect,
+                }),
+            }))
+        ),
+    ])
 
-    for (const movie of allMovies) {
-        for (const genre of movie.genres) {
-            const existing = genreMap.get(genre) ?? []
-            genreMap.set(genre, [...existing, movie])
-        }
-    }
-
-    const rows = [...genreMap.entries()]
-        .sort((a, b) => b[1].length - a[1].length)
+    const rows = rowGroups
+        .filter((row) => row.items.length > 0)
         .slice(0, 6)
-        .map(([genre, items]) => ({
+        .map(({ genre, items }) => ({
             genre,
             title: genre.replaceAll("_", " "),
-            items: items.slice(0, query.takePerGenre ?? 12),
+            items,
         }))
 
     return c.json({
         success: true,
         data: {
-            hero: allMovies[0] ?? null,
-            trending: allMovies.slice(0, 10),
+            hero: featuredMovies[0] ?? null,
+            trending: featuredMovies.slice(0, 10),
             rows,
         },
     })
