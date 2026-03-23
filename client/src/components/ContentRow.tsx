@@ -1,14 +1,19 @@
-import { useRef, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useRef, useState } from "react"
 import TitleCard from "@/components/TitleCard"
-import type { Movie } from "@/data/mock"
+import type { Movie } from "@/lib/netflix"
 
 interface ContentRowProps {
     title: string
     movies: Movie[]
+    profileId?: number
 }
 
-export default function ContentRow({ title, movies }: ContentRowProps) {
+export default function ContentRow({
+    title,
+    movies,
+    profileId,
+}: ContentRowProps) {
     const rowRef = useRef<HTMLDivElement>(null)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
     const [canScrollRight, setCanScrollRight] = useState(true)
@@ -40,6 +45,7 @@ export default function ContentRow({ title, movies }: ContentRowProps) {
                 {/* Left Arrow */}
                 {canScrollLeft && (
                     <button
+                        type="button"
                         onClick={() => scroll("left")}
                         className="absolute left-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
@@ -54,13 +60,18 @@ export default function ContentRow({ title, movies }: ContentRowProps) {
                     className="slider-row flex gap-1 overflow-x-scroll px-4 md:px-12 py-3"
                 >
                     {movies.map((movie) => (
-                        <TitleCard key={movie.id} movie={movie} />
+                        <TitleCard
+                            key={movie.id}
+                            movie={movie}
+                            profileId={profileId}
+                        />
                     ))}
                 </div>
 
                 {/* Right Arrow */}
                 {canScrollRight && (
                     <button
+                        type="button"
                         onClick={() => scroll("right")}
                         className="absolute right-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >

@@ -1,7 +1,7 @@
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import type { Movie } from "@/data/mock"
+import type { Movie } from "@/lib/netflix"
 
 interface TopTenRowProps {
     movies: Movie[]
@@ -39,6 +39,7 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
             <div className="relative">
                 {canScrollLeft && (
                     <button
+                        type="button"
                         onClick={() => scroll("left")}
                         className="absolute left-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
@@ -52,7 +53,8 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                     className="slider-row flex gap-3 overflow-x-scroll px-4 md:px-12 py-3"
                 >
                     {movies.slice(0, 10).map((movie, index) => (
-                        <div
+                        <button
+                            type="button"
                             key={movie.id}
                             className="relative flex-shrink-0 flex items-end cursor-pointer group/card"
                             onClick={() => navigate(`/title/${movie.id}`)}
@@ -79,12 +81,13 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                                     loading="lazy"
                                 />
                             </div>
-                        </div>
+                        </button>
                     ))}
                 </div>
 
                 {canScrollRight && (
                     <button
+                        type="button"
                         onClick={() => scroll("right")}
                         className="absolute right-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >

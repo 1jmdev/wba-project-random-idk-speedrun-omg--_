@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react"
+import { Bell, ChevronDown, Search } from "lucide-react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router"
-import { Search, Bell, ChevronDown } from "lucide-react"
-import type { Profile } from "@/data/mock"
+import type { Profile } from "@/lib/netflix"
 
 interface NavbarProps {
     profile: Profile
     onSwitchProfile: () => void
+    onLogout: () => Promise<void>
 }
 
-export default function Navbar({ profile, onSwitchProfile }: NavbarProps) {
+export default function Navbar({
+    profile,
+    onSwitchProfile,
+    onLogout,
+}: NavbarProps) {
     const [scrolled, setScrolled] = useState(false)
     const [searchOpen, setSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
@@ -124,13 +129,13 @@ export default function Navbar({ profile, onSwitchProfile }: NavbarProps) {
                                     onBlur={() => {
                                         if (!searchQuery) setSearchOpen(false)
                                     }}
-                                    autoFocus
                                     className="bg-transparent text-white text-sm pl-2 py-1 w-[180px] md:w-[250px] outline-none placeholder:text-gray-400"
                                 />
                             </div>
                         </form>
                     ) : (
                         <button
+                            type="button"
                             onClick={() => setSearchOpen(true)}
                             className="text-white hover:text-gray-300 transition-colors"
                         >
@@ -140,7 +145,10 @@ export default function Navbar({ profile, onSwitchProfile }: NavbarProps) {
                 </div>
 
                 {/* Notifications */}
-                <button className="text-white hover:text-gray-300 transition-colors relative">
+                <button
+                    type="button"
+                    className="text-white hover:text-gray-300 transition-colors relative"
+                >
                     <Bell className="w-5 h-5" />
                     <span className="absolute -top-1 -right-1 w-3 h-3 bg-netflix-red rounded-full text-[8px] flex items-center justify-center">
                         3
@@ -150,6 +158,7 @@ export default function Navbar({ profile, onSwitchProfile }: NavbarProps) {
                 {/* Profile */}
                 <div className="relative">
                     <button
+                        type="button"
                         onClick={() => setProfileMenuOpen(!profileMenuOpen)}
                         className="flex items-center gap-1 group"
                     >
@@ -165,12 +174,14 @@ export default function Navbar({ profile, onSwitchProfile }: NavbarProps) {
 
                     {profileMenuOpen && (
                         <>
-                            <div
+                            <button
+                                type="button"
                                 className="fixed inset-0"
                                 onClick={() => setProfileMenuOpen(false)}
                             />
                             <div className="absolute right-0 top-12 w-48 bg-black/95 border border-white/15 py-2 rounded-sm shadow-2xl">
                                 <button
+                                    type="button"
                                     onClick={() => {
                                         setProfileMenuOpen(false)
                                         onSwitchProfile()
@@ -180,16 +191,23 @@ export default function Navbar({ profile, onSwitchProfile }: NavbarProps) {
                                     Switch Profiles
                                 </button>
                                 <div className="border-t border-white/15 mt-1 pt-1">
-                                    <button className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline">
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
+                                    >
                                         Account
                                     </button>
-                                    <button className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline">
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
+                                    >
                                         Help Center
                                     </button>
                                     <button
+                                        type="button"
                                         onClick={() => {
                                             setProfileMenuOpen(false)
-                                            onSwitchProfile()
+                                            void onLogout()
                                         }}
                                         className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
                                     >
