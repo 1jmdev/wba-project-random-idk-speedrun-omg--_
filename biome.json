@@ -8,7 +8,9 @@
             "!coverage",
             "!bun.lock",
             "!package-lock.json",
-            "!yarn.lock"
+            "!yarn.lock",
+            "!api",
+            "!.vercel"
         ]
     },
     "formatter": {
