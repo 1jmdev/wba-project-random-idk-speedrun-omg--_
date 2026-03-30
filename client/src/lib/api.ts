@@ -9,45 +9,88 @@ export class ApiError extends Error {
     }
 }
 
-type RequestOptions = RequestInit & {
+type RequestOptions = Omit<RequestInit, "body"> & {
     body?: unknown
+}
+
+type CachedRequest = Promise<unknown>
+
+const inflightRequests = new Map<string, CachedRequest>()
+
+const serializeBody = (body: unknown) =>
+    body === undefined ? undefined : JSON.stringify(body)
+
+const getRequestKey = (path: string, options: RequestOptions) =>
+    JSON.stringify({
+        path,
+        method: options.method ?? "GET",
+        body: options.body ?? null,
+        headers: options.headers ?? null,
+    })
+
+const parseResponse = async (response: Response) => {
+    const text = await response.text()
+
+    if (!text) {
+        return null
+    }
+
+    try {
+        return JSON.parse(text) as unknown
+    } catch {
+        return text
+    }
 }
 
 async function request<T>(
     path: string,
     options: RequestOptions = {}
 ): Promise<T> {
-    const response = await fetch(path, {
-        ...options,
-        credentials: "include",
-        headers: {
-            ...(options.body !== undefined
-                ? { "Content-Type": "application/json" }
-                : {}),
-            ...(options.headers ?? {}),
-        },
-        body:
-            options.body === undefined
-                ? undefined
-                : JSON.stringify(options.body),
-    })
+    const { body, headers, ...rest } = options
+    const key = getRequestKey(path, options)
+    const cached = inflightRequests.get(key)
 
-    const text = await response.text()
-    const data = text ? (JSON.parse(text) as unknown) : null
-
-    if (!response.ok) {
-        const message =
-            typeof data === "object" &&
-            data !== null &&
-            "message" in data &&
-            typeof data.message === "string"
-                ? data.message
-                : `Request failed with status ${response.status}`
-
-        throw new ApiError(message, response.status, data)
+    if (cached) {
+        return cached as Promise<T>
     }
 
-    return data as T
+    const pending = (async () => {
+        const response = await fetch(path, {
+            ...rest,
+            credentials: "include",
+            headers: {
+                ...(body !== undefined
+                    ? { "Content-Type": "application/json" }
+                    : {}),
+                ...(headers ?? {}),
+            },
+            body: serializeBody(body),
+        })
+
+        const data = await parseResponse(response)
+
+        if (!response.ok) {
+            const message =
+                typeof data === "object" &&
+                data !== null &&
+                "message" in data &&
+                typeof (data as { message?: unknown }).message === "string"
+                    ? (data as { message: string }).message
+                    : `Request failed with status ${response.status}`
+
+            throw new ApiError(message, response.status, data)
+        }
+
+        return data as T
+    })()
+
+    inflightRequests.set(key, pending)
+
+    try {
+        return await pending
+    } finally {
+        inflightRequests.delete(key)
+    }
 }
 
 export interface ApiFamily {
