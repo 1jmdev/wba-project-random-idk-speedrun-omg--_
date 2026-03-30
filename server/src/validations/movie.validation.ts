@@ -40,6 +40,12 @@ export const createMovieSchema = z.object({
     }),
 })
 
+export const movieStreamParamSchema = z.object({
+    params: z.object({
+        id: z.number().int().positive("Movie id must be a positive number"),
+    }),
+})
+
 export const updateMovieSchema = z.object({
     body: z
         .object({

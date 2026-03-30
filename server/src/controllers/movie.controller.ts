@@ -1,6 +1,7 @@
 import type { Context } from "hono"
 import { Genre } from "../../../prisma/generated/enums"
 import { prisma } from "../lib/prisma"
+import { parsePrehrajtoVideoSource } from "../parsers/prehrajto"
 import type { AppEnv } from "../types"
 
 const movieSelect = {
@@ -315,5 +316,52 @@ export const remove = async (c: Context<AppEnv>) => {
     return c.json({
         success: true,
         message: "Movie deleted successfully",
+    })
+}
+
+export const stream = async (c: Context<AppEnv>) => {
+    const { params } = c.get("validated") as {
+        params: {
+            id: number
+        }
+    }
+
+    const movie = await prisma.movie.findFirst({
+        where: {
+            id: params.id,
+            ...releasedMovieWhere,
+        },
+        select: { providerId: true, name: true },
+    })
+
+    if (!movie) {
+        return c.json(
+            {
+                success: false,
+                message: "Movie not found",
+            },
+            404
+        )
+    }
+
+    const source = await parsePrehrajtoVideoSource(movie.providerId)
+
+    if (!source.rawVideoUrl) {
+        return c.json(
+            {
+                success: false,
+                message: "Video source not available",
+            },
+            404
+        )
+    }
+
+    return c.json({
+        success: true,
+        data: {
+            url: source.rawVideoUrl,
+            title: source.title ?? movie.name,
+            duration: source.duration,
+        },
     })
 }

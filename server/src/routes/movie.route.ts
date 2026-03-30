@@ -8,6 +8,7 @@ import {
     createMovieSchema,
     listMoviesQuerySchema,
     movieIdParamSchema,
+    movieStreamParamSchema,
     updateMovieSchema,
 } from "../validations/movie.validation"
 
@@ -22,6 +23,11 @@ router.get(
 router.get("/featured", movieController.featured)
 router.get("/genres", movieController.listGenres)
 router.get("/:id", validate(movieIdParamSchema), movieController.getById)
+router.get(
+    "/:id/stream",
+    validate(movieStreamParamSchema),
+    movieController.stream
+)
 
 router.post(
     "/",

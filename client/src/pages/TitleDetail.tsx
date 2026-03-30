@@ -150,7 +150,12 @@ export default function TitleDetail({
                     </h1>
 
                     <div className="flex items-center gap-3">
-                        <Button variant="default" size="xl" className="gap-2">
+                        <Button
+                            variant="default"
+                            size="xl"
+                            className="gap-2"
+                            onClick={() => navigate(`/watch/${movie.id}`)}
+                        >
                             <Play className="h-6 w-6 fill-black" />
                             Play
                         </Button>

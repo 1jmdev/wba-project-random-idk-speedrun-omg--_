@@ -257,4 +257,10 @@ export const apiClient = {
         )
         return response.data
     },
+    getMovieStream: async (movieId: number) => {
+        const response = await request<
+            ApiEnvelope<{ url: string; title: string; duration: number | null }>
+        >(`/api/movies/${movieId}/stream`)
+        return response.data
+    },
 }

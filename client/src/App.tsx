@@ -5,6 +5,7 @@ import { mapProfile, type Profile } from "@/lib/netflix"
 import AuthScreen from "@/pages/AuthScreen"
 import Browse from "@/pages/Browse"
 import MyList from "@/pages/MyList"
+import Player from "@/pages/Player"
 import ProfileSelect from "@/pages/ProfileSelect"
 import Search from "@/pages/Search"
 import TitleDetail from "@/pages/TitleDetail"
@@ -231,6 +232,7 @@ export default function App() {
                     />
                 }
             />
+            <Route path="/watch/:id" element={<Player />} />
         </Routes>
     )
 }

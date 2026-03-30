@@ -48,7 +48,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
 
                 <div className="flex items-center gap-3">
                     <Button
-                        onClick={() => navigate(`/title/${movie.id}`)}
+                        onClick={() => navigate(`/watch/${movie.id}`)}
                         variant="default"
                         size="xl"
                         className="gap-2"
