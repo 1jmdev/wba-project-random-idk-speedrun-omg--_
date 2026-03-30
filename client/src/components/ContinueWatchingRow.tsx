@@ -4,7 +4,7 @@ import { useNavigate } from "react-router"
 import type { Movie } from "@/lib/netflix"
 
 interface ContinueWatchingRowProps {
-    items: { movie: Movie; progress: number }[]
+    items: Movie[]
 }
 
 export default function ContinueWatchingRow({
@@ -54,7 +54,7 @@ export default function ContinueWatchingRow({
                     onScroll={checkScroll}
                     className="slider-row flex gap-1 overflow-x-scroll px-4 md:px-12 py-3"
                 >
-                    {items.map(({ movie, progress }) => (
+                    {items.map((movie) => (
                         <button
                             type="button"
                             key={movie.id}
@@ -86,14 +86,6 @@ export default function ContinueWatchingRow({
                                         </button>
                                     </div>
                                 </div>
-
-                                {/* Progress bar */}
-                                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/30">
-                                    <div
-                                        className="h-full bg-netflix-red"
-                                        style={{ width: `${progress}%` }}
-                                    />
-                                </div>
                             </div>
 
                             <div className="mt-1.5 px-0.5">
@@ -102,8 +94,8 @@ export default function ContinueWatchingRow({
                                 </p>
                                 <p className="text-[10px] text-white/50">
                                     {movie.type === "series"
-                                        ? `S${movie.seasons} E${Math.ceil(Math.random() * 10)}`
-                                        : `${progress}% watched`}
+                                        ? `S${movie.seasons}`
+                                        : movie.duration}
                                 </p>
                             </div>
                         </button>
