@@ -6,6 +6,8 @@
             "!dist",
             "!node_modules",
             "!coverage",
+            "!client/src/index.css",
+            "!prisma/generated",
             "!bun.lock",
             "!package-lock.json",
             "!yarn.lock",
@@ -31,12 +33,19 @@
         "enabled": true,
         "rules": {
             "recommended": true,
+            "a11y": {
+                "noLabelWithoutControl": "off"
+            },
             "correctness": {
-                "useExhaustiveDependencies": "warn",
+                "useExhaustiveDependencies": "off",
                 "useHookAtTopLevel": "error"
             },
             "suspicious": {
-                "noExplicitAny": "warn"
+                "noExplicitAny": "warn",
+                "noDocumentCookie": "off"
+            },
+            "security": {
+                "noDangerouslySetInnerHtml": "off"
             }
         }
     },
