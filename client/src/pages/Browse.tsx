@@ -109,14 +109,7 @@ export default function Browse({
         ].filter((category) => category.movies.length > 0)
     }, [allMovies, filter, rows])
 
-    const continueWatching = useMemo(
-        () =>
-            allMovies.slice(0, 5).map((movie, index) => ({
-                movie,
-                progress: 20 + index * 15,
-            })),
-        [allMovies]
-    )
+    const continueWatching = useMemo(() => allMovies.slice(0, 5), [allMovies])
 
     const currentPage = Math.floor(offset / PAGE_SIZE) + 1
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))

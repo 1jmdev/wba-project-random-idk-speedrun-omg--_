@@ -15,6 +15,14 @@ const movieSelect = {
     updatedAt: true,
 } as const
 
+const currentYear = new Date().getFullYear()
+
+const releasedMovieWhere = {
+    year: {
+        lte: currentYear,
+    },
+} as const
+
 export const list = async (c: Context<AppEnv>) => {
     const { query } = c.get("validated") as {
         query: {
@@ -30,6 +38,7 @@ export const list = async (c: Context<AppEnv>) => {
     }
 
     const where = {
+        ...releasedMovieWhere,
         ...(query.q
             ? {
                   name: {
@@ -73,6 +82,7 @@ export const list = async (c: Context<AppEnv>) => {
 
 export const featured = async (c: Context<AppEnv>) => {
     const movies = await prisma.movie.findMany({
+        where: releasedMovieWhere,
         orderBy: [{ year: "desc" }, { createdAt: "desc" }],
         take: 10,
         select: movieSelect,
@@ -109,6 +119,7 @@ export const browseHome = async (c: Context<AppEnv>) => {
 
     const [featuredMovies, rowGroups] = await Promise.all([
         prisma.movie.findMany({
+            where: releasedMovieWhere,
             orderBy: [{ year: "desc" }, { createdAt: "desc" }],
             take: featuredTake,
             select: movieSelect,
@@ -117,7 +128,10 @@ export const browseHome = async (c: Context<AppEnv>) => {
             genreCandidates.map(async (genre) => ({
                 genre,
                 items: await prisma.movie.findMany({
-                    where: { genres: { has: genre } },
+                    where: {
+                        ...releasedMovieWhere,
+                        genres: { has: genre },
+                    },
                     orderBy: [{ year: "desc" }, { createdAt: "desc" }],
                     take: takePerGenre,
                     select: movieSelect,
@@ -147,6 +161,7 @@ export const browseHome = async (c: Context<AppEnv>) => {
 
 export const listGenres = async (_c: Context<AppEnv>) => {
     const movies = await prisma.movie.findMany({
+        where: releasedMovieWhere,
         select: { genres: true },
     })
 
@@ -179,8 +194,11 @@ export const getById = async (c: Context<AppEnv>) => {
         }
     }
 
-    const movie = await prisma.movie.findUnique({
-        where: { id: params.id },
+    const movie = await prisma.movie.findFirst({
+        where: {
+            id: params.id,
+            ...releasedMovieWhere,
+        },
         select: movieSelect,
     })
 
