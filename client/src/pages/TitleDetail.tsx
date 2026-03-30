@@ -227,7 +227,7 @@ export default function TitleDetail({
                             </p>
                         </div>
 
-                        <div className="w-full flex-shrink-0 text-sm md:w-[260px]">
+                        <div className="w-full shrink-0 text-sm md:w-65">
                             <p className="mb-2 text-white/50">
                                 <span className="text-white/30">Cast: </span>
                                 <span className="text-white/70">
@@ -270,10 +270,10 @@ export default function TitleDetail({
                                         key={episode.id}
                                         className="group flex cursor-pointer gap-4 rounded-sm p-3 transition-colors hover:bg-white/5"
                                     >
-                                        <div className="flex w-8 flex-shrink-0 items-center justify-center text-lg text-white/50">
+                                        <div className="flex w-8 shrink-0 items-center justify-center text-lg text-white/50">
                                             {episode.id}
                                         </div>
-                                        <div className="relative aspect-video w-[130px] flex-shrink-0 overflow-hidden rounded-sm">
+                                        <div className="relative aspect-video w-32.5 shrink-0 overflow-hidden rounded-sm">
                                             <img
                                                 src={episode.image}
                                                 alt={episode.title}
