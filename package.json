@@ -7,7 +7,7 @@
         "dev": "bunx concurrently -k -n backend,frontend -c cyan,green \"bun run dev:server\" \"bun run dev:client\"",
         "dev:client": "vite",
         "dev:server": "PORT=8080 bun --hot --no-clear-screen server/index.ts",
-        "build": "bunx prisma generate && tsc -p tsconfig.app.json --noEmit && vite build",
+        "build": "bunx prisma generate && bun scripts/build-client.ts",
         "lint": "biome lint .",
         "format": "biome format --write .",
         "check": "biome check --write .",
