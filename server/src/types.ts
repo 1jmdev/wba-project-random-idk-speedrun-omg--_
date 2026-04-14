@@ -2,13 +2,11 @@ import type { Context } from "hono"
 
 export interface AuthUser {
     familyId: number
-    email: string
     profileId?: number
 }
 
 export interface AuthTokenPayload {
     familyId: number
-    email: string
     profileId?: number
     exp?: number
     iat?: number

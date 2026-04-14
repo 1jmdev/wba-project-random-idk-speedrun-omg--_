@@ -2,11 +2,7 @@ import { useState } from "react"
 
 interface AuthScreenProps {
     onLogin: (payload: { email: string; password: string }) => Promise<void>
-    onRegister: (payload: {
-        email: string
-        password: string
-        name: string
-    }) => Promise<void>
+    onRegister: (payload: { email: string; password: string }) => Promise<void>
     loading: boolean
     error: string | null
 }
@@ -18,7 +14,6 @@ export default function AuthScreen({
     error,
 }: AuthScreenProps) {
     const [mode, setMode] = useState<"login" | "register">("login")
-    const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -30,14 +25,14 @@ export default function AuthScreen({
             return
         }
 
-        await onRegister({ name, email, password })
+        await onRegister({ email, password })
     }
 
     return (
-        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(229,9,20,0.18),_transparent_32%),linear-gradient(180deg,_#151515_0%,_#080808_100%)] text-white">
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(229,9,20,0.18),transparent_32%),linear-gradient(180deg,#151515_0%,#080808_100%)] text-white">
             <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-4 py-10">
                 <div className="grid w-full overflow-hidden rounded-2xl border border-white/10 bg-black/55 shadow-2xl backdrop-blur md:grid-cols-[1.1fr_0.9fr]">
-                    <div className="hidden flex-col justify-between border-r border-white/10 bg-[linear-gradient(160deg,_rgba(229,9,20,0.18),_rgba(0,0,0,0.2)_35%,_rgba(0,0,0,0.85)_100%)] p-10 md:flex">
+                    <div className="hidden flex-col justify-between border-r border-white/10 bg-[linear-gradient(160deg,rgba(229,9,20,0.18),rgba(0,0,0,0.2)_35%,rgba(0,0,0,0.85)_100%)] p-10 md:flex">
                         <div>
                             <p className="mb-4 text-sm uppercase tracking-[0.35em] text-white/45">
                                 Netflix Clone
@@ -82,31 +77,14 @@ export default function AuthScreen({
                                 <h2 className="text-3xl font-semibold">
                                     {mode === "login"
                                         ? "Welcome back"
-                                        : "Create family account"}
+                                        : "Create family login"}
                                 </h2>
                                 <p className="mt-2 text-sm text-white/50">
                                     {mode === "login"
                                         ? "Sign in and choose a profile."
-                                        : "Register a family account, then add profiles."}
+                                        : "Register one family login, then create profiles."}
                                 </p>
                             </div>
-
-                            {mode === "register" && (
-                                <label className="block">
-                                    <span className="mb-2 block text-sm text-white/70">
-                                        Family name
-                                    </span>
-                                    <input
-                                        value={name}
-                                        onChange={(event) =>
-                                            setName(event.target.value)
-                                        }
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none transition focus:border-white/35"
-                                        placeholder="The Novak Family"
-                                        required
-                                    />
-                                </label>
-                            )}
 
                             <label className="block">
                                 <span className="mb-2 block text-sm text-white/70">

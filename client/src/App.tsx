@@ -77,7 +77,6 @@ export default function App() {
     const handleRegister = async (payload: {
         email: string
         password: string
-        name: string
     }) => {
         setAuthLoading(true)
         setAuthError(null)
@@ -99,13 +98,13 @@ export default function App() {
         setProfile(nextProfile)
     }
 
-    const handleCreateProfile = async (payload: {
-        email: string
-        name: string
-        profileName?: string
-        avatarUrl?: string
-    }) => {
+    const handleCreateProfile = async (payload: { name: string }) => {
         await apiClient.createProfile(payload)
+        await loadSession()
+    }
+
+    const handleDeleteProfile = async (profileId: number) => {
+        await apiClient.deleteProfile(profileId)
         await loadSession()
     }
 
@@ -148,10 +147,10 @@ export default function App() {
     if (!profile) {
         return (
             <ProfileSelect
-                familyName={family.name}
                 profiles={profiles}
                 onSelect={handleSelectProfile}
                 onCreateProfile={handleCreateProfile}
+                onDeleteProfile={handleDeleteProfile}
                 onLogout={handleLogout}
             />
         )

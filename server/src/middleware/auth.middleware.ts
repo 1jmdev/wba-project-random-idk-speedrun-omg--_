@@ -35,12 +35,10 @@ export const authRequired = async (c: Context<AppEnv>, next: Next) => {
         where: { id: payload.familyId },
         select: {
             id: true,
-            email: true,
-            isActive: true,
         },
     })
 
-    if (!family || !family.isActive) {
+    if (!family) {
         clearAuthCookie(c)
         return c.json(
             {
@@ -56,7 +54,6 @@ export const authRequired = async (c: Context<AppEnv>, next: Next) => {
             where: {
                 id: payload.profileId,
                 familyId: payload.familyId,
-                isActive: true,
             },
             select: { id: true },
         })
@@ -75,7 +72,6 @@ export const authRequired = async (c: Context<AppEnv>, next: Next) => {
 
     c.set("user", {
         familyId: family.id,
-        email: family.email,
         profileId: payload.profileId,
     })
 

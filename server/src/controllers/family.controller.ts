@@ -7,34 +7,24 @@ import { createAuthToken } from "../utils/token"
 const familySelect = {
     id: true,
     email: true,
-    name: true,
-    isActive: true,
     createdAt: true,
     updatedAt: true,
 } as const
 
 const profileSelect = {
     id: true,
-    email: true,
     name: true,
-    profileName: true,
-    avatarUrl: true,
-    isActive: true,
     familyId: true,
 } as const
 
 const toFamilyResponse = (family: {
     id: number
     email: string
-    name: string
-    isActive: boolean
     createdAt: Date
     updatedAt: Date
 }) => ({
     id: family.id,
     email: family.email,
-    name: family.name,
-    isActive: family.isActive,
     createdAt: family.createdAt,
     updatedAt: family.updatedAt,
 })
@@ -44,7 +34,6 @@ export const register = async (c: Context<AppEnv>) => {
         body: {
             email: string
             password: string
-            name: string
         }
     }
 
@@ -69,14 +58,12 @@ export const register = async (c: Context<AppEnv>) => {
         data: {
             email: body.email.toLowerCase(),
             password,
-            name: body.name.trim(),
         },
         select: familySelect,
     })
 
     const token = await createAuthToken({
         familyId: family.id,
-        email: family.email,
     })
 
     setAuthCookie(c, token)
@@ -110,7 +97,7 @@ export const login = async (c: Context<AppEnv>) => {
         },
     })
 
-    if (!family || !family.isActive) {
+    if (!family) {
         return c.json(
             {
                 success: false,
@@ -137,7 +124,6 @@ export const login = async (c: Context<AppEnv>) => {
 
     const token = await createAuthToken({
         familyId: family.id,
-        email: family.email,
     })
 
     setAuthCookie(c, token)
@@ -169,12 +155,12 @@ export const me = async (c: Context<AppEnv>) => {
             ...familySelect,
             profiles: {
                 select: profileSelect,
-                orderBy: [{ isActive: "desc" }, { id: "asc" }],
+                orderBy: { id: "asc" },
             },
         },
     })
 
-    if (!family || !family.isActive) {
+    if (!family) {
         clearAuthCookie(c)
         return c.json(
             {
@@ -251,7 +237,6 @@ export const changePassword = async (c: Context<AppEnv>) => {
 
     const token = await createAuthToken({
         familyId: family.id,
-        email: family.email,
         profileId: user.profileId,
     })
 

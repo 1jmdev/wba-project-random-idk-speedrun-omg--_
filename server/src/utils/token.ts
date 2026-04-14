@@ -7,7 +7,6 @@ export const createAuthToken = async (user: AuthUser) => {
     return sign(
         {
             familyId: user.familyId,
-            email: user.email,
             profileId: user.profileId,
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
         },
