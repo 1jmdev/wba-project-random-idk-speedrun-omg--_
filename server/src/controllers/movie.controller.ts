@@ -1,5 +1,5 @@
 import type { Context } from "hono"
-import { Genre } from "../../../prisma/generated/enums"
+import { Genre } from "@prisma/client"
 import { prisma } from "../lib/prisma"
 import { parsePrehrajtoVideoSource } from "../parsers/prehrajto"
 import type { AppEnv } from "../types"

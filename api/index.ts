@@ -1,4 +1,3 @@
 import app from "../server/index"
 
-export { app }
-export default app.fetch
+export default app
