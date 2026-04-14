@@ -6,11 +6,7 @@ import { createAuthToken } from "../utils/token"
 
 const profileSelect = {
     id: true,
-    email: true,
     name: true,
-    profileName: true,
-    avatarUrl: true,
-    isActive: true,
     familyId: true,
 } as const
 
@@ -19,7 +15,7 @@ export const list = async (c: Context<AppEnv>) => {
 
     const profiles = await prisma.profile.findMany({
         where: { familyId: user.familyId },
-        orderBy: [{ isActive: "desc" }, { id: "asc" }],
+        orderBy: { id: "asc" },
         select: profileSelect,
     })
 
@@ -65,10 +61,7 @@ export const create = async (c: Context<AppEnv>) => {
     const user = c.get("user") as AuthUser
     const { body } = c.get("validated") as {
         body: {
-            email: string
             name: string
-            profileName?: string
-            avatarUrl?: string
         }
     }
 
@@ -89,10 +82,7 @@ export const create = async (c: Context<AppEnv>) => {
     const profile = await prisma.profile.create({
         data: {
             familyId: user.familyId,
-            email: body.email.toLowerCase(),
             name: body.name.trim(),
-            profileName: body.profileName?.trim() || body.name.trim(),
-            avatarUrl: body.avatarUrl,
         },
         select: profileSelect,
     })
@@ -113,11 +103,7 @@ export const update = async (c: Context<AppEnv>) => {
             id: number
         }
         body: {
-            email?: string
             name?: string
-            profileName?: string
-            avatarUrl?: string | null
-            isActive?: boolean
         }
     }
 
@@ -142,17 +128,7 @@ export const update = async (c: Context<AppEnv>) => {
     const profile = await prisma.profile.update({
         where: { id: params.id },
         data: {
-            ...(body.email ? { email: body.email.toLowerCase() } : {}),
             ...(body.name ? { name: body.name.trim() } : {}),
-            ...(body.profileName !== undefined
-                ? { profileName: body.profileName?.trim() || null }
-                : {}),
-            ...(body.avatarUrl !== undefined
-                ? { avatarUrl: body.avatarUrl }
-                : {}),
-            ...(typeof body.isActive === "boolean"
-                ? { isActive: body.isActive }
-                : {}),
         },
         select: profileSelect,
     })
@@ -203,7 +179,6 @@ export const remove = async (c: Context<AppEnv>) => {
     if (user.profileId === params.id) {
         const token = await createAuthToken({
             familyId: user.familyId,
-            email: user.email,
         })
         setAuthCookie(c, token)
     }
@@ -230,7 +205,7 @@ export const selectProfile = async (c: Context<AppEnv>) => {
         select: profileSelect,
     })
 
-    if (!profile || !profile.isActive) {
+    if (!profile) {
         return c.json(
             {
                 success: false,
@@ -242,7 +217,6 @@ export const selectProfile = async (c: Context<AppEnv>) => {
 
     const token = await createAuthToken({
         familyId: user.familyId,
-        email: user.email,
         profileId: profile.id,
     })
 
@@ -259,7 +233,6 @@ export const clearSelectedProfile = async (c: Context<AppEnv>) => {
 
     const token = await createAuthToken({
         familyId: user.familyId,
-        email: user.email,
     })
 
     setAuthCookie(c, token)

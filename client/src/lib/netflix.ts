@@ -22,7 +22,6 @@ const castPool = [
 
 export interface Profile {
     id: number
-    email: string
     name: string
     avatar: string
     isKids: boolean
@@ -95,10 +94,9 @@ const buildCast = (movieId: number) =>
 
 export const mapProfile = (profile: ApiProfile): Profile => ({
     id: profile.id,
-    email: profile.email,
-    name: profile.profileName ?? profile.name,
-    avatar: profile.avatarUrl ?? avatarImage(profile.id),
-    isKids: /kids|child/i.test(profile.profileName ?? profile.name),
+    name: profile.name,
+    avatar: avatarImage(profile.id),
+    isKids: /kids|child/i.test(profile.name),
 })
 
 export const mapMovie = (movie: ApiMovie): Movie => {

@@ -96,19 +96,13 @@ async function request<T>(
 export interface ApiFamily {
     id: number
     email: string
-    name: string
-    isActive: boolean
     createdAt: string
     updatedAt: string
 }
 
 export interface ApiProfile {
     id: number
-    email: string
     name: string
-    profileName: string | null
-    avatarUrl: string | null
-    isActive: boolean
     familyId: number
 }
 
@@ -173,11 +167,7 @@ export const apiClient = {
 
         return response.data
     },
-    register: async (payload: {
-        email: string
-        password: string
-        name: string
-    }) => {
+    register: async (payload: { email: string; password: string }) => {
         const response = await request<
             ApiEnvelope<{
                 family: ApiFamily
@@ -194,12 +184,7 @@ export const apiClient = {
             method: "POST",
         })
     },
-    createProfile: async (payload: {
-        email: string
-        name: string
-        profileName?: string
-        avatarUrl?: string
-    }) => {
+    createProfile: async (payload: { name: string }) => {
         const response = await request<ApiEnvelope<ApiProfile>>(
             "/api/profiles",
             {
@@ -209,6 +194,11 @@ export const apiClient = {
         )
 
         return response.data
+    },
+    deleteProfile: async (profileId: number) => {
+        await request(`/api/profiles/${profileId}`, {
+            method: "DELETE",
+        })
     },
     selectProfile: async (profileId: number) => {
         const response = await request<ApiEnvelope<ApiProfile>>(
