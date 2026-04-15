@@ -22,7 +22,8 @@ export type PrehrajtoVideoSource = {
 export const parsePrehrajtoVideoSource = async (
     movieId: string
 ): Promise<PrehrajtoVideoSource> => {
-    const response = await fetch(`https://prehrajto.cz/${movieId}`)
+    const prehrajtoUrl = new URL(`https://prehrajto.cz/${movieId}`)
+    const response = await fetch(`https://corsproxy.io?key=${process.env.CORSPROXY_API_KEY}&url=${prehrajtoUrl}`)
     const html = await response.text()
 
     const sources = parseSources(html)
