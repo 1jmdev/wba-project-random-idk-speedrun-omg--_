@@ -6,11 +6,15 @@
     "scripts": {
         "dev": "bunx concurrently -k -n backend,frontend -c cyan,green \"bun run dev:server\" \"bun run dev:client\"",
         "dev:client": "vite",
+        "dev:proxy": "wrangler dev --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
         "dev:server": "PORT=8080 bun --hot --no-clear-screen server/index.ts",
         "build": "bunx prisma generate && bun scripts/build-client.ts",
         "lint": "biome lint .",
         "format": "biome format --write .",
         "check": "biome check --write .",
+        "deploy:proxy": "wrangler deploy --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
+        "start:proxy": "wrangler dev --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
+        "types:proxy": "wrangler types --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
@@ -53,6 +57,7 @@
         "concurrently": "^9.2.1",
         "prisma": "^7.5.0",
         "typescript": "~5.9.3",
-        "vite": "^7.2.4"
+        "vite": "^7.2.4",
+        "wrangler": "^3.101.0"
     }
 }
