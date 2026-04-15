@@ -58,7 +58,7 @@ export default function ContinueWatchingRow({
                         <button
                             type="button"
                             key={movie.id}
-                            className="relative flex-shrink-0 w-[160px] md:w-[230px] cursor-pointer group/card"
+                            className="relative shrink-0 w-40 md:w-57.5 cursor-pointer group/card"
                             onClick={() => navigate(`/title/${movie.id}`)}
                         >
                             <div className="relative aspect-video rounded-sm overflow-hidden">

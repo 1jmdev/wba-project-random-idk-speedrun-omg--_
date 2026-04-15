@@ -1,4 +1,9 @@
 export default function TitleDetailSkeleton() {
+    const episodeSkeletonKeys = Array.from(
+        { length: 5 },
+        (_, index) => `episode-skeleton-${index}`
+    )
+
     return (
         <>
             {/* Hero backdrop skeleton */}
@@ -54,9 +59,8 @@ export default function TitleDetailSkeleton() {
                     <div className="mt-10">
                         <div className="h-6 w-24 rounded skeleton-shimmer mb-4" />
                         <div className="space-y-3">
-                            {/* biome-ignore lint/suspicious/noArrayIndexKey: static skeleton placeholders */}
-                            {Array.from({ length: 5 }, (_, i) => (
-                                <div key={i} className="flex gap-4 p-3">
+                            {episodeSkeletonKeys.map((key) => (
+                                <div key={key} className="flex gap-4 p-3">
                                     <div className="w-8 h-8 rounded skeleton-shimmer shrink-0" />
                                     <div className="w-32.5 aspect-video rounded-sm skeleton-shimmer shrink-0" />
                                     <div className="flex-1 min-w-0 space-y-2">

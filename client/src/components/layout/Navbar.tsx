@@ -36,16 +36,16 @@ export default function Navbar({
 
     return (
         <nav
-            className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-0 h-[68px] transition-colors duration-500 ${
+            className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-0 h-17 transition-colors duration-500 ${
                 scrolled
                     ? "bg-neflix-dark"
-                    : "bg-gradient-to-b from-black/80 to-transparent"
+                    : "bg-linear-to-b from-black/80 to-transparent"
             }`}
         >
             {/* Left section */}
             <div className="flex items-center gap-6">
                 {/* Neflix Logo */}
-                <Link to="/" className="flex-shrink-0">
+                <Link to="/" className="shrink-0">
                     <NeflixLogo className="h-6 md:h-7" />
                 </Link>
 
@@ -105,7 +105,7 @@ export default function Navbar({
                                     onBlur={() => {
                                         if (!searchQuery) setSearchOpen(false)
                                     }}
-                                    className="bg-transparent text-white text-sm pl-2 py-1.5 w-[180px] md:w-[250px] outline-none placeholder:text-[#8c8c8c]"
+                                    className="bg-transparent text-white text-sm pl-2 py-1.5 w-45 md:w-62.5 outline-none placeholder:text-[#8c8c8c]"
                                     // biome-ignore lint/a11y/noAutofocus: search UX requires focus
                                     autoFocus
                                 />

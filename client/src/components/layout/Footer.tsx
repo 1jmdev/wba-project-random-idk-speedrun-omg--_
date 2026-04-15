@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
         <footer className="px-4 md:px-12 py-8 mt-12 text-[#808080] text-[13px]">
-            <div className="max-w-[980px] mx-auto">
+            <div className="max-w-245 mx-auto">
                 {/* Social icons */}
                 <div className="flex items-center gap-5 mb-7">
                     <a
@@ -9,6 +9,7 @@ export default function Footer() {
                         className="text-white hover:text-white/70 transition-colors"
                         aria-label="Facebook"
                     >
+                        <span className="sr-only">Facebook</span>
                         <svg
                             className="w-6 h-6"
                             fill="currentColor"
@@ -23,6 +24,7 @@ export default function Footer() {
                         className="text-white hover:text-white/70 transition-colors"
                         aria-label="Instagram"
                     >
+                        <span className="sr-only">Instagram</span>
                         <svg
                             className="w-6 h-6"
                             fill="currentColor"
@@ -37,6 +39,7 @@ export default function Footer() {
                         className="text-white hover:text-white/70 transition-colors"
                         aria-label="X (Twitter)"
                     >
+                        <span className="sr-only">X (Twitter)</span>
                         <svg
                             className="w-6 h-6"
                             fill="currentColor"
@@ -51,6 +54,7 @@ export default function Footer() {
                         className="text-white hover:text-white/70 transition-colors"
                         aria-label="YouTube"
                     >
+                        <span className="sr-only">YouTube</span>
                         <svg
                             className="w-6 h-6"
                             fill="currentColor"

@@ -23,7 +23,9 @@ export const parsePrehrajtoVideoSource = async (
     movieId: string
 ): Promise<PrehrajtoVideoSource> => {
     const prehrajtoUrl = new URL(`https://prehrajto.cz/${movieId}`)
-    const response = await fetch(`https://corsproxy.io?key=${process.env.CORSPROXY_API_KEY}&url=${prehrajtoUrl}`)
+    const response = await fetch(
+        `https://corsproxy.io?key=${process.env.CORSPROXY_API_KEY}&url=${prehrajtoUrl}`
+    )
     const html = await response.text()
 
     const sources = parseSources(html)
