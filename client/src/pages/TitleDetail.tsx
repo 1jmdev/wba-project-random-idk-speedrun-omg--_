@@ -4,9 +4,12 @@ import { useNavigate, useParams } from "react-router"
 import ContentRow from "@/components/ContentRow"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
+import RowSkeleton from "@/components/skeletons/RowSkeleton"
+import TitleDetailSkeleton from "@/components/skeletons/TitleDetailSkeleton"
 import { Button } from "@/components/ui/button"
 import { apiClient } from "@/lib/api"
 import {
+    episodeImage,
     isInMyList,
     type Movie,
     mapMovie,
@@ -75,22 +78,27 @@ export default function TitleDetail({
 
     const episodes = useMemo(() => {
         if (!movie || movie.type !== "series") return []
-        return Array.from(
-            { length: Math.min(movie.episodes ?? 10, 10) },
-            (_, index) => ({
-                id: index + 1,
-                title: `Episode ${index + 1}`,
-                description: `${movie.title} continues with unexpected twists and revelations that change everything the characters thought they knew.`,
-                duration: `${40 + Math.floor(Math.random() * 25)}m`,
-                image: `https://picsum.photos/seed/ep${movie.id}${index}/400/225`,
-            })
-        )
+        const count = Math.min(movie.episodes ?? 10, 10)
+        return Array.from({ length: count }, (_, index) => ({
+            id: index + 1,
+            title: `Episode ${index + 1}`,
+            description: `${movie.title} continues with unexpected twists and revelations that change everything the characters thought they knew.`,
+            duration: `${40 + ((movie.id * 7 + index * 13) % 25)}m`,
+            image: episodeImage(movie.id, index),
+        }))
     }, [movie])
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-background">
-                <p className="text-lg text-white">Loading title...</p>
+            <div className="min-h-screen bg-background">
+                <Navbar
+                    profile={profile}
+                    onSwitchProfile={onSwitchProfile}
+                    onLogout={onLogout}
+                />
+                <TitleDetailSkeleton />
+                <RowSkeleton titleWidth="w-40" />
+                <Footer />
             </div>
         )
     }

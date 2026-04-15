@@ -1,6 +1,7 @@
 import { Bell, ChevronDown, Search } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router"
+import NetflixLogo from "@/components/NetflixLogo"
 import type { Profile } from "@/lib/netflix"
 
 interface NavbarProps {
@@ -37,7 +38,7 @@ export default function Navbar({
         <nav
             className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-0 h-[68px] transition-colors duration-500 ${
                 scrolled
-                    ? "bg-black"
+                    ? "bg-netflix-dark"
                     : "bg-gradient-to-b from-black/80 to-transparent"
             }`}
         >
@@ -45,63 +46,38 @@ export default function Navbar({
             <div className="flex items-center gap-6">
                 {/* Netflix Logo */}
                 <Link to="/" className="flex-shrink-0">
-                    <svg
-                        viewBox="0 0 111 30"
-                        className="h-6 md:h-7 fill-netflix-red"
-                        aria-label="Netflix"
-                    >
-                        <path
-                            d="M105.06233,14.2806261 L110.999156,30 C109.249227,29.7497422 107.500234,29.4366498 105.718437,29.1511498 L ## 102.374168,20.4287498 L ## 99.2985498,29.1511498 C97.5765498,29.3699662 95.7## 955498,29.6531498 94.0## 355498,29.8## 71498 L99.9## 255498,14.2806261 L94.2## 65549,0 L99.2## 55498,0 L102.### 268,8.75## 2198 L105.### 437,0 L110.### 156,0 L105.062## ,14.2806261"
-                            fill="currentColor"
-                        ></path>
-                        <path
-                            d="M90.4686,0 L90.4686,26.7312 C88.7186,26.9498 86.9363,27.2006 85.1863,27.4830498 L85.1863,0 L90.4686,0 Z"
-                            fill="currentColor"
-                        ></path>
-                        <path
-                            d="M81.8456,0 L76.5634,0 L76.5634,27.9834 C78.2806,27.7350498 80.0634,27.4848498 81.8456,27.2670498 L81.8456,0 Z"
-                            fill="currentColor"
-                        ></path>
-                        <path
-                            d="M28.1884,9.8136 C27.0284,9.8136 26.0596,10.4496 25.5284,11.3496 L25.5284,11.3496 L25.4644,11.3496 L25.4644,0 L20.1812,0 L20.1812,30 L25.4644,30 L25.4644,18.1608 C25.4644,16.5888 26.2204,15.5256 27.5404,15.5256 C28.7964,15.5256 29.3924,16.4904 29.3924,18.0624 L29.3924,30 L34.6756,30 L34.6756,16.8168 C34.6756,12.7224 33.2756,9.8136 28.1884,9.8136 Z"
-                            fill="currentColor"
-                        ></path>
-                        <path
-                            d="M0,0 L5.3172,0 L5.3172,24.2892 L12.9372,24.2892 L12.9372,29.0124 L0,29.0124 L0,0 Z"
-                            fill="currentColor"
-                        ></path>
-                    </svg>
+                    <NetflixLogo className="h-6 md:h-7" />
                 </Link>
 
                 {/* Nav Links */}
                 <div className="hidden md:flex items-center gap-5">
                     <Link
                         to="/"
-                        className="text-sm font-medium text-white hover:text-netflix-light-gray transition-colors"
+                        className="text-[14px] font-medium text-white hover:text-netflix-light-gray transition-colors"
                     >
                         Home
                     </Link>
                     <Link
                         to="/tv-shows"
-                        className="text-sm text-netflix-light-gray hover:text-white transition-colors"
+                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
                     >
                         TV Shows
                     </Link>
                     <Link
                         to="/movies"
-                        className="text-sm text-netflix-light-gray hover:text-white transition-colors"
+                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
                     >
                         Movies
                     </Link>
                     <Link
                         to="/new"
-                        className="text-sm text-netflix-light-gray hover:text-white transition-colors"
+                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
                     >
-                        New & Popular
+                        New &amp; Popular
                     </Link>
                     <Link
                         to="/my-list"
-                        className="text-sm text-netflix-light-gray hover:text-white transition-colors"
+                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
                     >
                         My List
                     </Link>
@@ -117,7 +93,7 @@ export default function Navbar({
                             onSubmit={handleSearch}
                             className="flex items-center"
                         >
-                            <div className="flex items-center bg-black/90 border border-white/50 px-2">
+                            <div className="flex items-center bg-black border border-white/60 px-2.5">
                                 <Search className="w-4 h-4 text-white" />
                                 <input
                                     type="text"
@@ -129,7 +105,9 @@ export default function Navbar({
                                     onBlur={() => {
                                         if (!searchQuery) setSearchOpen(false)
                                     }}
-                                    className="bg-transparent text-white text-sm pl-2 py-1 w-[180px] md:w-[250px] outline-none placeholder:text-gray-400"
+                                    className="bg-transparent text-white text-sm pl-2 py-1.5 w-[180px] md:w-[250px] outline-none placeholder:text-[#8c8c8c]"
+                                    // biome-ignore lint/a11y/noAutofocus: search UX requires focus
+                                    autoFocus
                                 />
                             </div>
                         </form>
@@ -150,9 +128,6 @@ export default function Navbar({
                     className="text-white hover:text-gray-300 transition-colors relative"
                 >
                     <Bell className="w-5 h-5" />
-                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-netflix-red rounded-full text-[8px] flex items-center justify-center">
-                        3
-                    </span>
                 </button>
 
                 {/* Profile */}
@@ -160,15 +135,15 @@ export default function Navbar({
                     <button
                         type="button"
                         onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                        className="flex items-center gap-1 group"
+                        className="flex items-center gap-1.5 group"
                     >
                         <img
                             src={profile.avatar}
                             alt={profile.name}
-                            className="w-8 h-8 rounded-sm"
+                            className="w-8 h-8 rounded"
                         />
                         <ChevronDown
-                            className={`w-4 h-4 text-white transition-transform ${profileMenuOpen ? "rotate-180" : ""}`}
+                            className={`w-4 h-4 text-white transition-transform duration-200 ${profileMenuOpen ? "rotate-180" : ""}`}
                         />
                     </button>
 
@@ -179,41 +154,58 @@ export default function Navbar({
                                 className="fixed inset-0"
                                 onClick={() => setProfileMenuOpen(false)}
                             />
-                            <div className="absolute right-0 top-12 w-48 bg-black/95 border border-white/15 py-2 rounded-sm shadow-2xl">
+                            <div className="absolute right-0 top-14 w-52 bg-black/90 border border-white/20 py-2 shadow-2xl">
+                                {/* Caret */}
+                                <div className="absolute -top-2 right-6 w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-b-[7px] border-b-white/20" />
+
+                                <div className="px-3 py-2 flex items-center gap-3">
+                                    <img
+                                        src={profile.avatar}
+                                        alt={profile.name}
+                                        className="w-8 h-8 rounded"
+                                    />
+                                    <span className="text-[13px] text-white">
+                                        {profile.name}
+                                    </span>
+                                </div>
+
+                                <div className="border-t border-white/20 my-1" />
+
                                 <button
                                     type="button"
                                     onClick={() => {
                                         setProfileMenuOpen(false)
                                         onSwitchProfile()
                                     }}
-                                    className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
+                                    className="w-full px-3 py-1.5 text-left text-[13px] text-white/70 hover:text-white hover:underline"
                                 >
                                     Switch Profiles
                                 </button>
-                                <div className="border-t border-white/15 mt-1 pt-1">
-                                    <button
-                                        type="button"
-                                        className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
-                                    >
-                                        Account
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
-                                    >
-                                        Help Center
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setProfileMenuOpen(false)
-                                            void onLogout()
-                                        }}
-                                        className="w-full px-4 py-2 text-left text-sm text-white/80 hover:text-white hover:underline"
-                                    >
-                                        Sign out of Netflix
-                                    </button>
-                                </div>
+                                <button
+                                    type="button"
+                                    className="w-full px-3 py-1.5 text-left text-[13px] text-white/70 hover:text-white hover:underline"
+                                >
+                                    Account
+                                </button>
+                                <button
+                                    type="button"
+                                    className="w-full px-3 py-1.5 text-left text-[13px] text-white/70 hover:text-white hover:underline"
+                                >
+                                    Help Center
+                                </button>
+
+                                <div className="border-t border-white/20 my-1" />
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setProfileMenuOpen(false)
+                                        void onLogout()
+                                    }}
+                                    className="w-full px-3 py-1.5 text-center text-[13px] text-white/70 hover:text-white hover:underline"
+                                >
+                                    Sign out of Netflix
+                                </button>
                             </div>
                         </>
                     )}

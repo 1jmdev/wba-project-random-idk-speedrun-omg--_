@@ -1,11 +1,85 @@
 import type { ApiMovie, ApiProfile } from "@/lib/api"
 
-const posterImage = (id: number) =>
-    `https://picsum.photos/seed/netflix-poster-${id}/300/450`
-const backdropImage = (id: number) =>
-    `https://picsum.photos/seed/netflix-backdrop-${id}/1280/720`
-const avatarImage = (id: number) =>
-    `https://picsum.photos/seed/netflix-avatar-${id}/128/128`
+const PLACEHOLDER_COLORS = [
+    "#221f1f",
+    "#1a1a2e",
+    "#16213e",
+    "#0f3460",
+    "#1b1b2f",
+    "#2c003e",
+    "#3a0ca3",
+    "#240046",
+    "#10002b",
+    "#1d3557",
+]
+
+const pickColor = (id: number) =>
+    PLACEHOLDER_COLORS[id % PLACEHOLDER_COLORS.length]
+
+const svgDataUri = (svg: string) =>
+    `data:image/svg+xml,${encodeURIComponent(svg)}`
+
+const posterImage = (id: number) => {
+    const bg = pickColor(id)
+    return svgDataUri(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450">` +
+            `<rect width="300" height="450" fill="${bg}"/>` +
+            `<rect x="0" y="350" width="300" height="100" fill="rgba(0,0,0,0.5)"/>` +
+            `<text x="150" y="210" text-anchor="middle" fill="rgba(255,255,255,0.08)" font-size="120" font-family="sans-serif" font-weight="bold">N</text>` +
+            `<rect x="30" y="380" width="180" height="10" rx="3" fill="rgba(255,255,255,0.15)"/>` +
+            `<rect x="30" y="400" width="120" height="8" rx="3" fill="rgba(255,255,255,0.08)"/>` +
+            `</svg>`
+    )
+}
+
+const backdropImage = (id: number) => {
+    const bg = pickColor(id)
+    return svgDataUri(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">` +
+            `<rect width="1280" height="720" fill="${bg}"/>` +
+            `<text x="640" y="380" text-anchor="middle" fill="rgba(255,255,255,0.06)" font-size="280" font-family="sans-serif" font-weight="bold">N</text>` +
+            `<rect x="0" y="520" width="1280" height="200" fill="rgba(0,0,0,0.4)"/>` +
+            `<rect x="60" y="580" width="400" height="16" rx="4" fill="rgba(255,255,255,0.12)"/>` +
+            `<rect x="60" y="610" width="260" height="12" rx="3" fill="rgba(255,255,255,0.07)"/>` +
+            `</svg>`
+    )
+}
+
+const AVATAR_COLORS = [
+    "#e50914",
+    "#0071eb",
+    "#1ce783",
+    "#e87c03",
+    "#b9090b",
+    "#6d28d9",
+    "#0891b2",
+    "#be123c",
+]
+
+const avatarImage = (id: number) => {
+    const bg = AVATAR_COLORS[id % AVATAR_COLORS.length]
+    return svgDataUri(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">` +
+            `<rect width="128" height="128" rx="4" fill="${bg}"/>` +
+            `<circle cx="64" cy="45" r="22" fill="rgba(255,255,255,0.25)"/>` +
+            `<ellipse cx="64" cy="110" rx="35" ry="30" fill="rgba(255,255,255,0.2)"/>` +
+            `</svg>`
+    )
+}
+
+export const episodeImage = (movieId: number, episodeIndex: number) => {
+    const bg = pickColor(
+        (movieId * 7 + episodeIndex * 3) % PLACEHOLDER_COLORS.length
+    )
+    return svgDataUri(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">` +
+            `<rect width="400" height="225" fill="${bg}"/>` +
+            `<text x="200" y="125" text-anchor="middle" fill="rgba(255,255,255,0.06)" font-size="100" font-family="sans-serif" font-weight="bold">N</text>` +
+            `<circle cx="200" cy="112" r="24" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>` +
+            `<polygon points="192,98 216,112 192,126" fill="rgba(255,255,255,0.3)"/>` +
+            `</svg>`
+    )
+}
 
 const castPool = [
     "Emma Stone",

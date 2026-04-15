@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Route, Routes } from "react-router"
 import { ApiError, type ApiFamily, apiClient } from "@/lib/api"
 import { mapProfile, type Profile } from "@/lib/netflix"
+import NetflixLogo from "@/components/NetflixLogo"
 import AuthScreen from "@/pages/AuthScreen"
 import Browse from "@/pages/Browse"
 import MyList from "@/pages/MyList"
@@ -122,12 +123,9 @@ export default function App() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-background text-white">
-                <div className="text-center">
-                    <div className="mb-4 text-4xl font-black tracking-[0.3em] text-netflix-red">
-                        NETFLIX
-                    </div>
-                    <p className="text-sm text-white/55">Loading session...</p>
+            <div className="flex min-h-screen items-center justify-center bg-netflix-black">
+                <div className="netflix-pulse">
+                    <NetflixLogo className="h-12 md:h-16" />
                 </div>
             </div>
         )
