@@ -14,11 +14,11 @@
         "check": "biome check --write .",
         "deploy:proxy": "wrangler deploy --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
         "start:proxy": "wrangler dev --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
-        "types:proxy": "wrangler types --config proxy/wrangler.jsonc --tsconfig ../tsconfig.proxy.json",
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@base-ui/react": "^1.3.0",
+        "@cloudflare/workers-types": "^4.20260415.1",
         "@fontsource-variable/geist": "^5.2.8",
         "@prisma/adapter-pg": "^7.5.0",
         "@prisma/client": "^7.5.0",
@@ -58,6 +58,6 @@
         "prisma": "^7.5.0",
         "typescript": "~5.9.3",
         "vite": "^7.2.4",
-        "wrangler": "^3.101.0"
+        "wrangler": "^4.82.2"
     }
 }
