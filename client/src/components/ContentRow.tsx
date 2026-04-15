@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useRef, useState } from "react"
 import TitleCard from "@/components/TitleCard"
-import type { Movie } from "@/lib/netflix"
+import type { Movie } from "@/lib/neflix"
 
 interface ContentRowProps {
     title: string

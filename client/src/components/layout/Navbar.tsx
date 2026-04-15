@@ -1,8 +1,8 @@
 import { Bell, ChevronDown, Search } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router"
-import NetflixLogo from "@/components/NetflixLogo"
-import type { Profile } from "@/lib/netflix"
+import NeflixLogo from "@/components/NeflixLogo"
+import type { Profile } from "@/lib/neflix"
 
 interface NavbarProps {
     profile: Profile
@@ -38,46 +38,46 @@ export default function Navbar({
         <nav
             className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-12 py-0 h-[68px] transition-colors duration-500 ${
                 scrolled
-                    ? "bg-netflix-dark"
+                    ? "bg-neflix-dark"
                     : "bg-gradient-to-b from-black/80 to-transparent"
             }`}
         >
             {/* Left section */}
             <div className="flex items-center gap-6">
-                {/* Netflix Logo */}
+                {/* Neflix Logo */}
                 <Link to="/" className="flex-shrink-0">
-                    <NetflixLogo className="h-6 md:h-7" />
+                    <NeflixLogo className="h-6 md:h-7" />
                 </Link>
 
                 {/* Nav Links */}
                 <div className="hidden md:flex items-center gap-5">
                     <Link
                         to="/"
-                        className="text-[14px] font-medium text-white hover:text-netflix-light-gray transition-colors"
+                        className="text-[14px] font-medium text-white hover:text-neflix-light-gray transition-colors"
                     >
                         Home
                     </Link>
                     <Link
                         to="/tv-shows"
-                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
+                        className="text-[14px] text-neflix-light-gray hover:text-white/70 transition-colors"
                     >
                         TV Shows
                     </Link>
                     <Link
                         to="/movies"
-                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
+                        className="text-[14px] text-neflix-light-gray hover:text-white/70 transition-colors"
                     >
                         Movies
                     </Link>
                     <Link
                         to="/new"
-                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
+                        className="text-[14px] text-neflix-light-gray hover:text-white/70 transition-colors"
                     >
                         New &amp; Popular
                     </Link>
                     <Link
                         to="/my-list"
-                        className="text-[14px] text-netflix-light-gray hover:text-white/70 transition-colors"
+                        className="text-[14px] text-neflix-light-gray hover:text-white/70 transition-colors"
                     >
                         My List
                     </Link>
@@ -204,7 +204,7 @@ export default function Navbar({
                                     }}
                                     className="w-full px-3 py-1.5 text-center text-[13px] text-white/70 hover:text-white hover:underline"
                                 >
-                                    Sign out of Netflix
+                                    Sign out of Neflix
                                 </button>
                             </div>
                         </>

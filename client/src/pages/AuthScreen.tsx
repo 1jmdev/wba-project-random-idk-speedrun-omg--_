@@ -1,5 +1,5 @@
 import { useState } from "react"
-import NetflixLogo from "@/components/NetflixLogo"
+import NeflixLogo from "@/components/NeflixLogo"
 
 interface AuthScreenProps {
     onLogin: (payload: { email: string; password: string }) => Promise<void>
@@ -30,18 +30,18 @@ export default function AuthScreen({
     }
 
     return (
-        <div className="relative min-h-screen bg-netflix-black text-white">
+        <div className="relative min-h-screen bg-neflix-black text-white">
             {/* Background image placeholder */}
             <div className="absolute inset-0 opacity-50">
-                <div className="h-full w-full bg-gradient-to-b from-netflix-dark/80 via-netflix-black/60 to-netflix-black" />
+                <div className="h-full w-full bg-gradient-to-b from-neflix-dark/80 via-neflix-black/60 to-neflix-black" />
             </div>
 
             {/* Dark overlay */}
             <div className="absolute inset-0 bg-black/60" />
 
-            {/* Header with Netflix logo */}
+            {/* Header with Neflix logo */}
             <header className="relative z-10 px-4 py-6 md:px-12">
-                <NetflixLogo className="h-7 md:h-10" />
+                <NeflixLogo className="h-7 md:h-10" />
             </header>
 
             {/* Login form - centered */}
@@ -52,7 +52,7 @@ export default function AuthScreen({
                     </h1>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Email field - Netflix floating label style */}
+                        {/* Email field - Neflix floating label style */}
                         <div className="relative">
                             <input
                                 type="email"
@@ -73,7 +73,7 @@ export default function AuthScreen({
                             </label>
                         </div>
 
-                        {/* Password field - Netflix floating label style */}
+                        {/* Password field - Neflix floating label style */}
                         <div className="relative">
                             <input
                                 type="password"
@@ -103,7 +103,7 @@ export default function AuthScreen({
                         <button
                             type="submit"
                             disabled={loading}
-                            className="mt-6 w-full rounded bg-netflix-red py-3 text-base font-semibold text-white transition hover:bg-netflix-red-hover disabled:cursor-not-allowed disabled:opacity-60"
+                            className="mt-6 w-full rounded bg-neflix-red py-3 text-base font-semibold text-white transition hover:bg-neflix-red-hover disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             {loading
                                 ? "Please wait..."
@@ -131,7 +131,7 @@ export default function AuthScreen({
                     <div className="mt-16 text-[#737373]">
                         {mode === "login" ? (
                             <p>
-                                New to Netflix?{" "}
+                                New to Neflix?{" "}
                                 <button
                                     type="button"
                                     onClick={() => setMode("register")}

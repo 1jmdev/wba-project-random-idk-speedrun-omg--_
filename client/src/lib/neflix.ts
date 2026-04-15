@@ -185,7 +185,7 @@ export const mapMovie = (movie: ApiMovie): Movie => {
     return {
         id: movie.id,
         title: movie.name,
-        description: `${movie.name} is available via ${movie.providerType}. Released in ${movie.year}, this title runs ${formatDuration(movie.length)} and blends ${genres.join(", ")} influences into a polished Netflix-style presentation.`,
+        description: `${movie.name} is available via ${movie.providerType}. Released in ${movie.year}, this title runs ${formatDuration(movie.length)} and blends ${genres.join(", ")} influences into a polished Neflix-style presentation.`,
         image: posterImage(movie.id),
         backdrop: backdropImage(movie.id),
         year: movie.year,

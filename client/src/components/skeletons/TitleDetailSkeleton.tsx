@@ -2,7 +2,7 @@ export default function TitleDetailSkeleton() {
     return (
         <>
             {/* Hero backdrop skeleton */}
-            <div className="relative h-[70vh] w-full md:h-[80vh] bg-netflix-dark">
+            <div className="relative h-[70vh] w-full md:h-[80vh] bg-neflix-dark">
                 <div className="absolute inset-0 skeleton-shimmer" />
                 <div className="hero-gradient absolute inset-0" />
                 <div className="hero-gradient-left absolute inset-0" />

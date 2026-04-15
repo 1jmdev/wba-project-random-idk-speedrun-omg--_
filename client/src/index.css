@@ -40,12 +40,12 @@
 
 @theme inline {
     --font-sans: 'Geist Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --color-netflix-red: #e50914;
-    --color-netflix-red-hover: #c11119;
-    --color-netflix-dark: #141414;
-    --color-netflix-black: #000000;
-    --color-netflix-gray: #2a2a2a;
-    --color-netflix-light-gray: #999999;
+    --color-neflix-red: #e50914;
+    --color-neflix-red-hover: #c11119;
+    --color-neflix-dark: #141414;
+    --color-neflix-black: #000000;
+    --color-neflix-gray: #2a2a2a;
+    --color-neflix-light-gray: #999999;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -101,7 +101,7 @@
     }
 }
 
-/* Netflix scrollbar */
+/* Neflix scrollbar */
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -180,8 +180,8 @@
     animation: shimmer 1.6s ease-in-out infinite;
 }
 
-/* Netflix loading pulse */
-@keyframes netflix-pulse {
+/* Neflix loading pulse */
+@keyframes neflix-pulse {
     0%,
     100% {
         opacity: 1;
@@ -191,6 +191,6 @@
     }
 }
 
-.netflix-pulse {
-    animation: netflix-pulse 1.5s ease-in-out infinite;
+.neflix-pulse {
+    animation: neflix-pulse 1.5s ease-in-out infinite;
 }

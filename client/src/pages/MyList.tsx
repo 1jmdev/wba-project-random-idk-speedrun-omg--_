@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar"
 import CardGridSkeleton from "@/components/skeletons/CardGridSkeleton"
 import TitleCard from "@/components/TitleCard"
 import { apiClient } from "@/lib/api"
-import { getMyListIds, type Movie, mapMovie, type Profile } from "@/lib/netflix"
+import { getMyListIds, type Movie, mapMovie, type Profile } from "@/lib/neflix"
 
 interface MyListProps {
     profile: Profile

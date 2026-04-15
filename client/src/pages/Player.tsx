@@ -9,10 +9,10 @@ import {
 } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router"
-import NetflixLogo from "@/components/NetflixLogo"
+import NeflixLogo from "@/components/NeflixLogo"
 import { Button } from "@/components/ui/button"
 import { apiClient } from "@/lib/api"
-import { mapMovie } from "@/lib/netflix"
+import { mapMovie } from "@/lib/neflix"
 
 interface StreamState {
     url: string | null
@@ -252,8 +252,8 @@ export default function Player() {
     if (stream.loading) {
         return (
             <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-black">
-                <div className="netflix-pulse">
-                    <NetflixLogo className="h-10" />
+                <div className="neflix-pulse">
+                    <NeflixLogo className="h-10" />
                 </div>
                 <p className="text-xs text-white/40">
                     {movieTitle || "Loading..."}
@@ -265,7 +265,7 @@ export default function Player() {
     if (stream.error || !stream.url) {
         return (
             <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-6 text-center">
-                <NetflixLogo className="h-8" />
+                <NeflixLogo className="h-8" />
                 <p className="max-w-md text-base text-white/70">
                     {stream.error ?? "Video not available"}
                 </p>
