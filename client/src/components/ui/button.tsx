@@ -10,7 +10,7 @@ const buttonVariants = cva(
             variant: {
                 default:
                     "bg-white text-black hover:bg-white/75 active:bg-white/60 rounded-[4px]",
-                netflix:
+                neflix:
                     "bg-[#e50914] text-white hover:bg-[#c11119] active:bg-[#a00d12] rounded-[4px]",
                 secondary:
                     "bg-[rgba(109,109,110,0.7)] text-white hover:bg-[rgba(109,109,110,0.4)] active:bg-[rgba(109,109,110,0.3)] rounded-[4px]",

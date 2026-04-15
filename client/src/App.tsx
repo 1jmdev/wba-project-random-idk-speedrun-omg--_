@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { Route, Routes } from "react-router"
 import { ApiError, type ApiFamily, apiClient } from "@/lib/api"
-import { mapProfile, type Profile } from "@/lib/netflix"
-import NetflixLogo from "@/components/NetflixLogo"
+import { mapProfile, type Profile } from "@/lib/neflix"
+import NeflixLogo from "@/components/NeflixLogo"
 import AuthScreen from "@/pages/AuthScreen"
 import Browse from "@/pages/Browse"
 import MyList from "@/pages/MyList"
@@ -123,9 +123,9 @@ export default function App() {
 
     if (loading) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-netflix-black">
-                <div className="netflix-pulse">
-                    <NetflixLogo className="h-12 md:h-16" />
+            <div className="flex min-h-screen items-center justify-center bg-neflix-black">
+                <div className="neflix-pulse">
+                    <NeflixLogo className="h-12 md:h-16" />
                 </div>
             </div>
         )

@@ -1,6 +1,6 @@
 import { Plus, X } from "lucide-react"
 import { useState } from "react"
-import type { Profile } from "@/lib/netflix"
+import type { Profile } from "@/lib/neflix"
 
 interface ProfileSelectProps {
     profiles: Profile[]
@@ -10,7 +10,7 @@ interface ProfileSelectProps {
     onLogout: () => Promise<void>
 }
 
-// Netflix profile icon colors
+// Neflix profile icon colors
 const PROFILE_COLORS = [
     "#e50914",
     "#0071eb",
@@ -112,7 +112,7 @@ export default function ProfileSelect({
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-netflix-dark">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-neflix-dark">
             <h1 className="mb-8 text-3xl font-medium text-white md:mb-12 md:text-5xl">
                 {manageMode ? "Manage Profiles:" : "Who\u0027s watching?"}
             </h1>
@@ -134,7 +134,7 @@ export default function ProfileSelect({
                                         void handleDelete(profile.id)
                                     }
                                     disabled={loading || profiles.length <= 1}
-                                    className="absolute -right-1 -top-1 z-10 rounded-full bg-netflix-dark p-1 text-white transition hover:text-netflix-red disabled:cursor-not-allowed disabled:opacity-40"
+                                    className="absolute -right-1 -top-1 z-10 rounded-full bg-neflix-dark p-1 text-white transition hover:text-neflix-red disabled:cursor-not-allowed disabled:opacity-40"
                                     aria-label={`Delete ${profile.name}`}
                                 >
                                     <X className="h-4 w-4" />
@@ -206,7 +206,7 @@ export default function ProfileSelect({
                         className="group flex flex-col items-center gap-3"
                         disabled={loading}
                     >
-                        <div className="flex h-[84px] w-[84px] items-center justify-center rounded bg-netflix-dark border-2 border-[#808080] md:h-[140px] md:w-[140px] transition-colors group-hover:border-white">
+                        <div className="flex h-[84px] w-[84px] items-center justify-center rounded bg-neflix-dark border-2 border-[#808080] md:h-[140px] md:w-[140px] transition-colors group-hover:border-white">
                             <Plus className="h-12 w-12 text-[#808080] transition-colors group-hover:text-white md:h-16 md:w-16" />
                         </div>
                         <span className="text-sm text-[#808080] transition-colors group-hover:text-white md:text-base">
@@ -219,7 +219,7 @@ export default function ProfileSelect({
             {manageMode && creating && (
                 <form
                     onSubmit={handleCreate}
-                    className="mt-10 w-full max-w-md border-t border-b border-[#333] bg-netflix-dark p-6"
+                    className="mt-10 w-full max-w-md border-t border-b border-[#333] bg-neflix-dark p-6"
                 >
                     <div className="flex items-center gap-4">
                         <div className="h-20 w-20 shrink-0 rounded bg-[#333] flex items-center justify-center">
@@ -251,7 +251,7 @@ export default function ProfileSelect({
                         <button
                             type="submit"
                             disabled={loading}
-                            className="bg-white px-6 py-1.5 text-sm font-semibold text-netflix-dark hover:bg-netflix-red hover:text-white transition-colors"
+                            className="bg-white px-6 py-1.5 text-sm font-semibold text-neflix-dark hover:bg-neflix-red hover:text-white transition-colors"
                         >
                             Save
                         </button>
@@ -269,7 +269,7 @@ export default function ProfileSelect({
                     onClick={toggleManageMode}
                     className={`border px-8 py-2 text-sm tracking-[0.2em] transition-colors ${
                         manageMode
-                            ? "border-white bg-white text-netflix-dark hover:bg-netflix-red hover:text-white hover:border-netflix-red"
+                            ? "border-white bg-white text-neflix-dark hover:bg-neflix-red hover:text-white hover:border-neflix-red"
                             : "border-[#808080] text-[#808080] hover:border-white hover:text-white"
                     }`}
                 >

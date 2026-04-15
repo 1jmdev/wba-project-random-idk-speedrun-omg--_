@@ -1,7 +1,7 @@
 import { Check, ChevronDown, Play, Plus, ThumbsUp } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
-import { isInMyList, type Movie, toggleMyList } from "@/lib/netflix"
+import { isInMyList, type Movie, toggleMyList } from "@/lib/neflix"
 
 interface TitleCardProps {
     movie: Movie

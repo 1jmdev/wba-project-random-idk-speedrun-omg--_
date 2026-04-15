@@ -62,7 +62,7 @@ export default function Footer() {
                     </a>
                 </div>
 
-                {/* Footer links - Netflix style */}
+                {/* Footer links - Neflix style */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-y-3 gap-x-4 mb-7">
                     {[
                         "Audio Description",
@@ -89,7 +89,7 @@ export default function Footer() {
                 </div>
 
                 <p className="text-[11px] text-[#808080]/70">
-                    &copy; 1997-2024 Netflix, Inc.
+                    &copy; 1997-2024 Neflix, Inc.
                 </p>
             </div>
         </footer>

@@ -1,6 +1,6 @@
 export default function HeroSkeleton() {
     return (
-        <div className="relative w-full h-[80vh] md:h-[85vh] bg-netflix-dark">
+        <div className="relative w-full h-[80vh] md:h-[85vh] bg-neflix-dark">
             {/* Background shimmer */}
             <div className="absolute inset-0 skeleton-shimmer" />
 

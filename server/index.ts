@@ -21,7 +21,7 @@ app.use("*", loggerMiddleware)
 app.get("/", (c) =>
     c.json({
         success: true,
-        message: "Netflix clone API is running",
+        message: "Neflix clone API is running",
     })
 )
 app.get("/health", (c) =>

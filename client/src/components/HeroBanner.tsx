@@ -1,6 +1,6 @@
 import { Info, Play } from "lucide-react"
 import { useNavigate } from "react-router"
-import type { Movie } from "@/lib/netflix"
+import type { Movie } from "@/lib/neflix"
 
 interface HeroBannerProps {
     movie: Movie
@@ -35,7 +35,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
                 </p>
 
                 <div className="flex items-center gap-2">
-                    {/* Netflix Play button - white with black text */}
+                    {/* Neflix Play button - white with black text */}
                     <button
                         type="button"
                         onClick={() => navigate(`/watch/${movie.id}`)}
@@ -45,7 +45,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
                         Play
                     </button>
 
-                    {/* Netflix More Info button - gray translucent */}
+                    {/* Neflix More Info button - gray translucent */}
                     <button
                         type="button"
                         onClick={() => navigate(`/title/${movie.id}`)}
@@ -57,7 +57,7 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
                 </div>
             </div>
 
-            {/* Maturity rating badge - Netflix style right edge */}
+            {/* Maturity rating badge - Neflix style right edge */}
             <div className="absolute right-0 bottom-[25%] flex items-center z-10">
                 <span className="bg-black/60 border-l-[3px] border-white/40 px-3.5 py-1 text-sm text-white/80">
                     {movie.rating}

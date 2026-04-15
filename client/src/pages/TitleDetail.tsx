@@ -15,7 +15,7 @@ import {
     mapMovie,
     type Profile,
     toggleMyList,
-} from "@/lib/netflix"
+} from "@/lib/neflix"
 
 interface TitleDetailProps {
     profile: Profile

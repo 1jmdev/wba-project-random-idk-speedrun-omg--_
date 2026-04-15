@@ -14,7 +14,7 @@ import {
     type Movie,
     mapMovie,
     type Profile,
-} from "@/lib/netflix"
+} from "@/lib/neflix"
 
 interface BrowseProps {
     profile: Profile
