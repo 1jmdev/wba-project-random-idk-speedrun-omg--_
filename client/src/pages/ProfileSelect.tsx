@@ -10,6 +10,18 @@ interface ProfileSelectProps {
     onLogout: () => Promise<void>
 }
 
+// Netflix profile icon colors
+const PROFILE_COLORS = [
+    "#e50914",
+    "#0071eb",
+    "#1ce783",
+    "#e87c03",
+    "#b9090b",
+    "#6d28d9",
+    "#0891b2",
+    "#be123c",
+]
+
 export default function ProfileSelect({
     profiles,
     onSelect,
@@ -102,71 +114,102 @@ export default function ProfileSelect({
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-netflix-dark">
             <h1 className="mb-8 text-3xl font-medium text-white md:mb-12 md:text-5xl">
-                {manageMode ? "Manage profiles" : "Who&apos;s watching?"}
+                {manageMode ? "Manage Profiles:" : "Who\u0027s watching?"}
             </h1>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 px-4 md:gap-6">
-                {profiles.map((profile) => (
-                    <div
-                        key={profile.id}
-                        className={`group relative flex flex-col items-center gap-2 ${manageMode ? "cursor-default" : "cursor-pointer"}`}
-                    >
-                        {manageMode && (
+            <div className="flex flex-wrap items-center justify-center gap-4 px-4 md:gap-8">
+                {profiles.map((profile, index) => {
+                    const color = PROFILE_COLORS[index % PROFILE_COLORS.length]
+                    const initial = profile.name.charAt(0).toUpperCase()
+
+                    return (
+                        <div
+                            key={profile.id}
+                            className={`group relative flex flex-col items-center gap-3 ${manageMode ? "cursor-default" : "cursor-pointer"}`}
+                        >
+                            {manageMode && (
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        void handleDelete(profile.id)
+                                    }
+                                    disabled={loading || profiles.length <= 1}
+                                    className="absolute -right-1 -top-1 z-10 rounded-full bg-netflix-dark p-1 text-white transition hover:text-netflix-red disabled:cursor-not-allowed disabled:opacity-40"
+                                    aria-label={`Delete ${profile.name}`}
+                                >
+                                    <X className="h-4 w-4" />
+                                </button>
+                            )}
                             <button
                                 type="button"
-                                onClick={() => void handleDelete(profile.id)}
-                                disabled={loading || profiles.length <= 1}
-                                className="absolute right-2 top-2 z-10 rounded-full bg-black/70 p-1 text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-40"
-                                aria-label={`Delete ${profile.name}`}
+                                onClick={() => void handleSelect(profile)}
+                                onMouseEnter={() => setHoveredId(profile.id)}
+                                onMouseLeave={() => setHoveredId(null)}
+                                disabled={loading || manageMode}
+                                className="flex flex-col items-center gap-3"
                             >
-                                <X className="h-4 w-4" />
-                            </button>
-                        )}
-                        <button
-                            type="button"
-                            onClick={() => void handleSelect(profile)}
-                            onMouseEnter={() => setHoveredId(profile.id)}
-                            onMouseLeave={() => setHoveredId(null)}
-                            disabled={loading || manageMode}
-                            className="flex flex-col items-center gap-2"
-                        >
-                            <div
-                                className={`h-25 w-25 overflow-hidden rounded-sm transition-all md:h-35 md:w-35 ${
-                                    !manageMode && hoveredId === profile.id
-                                        ? "ring-2 ring-white"
-                                        : "ring-0"
-                                }`}
-                            >
-                                <img
-                                    src={profile.avatar}
-                                    alt={profile.name}
-                                    className="h-full w-full object-cover"
-                                />
-                            </div>
-                            <span
-                                className={`text-sm transition-colors md:text-base ${
-                                    hoveredId === profile.id
-                                        ? "text-white"
-                                        : "text-netflix-light-gray"
-                                }`}
-                            >
-                                {profile.name}
-                            </span>
-                        </button>
-                    </div>
-                ))}
+                                <div
+                                    className={`relative h-[84px] w-[84px] overflow-hidden rounded md:h-[140px] md:w-[140px] transition-all ${
+                                        !manageMode && hoveredId === profile.id
+                                            ? "ring-3 ring-white"
+                                            : "ring-0"
+                                    } ${manageMode ? "opacity-50" : ""}`}
+                                    style={{
+                                        backgroundColor: color,
+                                    }}
+                                >
+                                    {/* Profile initial */}
+                                    <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold text-white/90 md:text-5xl select-none">
+                                        {initial}
+                                    </span>
 
+                                    {/* Manage overlay */}
+                                    {manageMode && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                                            <svg
+                                                className="h-8 w-8 text-white md:h-10 md:w-10"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                strokeWidth={1.5}
+                                                aria-label="Edit"
+                                            >
+                                                <title>Edit profile</title>
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Z"
+                                                />
+                                            </svg>
+                                        </div>
+                                    )}
+                                </div>
+                                <span
+                                    className={`text-sm transition-colors md:text-base ${
+                                        hoveredId === profile.id
+                                            ? "text-white"
+                                            : "text-[#808080]"
+                                    }`}
+                                >
+                                    {profile.name}
+                                </span>
+                            </button>
+                        </div>
+                    )
+                })}
+
+                {/* Add Profile */}
                 {manageMode && (
                     <button
                         type="button"
                         onClick={() => setCreating((value) => !value)}
-                        className="group flex flex-col items-center gap-2"
+                        className="group flex flex-col items-center gap-3"
                         disabled={loading}
                     >
-                        <div className="flex h-25 w-25 items-center justify-center rounded-sm bg-netflix-gray/50 transition-colors hover:bg-netflix-gray/70 md:h-35 md:w-35">
-                            <Plus className="h-12 w-12 text-netflix-light-gray transition-colors group-hover:text-white" />
+                        <div className="flex h-[84px] w-[84px] items-center justify-center rounded bg-netflix-dark border-2 border-[#808080] md:h-[140px] md:w-[140px] transition-colors group-hover:border-white">
+                            <Plus className="h-12 w-12 text-[#808080] transition-colors group-hover:text-white md:h-16 md:w-16" />
                         </div>
-                        <span className="text-sm text-netflix-light-gray transition-colors group-hover:text-white md:text-base">
+                        <span className="text-sm text-[#808080] transition-colors group-hover:text-white md:text-base">
                             Add Profile
                         </span>
                     </button>
@@ -176,58 +219,66 @@ export default function ProfileSelect({
             {manageMode && creating && (
                 <form
                     onSubmit={handleCreate}
-                    className="mt-10 w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-6"
+                    className="mt-10 w-full max-w-md border-t border-b border-[#333] bg-netflix-dark p-6"
                 >
-                    <h2 className="mb-4 text-lg font-medium text-white">
-                        Add profile
-                    </h2>
-                    <div className="space-y-3">
-                        <input
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
-                            placeholder="Profile name"
-                            className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white outline-none"
-                            required
-                        />
+                    <div className="flex items-center gap-4">
+                        <div className="h-20 w-20 shrink-0 rounded bg-[#333] flex items-center justify-center">
+                            <Plus className="h-8 w-8 text-[#808080]" />
+                        </div>
+                        <div className="flex-1">
+                            <input
+                                value={name}
+                                onChange={(event) =>
+                                    setName(event.target.value)
+                                }
+                                placeholder="Name"
+                                className="w-full bg-[#333] px-4 py-3 text-white outline-none"
+                                required
+                            />
+                        </div>
                     </div>
                     {error && (
-                        <p className="mt-4 text-sm text-red-300">{error}</p>
+                        <p className="mt-4 text-sm text-[#e87c03]">{error}</p>
                     )}
-                    <div className="mt-5 flex gap-3">
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="rounded-lg bg-netflix-red px-4 py-2 text-sm text-white"
-                        >
-                            Create
-                        </button>
+                    <div className="mt-5 flex gap-3 justify-end">
                         <button
                             type="button"
                             onClick={() => setCreating(false)}
-                            className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white/75"
+                            className="border border-[#808080] px-6 py-1.5 text-sm text-[#808080] hover:text-white hover:border-white"
                         >
                             Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="bg-white px-6 py-1.5 text-sm font-semibold text-netflix-dark hover:bg-netflix-red hover:text-white transition-colors"
+                        >
+                            Save
                         </button>
                     </div>
                 </form>
             )}
 
             {error && !creating && (
-                <p className="mt-6 text-sm text-red-300">{error}</p>
+                <p className="mt-6 text-sm text-[#e87c03]">{error}</p>
             )}
 
             <div className="mt-10 flex gap-3 md:mt-16">
                 <button
                     type="button"
                     onClick={toggleManageMode}
-                    className="border border-netflix-light-gray/50 px-6 py-2 text-sm tracking-widest text-netflix-light-gray transition-colors hover:border-white hover:text-white"
+                    className={`border px-8 py-2 text-sm tracking-[0.2em] transition-colors ${
+                        manageMode
+                            ? "border-white bg-white text-netflix-dark hover:bg-netflix-red hover:text-white hover:border-netflix-red"
+                            : "border-[#808080] text-[#808080] hover:border-white hover:text-white"
+                    }`}
                 >
                     {manageMode ? "DONE" : "MANAGE PROFILES"}
                 </button>
                 <button
                     type="button"
                     onClick={() => void onLogout()}
-                    className="border border-white/20 px-6 py-2 text-sm tracking-widest text-white/70 transition-colors hover:border-white hover:text-white"
+                    className="border border-[#808080]/50 px-8 py-2 text-sm tracking-[0.2em] text-[#808080] transition-colors hover:border-white hover:text-white"
                 >
                     SIGN OUT
                 </button>

@@ -9,6 +9,7 @@ import {
 } from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router"
+import NetflixLogo from "@/components/NetflixLogo"
 import { Button } from "@/components/ui/button"
 import { apiClient } from "@/lib/api"
 import { mapMovie } from "@/lib/netflix"
@@ -108,17 +109,35 @@ export default function Player() {
         }
     }, [])
 
-    // Spacebar toggles play/pause
-    useEffect(() => {
-        const onKeyDown = (e: KeyboardEvent) => {
-            if (e.code === "Space" && e.target === document.body) {
-                e.preventDefault()
-                togglePlay()
+    const seekBy = useCallback(
+        (seconds: number) => {
+            const video = videoRef.current
+            if (!video) return
+            video.currentTime = Math.max(
+                0,
+                Math.min(video.duration || 0, video.currentTime + seconds)
+            )
+            setCurrentTime(video.currentTime)
+            resetControlsTimer()
+        },
+        [resetControlsTimer]
+    )
+
+    const adjustVolume = useCallback(
+        (delta: number) => {
+            const video = videoRef.current
+            if (!video) return
+            const next = Math.max(0, Math.min(1, video.volume + delta))
+            video.volume = next
+            setVolume(next)
+            if (next > 0 && video.muted) {
+                video.muted = false
+                setMuted(false)
             }
-        }
-        document.addEventListener("keydown", onKeyDown)
-        return () => document.removeEventListener("keydown", onKeyDown)
-    }, [togglePlay])
+            resetControlsTimer()
+        },
+        [resetControlsTimer]
+    )
 
     const toggleMute = useCallback(() => {
         const video = videoRef.current
@@ -165,6 +184,61 @@ export default function Player() {
         }
     }, [])
 
+    // Keyboard controls: Space, Arrows, M, F, J/K/L
+    useEffect(() => {
+        const onKeyDown = (e: KeyboardEvent) => {
+            const tag = (e.target as HTMLElement).tagName
+            if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") {
+                return
+            }
+
+            switch (e.code) {
+                case "Space":
+                case "KeyK": {
+                    e.preventDefault()
+                    togglePlay()
+                    break
+                }
+                case "ArrowLeft":
+                case "KeyJ": {
+                    e.preventDefault()
+                    seekBy(-10)
+                    break
+                }
+                case "ArrowRight":
+                case "KeyL": {
+                    e.preventDefault()
+                    seekBy(10)
+                    break
+                }
+                case "ArrowUp": {
+                    e.preventDefault()
+                    adjustVolume(0.05)
+                    break
+                }
+                case "ArrowDown": {
+                    e.preventDefault()
+                    adjustVolume(-0.05)
+                    break
+                }
+                case "KeyM": {
+                    e.preventDefault()
+                    toggleMute()
+                    break
+                }
+                case "KeyF": {
+                    e.preventDefault()
+                    void toggleFullscreen()
+                    break
+                }
+                default:
+                    break
+            }
+        }
+        document.addEventListener("keydown", onKeyDown)
+        return () => document.removeEventListener("keydown", onKeyDown)
+    }, [togglePlay, seekBy, adjustVolume, toggleMute, toggleFullscreen])
+
     const formatTime = (seconds: number) => {
         if (!Number.isFinite(seconds)) return "0:00"
         const h = Math.floor(seconds / 3600)
@@ -177,13 +251,12 @@ export default function Player() {
 
     if (stream.loading) {
         return (
-            <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black">
-                <div className="text-4xl font-black tracking-[0.3em] text-netflix-red">
-                    NETFLIX
+            <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-black">
+                <div className="netflix-pulse">
+                    <NetflixLogo className="h-10" />
                 </div>
-                <p className="text-sm text-white/60">Loading video source…</p>
-                <p className="text-xs text-white/30">
-                    {movieTitle || "Please wait"}
+                <p className="text-xs text-white/40">
+                    {movieTitle || "Loading..."}
                 </p>
             </div>
         )
@@ -192,9 +265,7 @@ export default function Player() {
     if (stream.error || !stream.url) {
         return (
             <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-6 text-center">
-                <div className="text-4xl font-black tracking-[0.3em] text-netflix-red">
-                    NETFLIX
-                </div>
+                <NetflixLogo className="h-8" />
                 <p className="max-w-md text-base text-white/70">
                     {stream.error ?? "Video not available"}
                 </p>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
+import CardGridSkeleton from "@/components/skeletons/CardGridSkeleton"
 import TitleCard from "@/components/TitleCard"
 import { apiClient } from "@/lib/api"
 import { getMyListIds, type Movie, mapMovie, type Profile } from "@/lib/netflix"
@@ -68,13 +69,9 @@ export default function MyList({
                     My List
                 </h1>
 
-                {loading && (
-                    <p className="mb-6 text-sm text-white/50">
-                        Loading saved titles...
-                    </p>
-                )}
-
-                {movies.length > 0 ? (
+                {loading ? (
+                    <CardGridSkeleton count={12} />
+                ) : movies.length > 0 ? (
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
                         {movies.map((movie) => (
                             <div key={movie.id}>

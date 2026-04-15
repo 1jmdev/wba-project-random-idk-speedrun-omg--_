@@ -158,3 +158,39 @@
 .row-gradient-right {
     background: linear-gradient(to left, #141414 0%, transparent 100%);
 }
+
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+    0% {
+        background-position: -700px 0;
+    }
+    100% {
+        background-position: 700px 0;
+    }
+}
+
+.skeleton-shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.04) 0%,
+        rgba(255, 255, 255, 0.08) 40%,
+        rgba(255, 255, 255, 0.04) 80%
+    );
+    background-size: 700px 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* Netflix loading pulse */
+@keyframes netflix-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.netflix-pulse {
+    animation: netflix-pulse 1.5s ease-in-out infinite;
+}

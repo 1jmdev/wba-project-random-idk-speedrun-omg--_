@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
+import CardGridSkeleton from "@/components/skeletons/CardGridSkeleton"
 import TitleCard from "@/components/TitleCard"
 import { apiClient } from "@/lib/api"
 import { type Movie, mapMovie, type Profile } from "@/lib/netflix"
@@ -79,7 +80,7 @@ export default function Search({
             />
 
             <div className="px-4 pb-8 pt-24 md:px-12">
-                {query && (
+                {query && !loading && (
                     <p className="mb-6 text-sm text-white/50">
                         {results.length > 0
                             ? `Showing results for "${query}"`
@@ -87,13 +88,15 @@ export default function Search({
                     </p>
                 )}
 
-                {loading && (
-                    <p className="mb-6 text-sm text-white/50">
-                        Searching catalog...
-                    </p>
-                )}
-
-                {results.length > 0 ? (
+                {loading ? (
+                    <div className="pt-4">
+                        {/* Search title skeleton */}
+                        <div className="mb-6">
+                            <div className="h-4 w-56 rounded skeleton-shimmer" />
+                        </div>
+                        <CardGridSkeleton count={PAGE_SIZE} />
+                    </div>
+                ) : results.length > 0 ? (
                     <>
                         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
                             {results.map((movie) => (
@@ -107,12 +110,11 @@ export default function Search({
                             ))}
                         </div>
 
-                        <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-white/70 md:flex-row md:items-center md:justify-between">
-                            <p className="text-sm">
-                                Page {currentPage} of {totalPages}. Showing{" "}
-                                {results.length} titles from offset {offset}.
+                        <div className="mt-8 flex items-center justify-between text-sm text-white/50">
+                            <p>
+                                Page {currentPage} of {totalPages}
                             </p>
-                            <div className="flex gap-3">
+                            <div className="flex gap-2">
                                 <button
                                     type="button"
                                     onClick={() =>
@@ -121,7 +123,7 @@ export default function Search({
                                         )
                                     }
                                     disabled={!hasPreviousPage || loading}
-                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
+                                    className="border border-white/20 px-5 py-1.5 text-sm text-white/70 transition hover:border-white hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                                 >
                                     Previous
                                 </button>
@@ -133,7 +135,7 @@ export default function Search({
                                         )
                                     }
                                     disabled={!hasNextPage || loading}
-                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
+                                    className="border border-white/20 px-5 py-1.5 text-sm text-white/70 transition hover:border-white hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                                 >
                                     Next
                                 </button>

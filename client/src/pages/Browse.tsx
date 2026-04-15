@@ -4,6 +4,9 @@ import ContinueWatchingRow from "@/components/ContinueWatchingRow"
 import HeroBanner from "@/components/HeroBanner"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
+import HeroSkeleton from "@/components/skeletons/HeroSkeleton"
+import RowSkeleton from "@/components/skeletons/RowSkeleton"
+import TopTenSkeleton from "@/components/skeletons/TopTenSkeleton"
 import TopTenRow from "@/components/TopTenRow"
 import { apiClient } from "@/lib/api"
 import {
@@ -124,72 +127,94 @@ export default function Browse({
                 onLogout={onLogout}
             />
 
-            {heroMovie && <HeroBanner movie={heroMovie} />}
+            {/* Hero section */}
+            {loading ? (
+                <HeroSkeleton />
+            ) : (
+                heroMovie && <HeroBanner movie={heroMovie} />
+            )}
 
             <div className="relative z-10 -mt-20 md:-mt-32">
-                {loading && (
-                    <div className="px-4 py-12 text-sm text-white/50 md:px-12">
-                        Loading catalog...
-                    </div>
-                )}
+                {loading ? (
+                    <>
+                        {/* Skeleton rows while loading */}
+                        {!filter && <RowSkeleton titleWidth="w-44" />}
+                        <RowSkeleton titleWidth="w-32" />
+                        <RowSkeleton titleWidth="w-56" />
+                        {!filter && <TopTenSkeleton />}
+                        <RowSkeleton titleWidth="w-40" />
+                        <RowSkeleton titleWidth="w-48" />
+                    </>
+                ) : (
+                    <>
+                        {!filter && (
+                            <ContinueWatchingRow items={continueWatching} />
+                        )}
 
-                {!filter && <ContinueWatchingRow items={continueWatching} />}
+                        {filteredCategories.slice(0, 2).map((category) => (
+                            <ContentRow
+                                key={category.title}
+                                profileId={profile.id}
+                                title={category.title}
+                                movies={category.movies}
+                            />
+                        ))}
 
-                {filteredCategories.slice(0, 2).map((category) => (
-                    <ContentRow
-                        key={category.title}
-                        profileId={profile.id}
-                        title={category.title}
-                        movies={category.movies}
-                    />
-                ))}
+                        {!filter && (
+                            <TopTenRow movies={allMovies.slice(0, 10)} />
+                        )}
 
-                {!filter && <TopTenRow movies={allMovies.slice(0, 10)} />}
+                        {filteredCategories.slice(2).map((category) => (
+                            <ContentRow
+                                key={category.title}
+                                profileId={profile.id}
+                                title={category.title}
+                                movies={category.movies}
+                            />
+                        ))}
 
-                {filteredCategories.slice(2).map((category) => (
-                    <ContentRow
-                        key={category.title}
-                        profileId={profile.id}
-                        title={category.title}
-                        movies={category.movies}
-                    />
-                ))}
-
-                {filter && (
-                    <div className="px-4 py-10 md:px-12">
-                        <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-white/70 md:flex-row md:items-center md:justify-between">
-                            <p className="text-sm">
-                                Page {currentPage} of {totalPages}. Showing{" "}
-                                {allMovies.length} titles from offset {offset}.
-                            </p>
-                            <div className="flex gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        setOffset((current) =>
-                                            Math.max(0, current - PAGE_SIZE)
-                                        )
-                                    }
-                                    disabled={!hasPreviousPage || loading}
-                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
-                                >
-                                    Previous
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        setOffset(
-                                            (current) => current + PAGE_SIZE
-                                        )
-                                    }
-                                    disabled={!hasNextPage || loading}
-                                    className="rounded-full border border-white/20 px-4 py-2 text-sm transition hover:border-white disabled:cursor-not-allowed disabled:opacity-40"
-                                >
-                                    Next
-                                </button>
+                        {filter && (
+                            <div className="px-4 py-10 md:px-12">
+                                <div className="flex items-center justify-between text-sm text-white/50">
+                                    <p>
+                                        Page {currentPage} of {totalPages}
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setOffset((current) =>
+                                                    Math.max(
+                                                        0,
+                                                        current - PAGE_SIZE
+                                                    )
+                                                )
+                                            }
+                                            disabled={
+                                                !hasPreviousPage || loading
+                                            }
+                                            className="border border-white/20 px-5 py-1.5 text-sm text-white/70 transition hover:border-white hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                                        >
+                                            Previous
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setOffset(
+                                                    (current) =>
+                                                        current + PAGE_SIZE
+                                                )
+                                            }
+                                            disabled={!hasNextPage || loading}
+                                            className="border border-white/20 px-5 py-1.5 text-sm text-white/70 transition hover:border-white hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        )}
+                    </>
                 )}
             </div>
 
