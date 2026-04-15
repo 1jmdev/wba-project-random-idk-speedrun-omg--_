@@ -56,12 +56,12 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                         <button
                             type="button"
                             key={movie.id}
-                            className="relative flex-shrink-0 flex items-end cursor-pointer group/card"
+                            className="relative shrink-0 flex items-end cursor-pointer group/card"
                             onClick={() => navigate(`/title/${movie.id}`)}
                         >
                             {/* Big number */}
                             <span
-                                className="text-[120px] md:text-[160px] font-black leading-none select-none mr-[-20px] z-10"
+                                className="text-[120px] md:text-[160px] font-black leading-none select-none -mr-5 z-10"
                                 style={{
                                     color: "transparent",
                                     WebkitTextStroke:
@@ -73,7 +73,7 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                             </span>
 
                             {/* Poster */}
-                            <div className="w-[100px] md:w-[130px] aspect-[2/3] rounded-sm overflow-hidden group-hover/card:scale-105 transition-transform">
+                            <div className="w-25 md:w-32.5 aspect-2/3 rounded-sm overflow-hidden group-hover/card:scale-105 transition-transform">
                                 <img
                                     src={movie.image}
                                     alt={movie.title}

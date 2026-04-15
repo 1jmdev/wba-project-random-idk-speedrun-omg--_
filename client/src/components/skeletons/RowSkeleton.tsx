@@ -7,6 +7,11 @@ export default function RowSkeleton({
     titleWidth = "w-48",
     cardCount = 6,
 }: RowSkeletonProps) {
+    const skeletonKeys = Array.from(
+        { length: cardCount },
+        (_, index) => `row-skeleton-${index}`
+    )
+
     return (
         <div className="mb-8 md:mb-10">
             {/* Row title */}
@@ -18,12 +23,8 @@ export default function RowSkeleton({
 
             {/* Cards */}
             <div className="flex gap-1 px-4 md:px-12">
-                {/* biome-ignore lint/suspicious/noArrayIndexKey: static skeleton placeholders */}
-                {Array.from({ length: cardCount }, (_, i) => (
-                    <div
-                        key={i}
-                        className="shrink-0 w-40 md:w-57.5"
-                    >
+                {skeletonKeys.map((key) => (
+                    <div key={key} className="shrink-0 w-40 md:w-57.5">
                         <div className="aspect-video rounded-sm skeleton-shimmer" />
                     </div>
                 ))}

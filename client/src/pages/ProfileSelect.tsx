@@ -149,7 +149,7 @@ export default function ProfileSelect({
                                 className="flex flex-col items-center gap-3"
                             >
                                 <div
-                                    className={`relative h-[84px] w-[84px] overflow-hidden rounded md:h-[140px] md:w-[140px] transition-all ${
+                                    className={`relative h-21 w-21 overflow-hidden rounded md:h-35 md:w-35 transition-all ${
                                         !manageMode && hoveredId === profile.id
                                             ? "ring-3 ring-white"
                                             : "ring-0"
@@ -206,7 +206,7 @@ export default function ProfileSelect({
                         className="group flex flex-col items-center gap-3"
                         disabled={loading}
                     >
-                        <div className="flex h-[84px] w-[84px] items-center justify-center rounded bg-neflix-dark border-2 border-[#808080] md:h-[140px] md:w-[140px] transition-colors group-hover:border-white">
+                        <div className="flex h-21 w-21 items-center justify-center rounded bg-neflix-dark border-2 border-[#808080] md:h-35 md:w-35 transition-colors group-hover:border-white">
                             <Plus className="h-12 w-12 text-[#808080] transition-colors group-hover:text-white md:h-16 md:w-16" />
                         </div>
                         <span className="text-sm text-[#808080] transition-colors group-hover:text-white md:text-base">

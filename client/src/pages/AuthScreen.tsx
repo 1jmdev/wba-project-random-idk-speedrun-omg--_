@@ -33,7 +33,7 @@ export default function AuthScreen({
         <div className="relative min-h-screen bg-neflix-black text-white">
             {/* Background image placeholder */}
             <div className="absolute inset-0 opacity-50">
-                <div className="h-full w-full bg-gradient-to-b from-neflix-dark/80 via-neflix-black/60 to-neflix-black" />
+                <div className="h-full w-full bg-linear-to-b from-neflix-dark/80 via-neflix-black/60 to-neflix-black" />
             </div>
 
             {/* Dark overlay */}
@@ -46,7 +46,7 @@ export default function AuthScreen({
 
             {/* Login form - centered */}
             <div className="relative z-10 mx-auto flex items-center justify-center px-4 pb-20">
-                <div className="w-full max-w-[450px] rounded bg-black/75 px-[68px] py-12">
+                <div className="w-full max-w-112.5 rounded bg-black/75 px-17 py-12">
                     <h1 className="mb-7 text-[32px] font-bold text-white">
                         {mode === "login" ? "Sign In" : "Sign Up"}
                     </h1>

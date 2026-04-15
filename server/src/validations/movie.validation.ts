@@ -1,5 +1,5 @@
-import { z } from "zod"
 import { Genre, ProviderType } from "@prisma/client"
+import { z } from "zod"
 
 const genreEnum = z.enum(Genre)
 const providerTypeEnum = z.enum(ProviderType)

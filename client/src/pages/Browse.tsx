@@ -9,12 +9,7 @@ import RowSkeleton from "@/components/skeletons/RowSkeleton"
 import TopTenSkeleton from "@/components/skeletons/TopTenSkeleton"
 import TopTenRow from "@/components/TopTenRow"
 import { apiClient } from "@/lib/api"
-import {
-    type Category,
-    type Movie,
-    mapMovie,
-    type Profile,
-} from "@/lib/neflix"
+import { type Category, type Movie, mapMovie, type Profile } from "@/lib/neflix"
 
 interface BrowseProps {
     profile: Profile

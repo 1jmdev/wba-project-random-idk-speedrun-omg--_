@@ -28,7 +28,7 @@ export default function TitleCard({
 
     return (
         <div
-            className={`group/card relative cursor-pointer ${grid ? "w-full" : "flex-shrink-0 w-[160px] md:w-[230px]"}`}
+            className={`group/card relative cursor-pointer ${grid ? "w-full" : "shrink-0 w-40 md:w-57.5"}`}
         >
             {/* Base card */}
             <div className="relative aspect-video overflow-hidden rounded-sm transition-transform duration-300 group-hover/card:scale-105">
@@ -47,7 +47,7 @@ export default function TitleCard({
 
                 {/* Title overlay — always visible at bottom */}
                 <div className="absolute inset-0 z-10 flex flex-col justify-end transition-opacity duration-200">
-                    <div className="bg-gradient-to-t from-black/90 via-black/50 to-transparent p-2.5 pt-10">
+                    <div className="bg-linear-to-t from-black/90 via-black/50 to-transparent p-2.5 pt-10">
                         <div className="group-hover/card:hidden">
                             <p className="truncate text-xs font-medium text-white md:text-sm">
                                 {movie.title}

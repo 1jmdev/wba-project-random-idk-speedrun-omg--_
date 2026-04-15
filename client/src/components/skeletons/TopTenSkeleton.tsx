@@ -1,4 +1,9 @@
 export default function TopTenSkeleton() {
+    const skeletonKeys = Array.from(
+        { length: 6 },
+        (_, index) => `top-ten-skeleton-${index}`
+    )
+
     return (
         <div className="mb-8 md:mb-10">
             {/* Row title */}
@@ -8,9 +13,8 @@ export default function TopTenSkeleton() {
 
             {/* Top 10 cards */}
             <div className="flex gap-3 px-4 md:px-12">
-                {/* biome-ignore lint/suspicious/noArrayIndexKey: static skeleton placeholders */}
-                {Array.from({ length: 6 }, (_, i) => (
-                    <div key={i} className="shrink-0 flex items-end">
+                {skeletonKeys.map((key) => (
+                    <div key={key} className="shrink-0 flex items-end">
                         {/* Number placeholder */}
                         <div className="w-15 md:w-20 h-30 md:h-40 -mr-5 z-10 skeleton-shimmer rounded" />
 
