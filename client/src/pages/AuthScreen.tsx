@@ -1,5 +1,13 @@
 import { useState } from "react"
 import NeflixLogo from "@/components/NeflixLogo"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 interface AuthScreenProps {
     onLogin: (payload: { email: string; password: string }) => Promise<void>
@@ -121,9 +129,19 @@ export default function AuthScreen({
                                 />
                                 Remember me
                             </label>
-                            <span className="cursor-pointer hover:underline">
-                                Need help?
-                            </span>
+                            <Dialog>
+                                <DialogTrigger className="cursor-pointer hover:underline">
+                                    Need help?
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Help</DialogTitle>
+                                        <DialogDescription>
+                                            Are you stupid? Just fill out the fucking form?
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
                         </div>
                     </form>
 
@@ -154,13 +172,6 @@ export default function AuthScreen({
                                 .
                             </p>
                         )}
-                        <p className="mt-3 text-[13px]">
-                            This page is protected by Google reCAPTCHA to ensure
-                            you&apos;re not a bot.{" "}
-                            <span className="cursor-pointer text-[#0071eb] hover:underline">
-                                Learn more.
-                            </span>
-                        </p>
                     </div>
                 </div>
             </div>
