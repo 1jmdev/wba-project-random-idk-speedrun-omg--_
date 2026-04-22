@@ -14,6 +14,7 @@ async function main(): Promise<void> {
         minify: true,
         sourcemap: "none",
         packages: "bundle",
+        publicPath: "/",
         plugins: [tailwind],
     })
 
@@ -37,7 +38,7 @@ async function copyPublicAssets(): Promise<void> {
 async function injectPublicStylesheet(): Promise<void> {
     const indexPath = `${outDir}index.html`
     const html = await readFile(indexPath, "utf8")
-    const stylesheetTag = '<link rel="stylesheet" href="./fonts.css">'
+    const stylesheetTag = '<link rel="stylesheet" href="/fonts.css">'
 
     if (html.includes(stylesheetTag)) {
         return
