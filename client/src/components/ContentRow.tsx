@@ -47,9 +47,9 @@ export default function ContentRow({
                     <button
                         type="button"
                         onClick={() => scroll("left")}
-                        className="absolute left-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
+                        className="absolute left-0 top-0 bottom-0 z-20 w-10 md:w-14 flex items-center justify-center bg-black/50 opacity-100 md:opacity-0 md:group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
-                        <ChevronLeft className="w-8 h-8 text-white" />
+                        <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 text-white" />
                     </button>
                 )}
 
@@ -73,9 +73,9 @@ export default function ContentRow({
                     <button
                         type="button"
                         onClick={() => scroll("right")}
-                        className="absolute right-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
+                        className="absolute right-0 top-0 bottom-0 z-20 w-10 md:w-14 flex items-center justify-center bg-black/50 opacity-100 md:opacity-0 md:group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
-                        <ChevronRight className="w-8 h-8 text-white" />
+                        <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-white" />
                     </button>
                 )}
             </div>

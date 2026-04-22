@@ -41,16 +41,16 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                     <button
                         type="button"
                         onClick={() => scroll("left")}
-                        className="absolute left-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
+                        className="absolute left-0 top-0 bottom-0 z-20 w-10 md:w-14 flex items-center justify-center bg-black/50 opacity-100 md:opacity-0 md:group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
-                        <ChevronLeft className="w-8 h-8 text-white" />
+                        <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 text-white" />
                     </button>
                 )}
 
                 <div
                     ref={rowRef}
                     onScroll={checkScroll}
-                    className="slider-row flex gap-3 overflow-x-scroll px-4 md:px-12 py-3"
+                    className="slider-row flex gap-2 md:gap-3 overflow-x-scroll px-4 md:px-12 py-3"
                 >
                     {movies.slice(0, 10).map((movie, index) => (
                         <button
@@ -61,11 +61,11 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                         >
                             {/* Big number */}
                             <span
-                                className="text-[120px] md:text-[160px] font-black leading-none select-none -mr-5 z-10"
+                                className="text-[90px] sm:text-[120px] md:text-[160px] font-black leading-none select-none -mr-4 md:-mr-5 z-10"
                                 style={{
                                     color: "transparent",
                                     WebkitTextStroke:
-                                        "3px rgba(255,255,255,0.5)",
+                                        "2px rgba(255,255,255,0.5)",
                                     paintOrder: "stroke fill",
                                 }}
                             >
@@ -73,7 +73,7 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                             </span>
 
                             {/* Poster */}
-                            <div className="w-25 md:w-32.5 aspect-2/3 rounded-sm overflow-hidden group-hover/card:scale-105 transition-transform">
+                            <div className="w-20 sm:w-25 md:w-32.5 aspect-2/3 rounded-sm overflow-hidden group-hover/card:scale-105 transition-transform">
                                 <img
                                     src={movie.image}
                                     alt={movie.title}
@@ -89,9 +89,9 @@ export default function TopTenRow({ movies }: TopTenRowProps) {
                     <button
                         type="button"
                         onClick={() => scroll("right")}
-                        className="absolute right-0 top-0 bottom-0 z-20 w-12 md:w-14 flex items-center justify-center bg-black/50 opacity-0 group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
+                        className="absolute right-0 top-0 bottom-0 z-20 w-10 md:w-14 flex items-center justify-center bg-black/50 opacity-100 md:opacity-0 md:group-hover/row:opacity-100 transition-opacity hover:bg-black/70"
                     >
-                        <ChevronRight className="w-8 h-8 text-white" />
+                        <ChevronRight className="w-6 h-6 md:w-8 md:h-8 text-white" />
                     </button>
                 )}
             </div>

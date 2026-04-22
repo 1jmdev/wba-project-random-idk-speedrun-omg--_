@@ -28,10 +28,10 @@ export default function TitleCard({
 
     return (
         <div
-            className={`group/card relative cursor-pointer ${grid ? "w-full" : "shrink-0 w-40 md:w-57.5"}`}
+            className={`group/card relative cursor-pointer ${grid ? "w-full" : "shrink-0 w-36 sm:w-40 md:w-57.5"}`}
         >
             {/* Base card */}
-            <div className="relative aspect-video overflow-hidden rounded-sm transition-transform duration-300 group-hover/card:scale-105">
+            <div className="relative aspect-video overflow-hidden rounded-sm md:transition-transform md:duration-300 md:group-hover/card:scale-105">
                 <button
                     type="button"
                     aria-label={`Open ${movie.title}`}
@@ -46,15 +46,15 @@ export default function TitleCard({
                 />
 
                 {/* Title overlay — always visible at bottom */}
-                <div className="absolute inset-0 z-10 flex flex-col justify-end transition-opacity duration-200">
-                    <div className="bg-linear-to-t from-black/90 via-black/50 to-transparent p-2.5 pt-10">
-                        <div className="group-hover/card:hidden">
+                <div className="absolute inset-0 z-10 flex flex-col justify-end transition-opacity duration-200 pointer-events-none">
+                    <div className="bg-linear-to-t from-black/90 via-black/50 to-transparent p-2 pt-6 md:p-2.5 md:pt-10">
+                        <div className="md:group-hover/card:hidden">
                             <p className="truncate text-xs font-medium text-white md:text-sm">
                                 {movie.title}
                             </p>
                         </div>
 
-                        <div className="hidden group-hover/card:block">
+                        <div className="hidden md:group-hover/card:block pointer-events-auto">
                             <div className="mb-1.5 flex items-center gap-1.5">
                                 <button
                                     type="button"

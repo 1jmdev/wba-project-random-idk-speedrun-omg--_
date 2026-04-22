@@ -54,7 +54,7 @@ export default function AuthScreen({
 
             {/* Login form - centered */}
             <div className="relative z-10 mx-auto flex items-center justify-center px-4 pb-20">
-                <div className="w-full max-w-112.5 rounded bg-black/75 px-17 py-12">
+                <div className="w-full max-w-112.5 rounded bg-black/75 px-6 py-10 md:px-17 md:py-12">
                     <h1 className="mb-7 text-[32px] font-bold text-white">
                         {mode === "login" ? "Sign In" : "Sign Up"}
                     </h1>

@@ -119,7 +119,7 @@ export default function TitleDetail({
                 onLogout={onLogout}
             />
 
-            <div className="relative h-[70vh] w-full md:h-[80vh]">
+            <div className="relative h-[55vh] sm:h-[65vh] md:h-[80vh] w-full">
                 <img
                     src={movie.backdrop}
                     alt={movie.title}
@@ -131,7 +131,7 @@ export default function TitleDetail({
                 <button
                     type="button"
                     onClick={() => navigate(-1)}
-                    className="absolute right-4 top-20 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 transition-colors hover:bg-black/80 md:right-8"
+                    className="absolute right-4 top-16 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 transition-colors hover:bg-black/80 md:right-8 md:top-20"
                 >
                     <X className="h-5 w-5 text-white" />
                 </button>
@@ -139,7 +139,7 @@ export default function TitleDetail({
                 <button
                     type="button"
                     onClick={() => setMuted(!muted)}
-                    className="absolute bottom-[15%] right-16 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-white/40 transition-colors hover:border-white"
+                    className="absolute bottom-[18%] right-14 z-20 flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full border border-white/40 transition-colors hover:border-white sm:bottom-[15%] sm:right-16"
                 >
                     {muted ? (
                         <VolumeX className="h-4 w-4 text-white" />
@@ -148,23 +148,23 @@ export default function TitleDetail({
                     )}
                 </button>
 
-                <div className="absolute bottom-[15%] right-0 z-20 border-l-2 border-white/40 bg-black/60 px-3 py-1 text-sm text-white/80">
+                <div className="absolute bottom-[18%] right-0 z-20 border-l-2 border-white/40 bg-black/60 px-2.5 md:px-3 py-1 text-xs md:text-sm text-white/80 sm:bottom-[15%]">
                     {movie.rating}
                 </div>
 
-                <div className="absolute bottom-[10%] left-4 z-10 max-w-2xl md:left-12">
-                    <h1 className="mb-4 text-4xl font-bold text-white drop-shadow-lg md:text-6xl">
+                <div className="absolute bottom-[8%] left-4 z-10 max-w-2xl md:left-12">
+                    <h1 className="mb-3 md:mb-4 text-2xl sm:text-4xl font-bold text-white drop-shadow-lg md:text-6xl">
                         {movie.title}
                     </h1>
 
                     <div className="flex items-center gap-3">
                         <Button
                             variant="default"
-                            size="xl"
-                            className="gap-2"
+                            size="lg"
+                            className="gap-2 md:text-base"
                             onClick={() => navigate(`/watch/${movie.id}`)}
                         >
-                            <Play className="h-6 w-6 fill-black" />
+                            <Play className="h-5 w-5 fill-black md:h-6 md:w-6" />
                             Play
                         </Button>
                     </div>
@@ -175,7 +175,7 @@ export default function TitleDetail({
                 <div className="max-w-5xl">
                     <div className="flex flex-col gap-6 md:flex-row md:gap-10">
                         <div className="flex-1">
-                            <div className="mb-3 flex items-center gap-3 text-sm">
+                            <div className="mb-3 flex flex-wrap items-center gap-2 md:gap-3 text-sm">
                                 <span className="font-semibold text-[#46d369]">
                                     {movie.match}% Match
                                 </span>
@@ -272,16 +272,16 @@ export default function TitleDetail({
                                 </span>
                             </div>
 
-                            <div className="space-y-3">
+                            <div className="space-y-2 md:space-y-3">
                                 {episodes.map((episode) => (
                                     <div
                                         key={episode.id}
-                                        className="group flex cursor-pointer gap-4 rounded-sm p-3 transition-colors hover:bg-white/5"
+                                        className="group flex cursor-pointer gap-3 md:gap-4 rounded-sm p-2 md:p-3 transition-colors hover:bg-white/5"
                                     >
-                                        <div className="flex w-8 shrink-0 items-center justify-center text-lg text-white/50">
+                                        <div className="flex w-6 md:w-8 shrink-0 items-center justify-center text-base md:text-lg text-white/50">
                                             {episode.id}
                                         </div>
-                                        <div className="relative aspect-video w-32.5 shrink-0 overflow-hidden rounded-sm">
+                                        <div className="relative aspect-video w-28 sm:w-32.5 shrink-0 overflow-hidden rounded-sm">
                                             <img
                                                 src={episode.image}
                                                 alt={episode.title}
@@ -289,17 +289,17 @@ export default function TitleDetail({
                                                 loading="lazy"
                                             />
                                             <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                                                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white">
-                                                    <Play className="ml-0.5 h-4 w-4 fill-white text-white" />
+                                                <div className="flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full border-2 border-white">
+                                                    <Play className="ml-0.5 h-3.5 w-3.5 md:h-4 md:w-4 fill-white text-white" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <div className="mb-1 flex items-center justify-between">
-                                                <h3 className="text-sm font-medium text-white">
+                                            <div className="mb-1 flex items-center justify-between gap-2">
+                                                <h3 className="text-sm font-medium text-white truncate">
                                                     {episode.title}
                                                 </h3>
-                                                <span className="text-xs text-white/50">
+                                                <span className="text-xs text-white/50 shrink-0">
                                                     {episode.duration}
                                                 </span>
                                             </div>

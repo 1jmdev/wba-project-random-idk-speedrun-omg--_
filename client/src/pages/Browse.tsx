@@ -170,7 +170,7 @@ export default function Browse({
 
                         {filter && (
                             <div className="px-4 py-10 md:px-12">
-                                <div className="flex items-center justify-between text-sm text-white/50">
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
                                     <p>
                                         Page {currentPage} of {totalPages}
                                     </p>

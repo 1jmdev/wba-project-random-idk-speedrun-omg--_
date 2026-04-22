@@ -110,7 +110,7 @@ export default function Search({
                             ))}
                         </div>
 
-                        <div className="mt-8 flex items-center justify-between text-sm text-white/50">
+                        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
                             <p>
                                 Page {currentPage} of {totalPages}
                             </p>

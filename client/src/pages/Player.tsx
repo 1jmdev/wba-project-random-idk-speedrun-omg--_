@@ -323,11 +323,11 @@ export default function Player() {
                 className={`pointer-events-none absolute inset-0 flex flex-col justify-between bg-linear-to-b from-black/70 via-transparent to-black/80 transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"}`}
             >
                 {/* Top bar */}
-                <div className="pointer-events-auto flex items-center gap-3 px-4 py-4 md:px-8">
+                <div className="pointer-events-auto flex items-center gap-3 px-4 py-3 md:px-8 md:py-4">
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="rounded-full bg-black/50 text-white hover:bg-black/80"
+                        className="rounded-full bg-black/50 text-white hover:bg-black/80 h-9 w-9"
                         onClick={() => navigate(-1)}
                         aria-label="Back"
                     >
@@ -349,7 +349,7 @@ export default function Player() {
                         value={currentTime}
                         onChange={handleSeek}
                         aria-label="Seek"
-                        className="w-full cursor-pointer"
+                        className="w-full cursor-pointer h-5 md:h-auto"
                         style={{
                             accentColor: "#e50914",
                             background: `linear-gradient(to right, #e50914 ${progressPct}%, rgba(255,255,255,0.3) ${progressPct}%)`,
@@ -362,7 +362,7 @@ export default function Player() {
                             <Button
                                 variant="default"
                                 size="icon-lg"
-                                className="rounded-full"
+                                className="rounded-full h-10 w-10 md:h-12 md:w-12"
                                 onClick={togglePlay}
                                 aria-label={playing ? "Pause" : "Play"}
                             >
@@ -376,7 +376,7 @@ export default function Player() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-white"
+                                className="text-white h-9 w-9"
                                 onClick={toggleMute}
                                 aria-label={muted ? "Unmute" : "Mute"}
                             >
@@ -395,11 +395,11 @@ export default function Player() {
                                 value={muted ? 0 : volume}
                                 onChange={handleVolumeChange}
                                 aria-label="Volume"
-                                className="w-20 cursor-pointer md:w-28"
+                                className="w-16 cursor-pointer sm:w-20 md:w-28"
                                 style={{ accentColor: "#ffffff" }}
                             />
 
-                            <span className="text-xs text-white/70 tabular-nums">
+                            <span className="text-xs text-white/70 tabular-nums hidden sm:inline">
                                 {formatTime(currentTime)}
                                 {" / "}
                                 {formatTime(duration)}
@@ -410,7 +410,7 @@ export default function Player() {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="text-white"
+                            className="text-white h-9 w-9"
                             onClick={toggleFullscreen}
                             aria-label={
                                 fullscreen ? "Exit fullscreen" : "Fullscreen"
@@ -432,9 +432,9 @@ export default function Player() {
                     variant="default"
                     aria-label="Play"
                     onClick={togglePlay}
-                    className="absolute h-20 w-20 rounded-full"
+                    className="absolute h-16 w-16 md:h-20 md:w-20 rounded-full"
                 >
-                    <Play className="size-7 fill-black ml-0.5" />
+                    <Play className="h-6 w-6 md:size-7 fill-black ml-0.5" />
                 </Button>
             )}
         </div>
