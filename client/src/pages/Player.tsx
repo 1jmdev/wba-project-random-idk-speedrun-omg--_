@@ -47,6 +47,11 @@ export default function Player() {
     const [fullscreen, setFullscreen] = useState(false)
     const [showControls, setShowControls] = useState(true)
 
+    const playingRef = useRef(playing)
+    useEffect(() => {
+        playingRef.current = playing
+    }, [playing])
+
     useEffect(() => {
         const movieId = Number(id)
         if (!movieId) return
@@ -87,9 +92,26 @@ export default function Player() {
             clearTimeout(controlsTimeoutRef.current)
         }
         controlsTimeoutRef.current = setTimeout(() => {
-            if (playing) setShowControls(false)
+            if (playingRef.current) setShowControls(false)
         }, 3000)
-    }, [playing])
+    }, [])
+
+    const toggleControls = useCallback(() => {
+        setShowControls((prev) => {
+            const next = !prev
+            if (controlsTimeoutRef.current) {
+                clearTimeout(controlsTimeoutRef.current)
+            }
+            if (next) {
+                controlsTimeoutRef.current = setTimeout(() => {
+                    if (playingRef.current) {
+                        setShowControls(false)
+                    }
+                }, 3000)
+            }
+            return next
+        })
+    }, [])
 
     useEffect(() => {
         return () => {
@@ -287,22 +309,14 @@ export default function Player() {
     return (
         <div
             ref={containerRef}
-            className="relative flex min-h-screen items-center justify-center bg-black"
+            className="relative flex h-dvh items-center justify-center bg-black overflow-hidden"
         >
-            {/* Invisible play/pause click target behind the video */}
-            <Button
-                variant="ghost"
-                aria-label={playing ? "Pause" : "Play"}
-                className="absolute inset-0 h-full w-full cursor-default rounded-none opacity-0"
-                onClick={togglePlay}
-            />
-
             {/* Video */}
             {/* biome-ignore lint/a11y/useMediaCaption: provider content has no caption track */}
             <video
                 ref={videoRef}
                 src={stream.url}
-                className="relative h-screen w-full object-contain"
+                className="relative h-dvh w-full object-contain"
                 onMouseMove={resetControlsTimer}
                 onPlay={() => setPlaying(true)}
                 onPause={() => setPlaying(false)}
@@ -318,9 +332,17 @@ export default function Player() {
                 }}
             />
 
+            {/* Transparent click overlay — toggles controls on tap */}
+            <button
+                type="button"
+                aria-label="Toggle controls"
+                onClick={toggleControls}
+                className="absolute inset-0 z-10 bg-transparent"
+            />
+
             {/* Controls overlay — pointer-events disabled on the wrapper so only explicit interactive children capture events */}
             <div
-                className={`pointer-events-none absolute inset-0 flex flex-col justify-between bg-linear-to-b from-black/70 via-transparent to-black/80 transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"}`}
+                className={`pointer-events-none absolute inset-0 z-20 flex flex-col justify-between bg-linear-to-b from-black/70 via-transparent to-black/80 transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"}`}
             >
                 {/* Top bar */}
                 <div className="pointer-events-auto flex items-center gap-3 px-4 py-3 md:px-8 md:py-4">
@@ -426,15 +448,19 @@ export default function Player() {
                 </div>
             </div>
 
-            {/* Centre play button — clickable when paused */}
-            {!playing && showControls && (
+            {/* Centre play/pause button — clickable when controls are shown */}
+            {showControls && (
                 <Button
                     variant="default"
-                    aria-label="Play"
+                    aria-label={playing ? "Pause" : "Play"}
                     onClick={togglePlay}
-                    className="absolute h-16 w-16 md:h-20 md:w-20 rounded-full"
+                    className="absolute z-30 h-16 w-16 md:h-20 md:w-20 rounded-full"
                 >
-                    <Play className="h-6 w-6 md:size-7 fill-black ml-0.5" />
+                    {playing ? (
+                        <Pause className="h-6 w-6 md:size-7 fill-black" />
+                    ) : (
+                        <Play className="h-6 w-6 md:size-7 fill-black ml-0.5" />
+                    )}
                 </Button>
             )}
         </div>
