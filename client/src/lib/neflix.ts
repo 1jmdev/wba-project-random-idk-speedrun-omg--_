@@ -104,7 +104,7 @@ export interface Profile {
 export interface Movie {
     id: number
     title: string
-    description: string
+    description: string | null
     image: string
     backdrop: string
     year: number
@@ -130,7 +130,11 @@ const genreLabel = (genre: string) =>
         .replaceAll("_", " ")
         .replace(/\b\w/g, (char) => char.toUpperCase())
 
-const formatDuration = (minutes: number) => {
+const formatDuration = (minutes: number | null) => {
+    if (minutes == null) {
+        return ""
+    }
+
     if (minutes < 60) {
         return `${minutes}m`
     }
@@ -146,7 +150,7 @@ const formatDuration = (minutes: number) => {
 }
 
 const inferType = (movie: ApiMovie): "movie" | "series" =>
-    movie.length <= 55 ? "series" : "movie"
+    movie.type === "series" ? "series" : "movie"
 
 const inferRating = (genres: string[]) => {
     if (genres.includes("ADULT") || genres.includes("HORROR")) {
@@ -177,30 +181,31 @@ export const mapMovie = (movie: ApiMovie): Movie => {
     const type = inferType(movie)
     const seasons =
         type === "series"
-            ? Math.max(1, Math.ceil(movie.length / 10))
+            ? Math.max(1, Math.ceil((movie.length ?? 45) / 10))
             : undefined
     const episodes = seasons ? seasons * 8 : undefined
     const genres = movie.genres.map(genreLabel)
+    const title = movie.title_en ?? movie.title_cz ?? "Unknown"
 
     return {
         id: movie.id,
-        title: movie.name,
-        description: `${movie.name} is available via ${movie.providerType}. Released in ${movie.year}, this title runs ${formatDuration(movie.length)} and blends ${genres.join(", ")} influences into a polished Neflix-style presentation.`,
+        title,
+        description: movie.description,
         image: posterImage(movie.id),
         backdrop: backdropImage(movie.id),
-        year: movie.year,
+        year: movie.year ?? 0,
         rating: inferRating(movie.genres),
         duration:
             type === "series" && seasons
                 ? `${seasons} Season${seasons > 1 ? "s" : ""}`
-                : formatDuration(movie.length),
+                : formatDuration(movie.length) || "Unknown",
         match: 82 + (movie.id % 17),
         genres,
         cast: buildCast(movie.id),
         type,
         seasons,
         episodes,
-        runtimeMinutes: movie.length,
+        runtimeMinutes: movie.length ?? 0,
     }
 }
 

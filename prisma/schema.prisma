@@ -12,37 +12,6 @@ enum ProviderType {
   PREHRAJTO
 }
 
-enum Genre {
-  ACTION
-  ADULT
-  ADVENTURE
-  ANIMATION
-  BIOGRAPHY
-  COMEDY
-  CRIME
-  DOCUMENTARY
-  DRAMA
-  FAMILY
-  FANTASY
-  GAMESHOW
-  HISTORY
-  HORROR
-  MUSIC
-  MUSICAL
-  MYSTERY
-  NEWS
-  REALITYTV
-  ROMANCE
-  SCIFI
-  SHORT
-  SPORT
-  TALKSHOW
-  SCIENCE_FICTION
-  THRILLER
-  WAR
-  WESTERN
-}
-
 model Profile {
   @@map("profile")
 
@@ -69,17 +38,39 @@ model Family {
 model Movie {
   @@map("movie")
 
-  id           Int          @id @default(autoincrement())
-  name         String
-  year         Int
-  length       Int
-  genres       Genre[]
-  providerType ProviderType
-  providerId   String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id            Int          @id @default(autoincrement())
+  title_en      String?
+  title_cz      String?
+  type          String
+  origins       String[]
+  isAdult       Boolean      @default(false)
+  length        Int?
+  year          Int?
+  providerId    String?
+  providerType  ProviderType
+  description   String?
+  genres        MovieGenre[]
 
-  @@unique([providerType, providerId])
-  @@index([name])
-  @@index([year])
+  @@index([title_en])
+  @@index([title_cz])
+}
+
+model Genre {
+  @@map("genre")
+
+  id     Int          @id @default(autoincrement())
+  name   String       @unique
+  movies MovieGenre[]
+}
+
+model MovieGenre {
+  @@map("movie_genre")
+
+  movieId  Int
+  genreId  Int
+  movie    Movie @relation(fields: [movieId], references: [id])
+  genre    Genre @relation(fields: [genreId], references: [id])
+
+  @@id([movieId, genreId])
+  @@index([genreId])
 }

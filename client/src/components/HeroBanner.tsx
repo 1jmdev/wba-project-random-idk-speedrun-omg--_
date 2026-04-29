@@ -30,9 +30,11 @@ export default function HeroBanner({ movie }: HeroBannerProps) {
                     {movie.title}
                 </h1>
 
-                <p className="text-sm md:text-base text-white/80 mb-4 md:mb-5 line-clamp-2 md:line-clamp-3 leading-relaxed drop-shadow-md">
-                    {movie.description}
-                </p>
+                {movie.description && (
+                    <p className="text-sm md:text-base text-white/80 mb-4 md:mb-5 line-clamp-2 md:line-clamp-3 leading-relaxed drop-shadow-md">
+                        {movie.description}
+                    </p>
+                )}
 
                 <div className="flex items-center gap-2">
                     {/* Neflix Play button - white with black text */}

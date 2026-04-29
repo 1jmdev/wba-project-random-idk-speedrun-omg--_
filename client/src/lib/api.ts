@@ -108,14 +108,17 @@ export interface ApiProfile {
 
 export interface ApiMovie {
     id: number
-    name: string
-    year: number
-    length: number
-    genres: string[]
+    title_en: string | null
+    title_cz: string | null
+    type: string
+    origins: string[]
+    isAdult: boolean
+    length: number | null
+    year: number | null
+    providerId: string | null
     providerType: string
-    providerId: string
-    createdAt: string
-    updatedAt: string
+    description: string | null
+    genres: string[]
 }
 
 export interface PaginatedResponse<T> {

@@ -52,11 +52,8 @@ export default function TitleDetail({
                 setInMyList(isInMyList(profile.id, movieId))
 
                 const firstGenre = item.genres[0]
-                const genreQuery = firstGenre
-                    ?.toUpperCase()
-                    .replaceAll(" ", "_")
                 const related = await apiClient.listMovies({
-                    genre: genreQuery,
+                    genre: firstGenre,
                     limit: 12,
                     sortBy: "year",
                     sortOrder: "desc",
@@ -230,9 +227,11 @@ export default function TitleDetail({
                                 </button>
                             </div>
 
-                            <p className="mb-4 text-sm leading-relaxed text-white/90">
-                                {movie.description}
-                            </p>
+                            {movie.description && (
+                                <p className="mb-4 text-sm leading-relaxed text-white/90">
+                                    {movie.description}
+                                </p>
+                            )}
                         </div>
 
                         <div className="w-full shrink-0 text-sm md:w-65">

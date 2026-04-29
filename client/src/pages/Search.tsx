@@ -51,7 +51,7 @@ export default function Search({
                         : {
                               limit: PAGE_SIZE,
                               offset,
-                              sortBy: "createdAt",
+                              sortBy: "id",
                               sortOrder: "desc",
                           }
                 )
