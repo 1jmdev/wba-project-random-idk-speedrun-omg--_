@@ -29,30 +29,20 @@ export default function Search({
     const previousQueryRef = useRef(query)
 
     useEffect(() => {
-        if (previousQueryRef.current !== query) {
-            previousQueryRef.current = query
-            setOffset(0)
-            return
-        }
-
         const load = async () => {
             setLoading(true)
 
             try {
-                const response = await apiClient.listMovies(
+                const response = await apiClient.searchMovies(
                     query.trim()
                         ? {
                               q: query.trim(),
                               limit: PAGE_SIZE,
                               offset,
-                              sortBy: "year",
-                              sortOrder: "desc",
                           }
                         : {
                               limit: PAGE_SIZE,
                               offset,
-                              sortBy: "id",
-                              sortOrder: "desc",
                           }
                 )
 
@@ -61,6 +51,15 @@ export default function Search({
             } finally {
                 setLoading(false)
             }
+        }
+
+        if (previousQueryRef.current !== query) {
+            previousQueryRef.current = query
+            setOffset(0)
+            if (offset === 0) {
+                void load()
+            }
+            return
         }
 
         void load()

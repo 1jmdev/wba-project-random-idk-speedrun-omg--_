@@ -16,6 +16,17 @@ export const listMoviesQuerySchema = z.object({
     }),
 })
 
+export const searchMoviesQuerySchema = z.object({
+    query: z.object({
+        q: z.string().trim().min(1).max(100),
+        genre: z.string().optional(),
+        year: z.coerce.number().int().optional(),
+        providerType: providerTypeEnum.optional(),
+        limit: z.coerce.number().int().min(1).max(50).optional(),
+        offset: z.coerce.number().int().min(0).optional(),
+    }),
+})
+
 export const browseHomeQuerySchema = z.object({
     query: z.object({
         takePerGenre: z.number().int().min(1).max(20).optional(),

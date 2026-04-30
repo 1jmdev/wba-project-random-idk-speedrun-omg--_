@@ -238,6 +238,26 @@ export const apiClient = {
 
         return response.data
     },
+    searchMovies: async (
+        params?: Record<string, string | number | undefined>
+    ) => {
+        const searchParams = new URLSearchParams()
+
+        if (params) {
+            for (const [key, value] of Object.entries(params)) {
+                if (value !== undefined && value !== "") {
+                    searchParams.set(key, String(value))
+                }
+            }
+        }
+
+        const query = searchParams.toString()
+        const response = await request<
+            ApiEnvelope<PaginatedResponse<ApiMovie>>
+        >(`/api/movies${query ? `?${query}` : ""}`)
+
+        return response.data
+    },
     browseHome: async () => {
         const response = await request<ApiEnvelope<BrowseHomeResponse>>(
             "/api/movies/browse/home"

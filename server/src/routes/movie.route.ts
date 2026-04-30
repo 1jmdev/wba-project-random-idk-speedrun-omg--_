@@ -5,6 +5,7 @@ import type { AppEnv } from "../types"
 import {
     browseHomeQuerySchema,
     listMoviesQuerySchema,
+    searchMoviesQuerySchema,
     movieIdParamSchema,
     movieStreamParamSchema,
 } from "../validations/movie.validation"
@@ -12,6 +13,7 @@ import {
 const router = new Hono<AppEnv>()
 
 router.get("/", validate(listMoviesQuerySchema), movieController.list)
+router.get("/search", validate(searchMoviesQuerySchema), movieController.list)
 router.get(
     "/browse/home",
     validate(browseHomeQuerySchema),

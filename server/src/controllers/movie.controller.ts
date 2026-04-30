@@ -54,6 +54,12 @@ const releasedMovieWhere = {
     },
 } as const
 
+type SearchMovieRow = {
+    id: number
+    score: number
+    total: bigint
+}
+
 export const list = async (c: Context<AppEnv>) => {
     const { query } = c.get("validated") as {
         query: {
@@ -127,6 +133,141 @@ export const list = async (c: Context<AppEnv>) => {
             limit,
             offset,
             hasMore: offset + movies.length < total,
+        },
+    })
+}
+
+export const search = async (c: Context<AppEnv>) => {
+    const { query } = c.get("validated") as {
+        query: {
+            q: string
+            genre?: string
+            year?: number
+            providerType?: "PREHRAJTO"
+            limit?: number
+            offset?: number
+        }
+    }
+
+    const q = query.q.trim()
+    const limit = Math.min(query.limit ?? 24, 50)
+    const offset = query.offset ?? 0
+
+    if (!q) {
+        return c.json({
+            success: true,
+            data: {
+                items: [],
+                total: 0,
+                limit,
+                offset,
+                hasMore: false,
+            },
+        })
+    }
+
+    const rows = await prisma.$queryRaw<SearchMovieRow[]>`
+        WITH input AS (
+            SELECT search_normalize(${q}) AS q
+        ),
+        ranked AS (
+            SELECT
+                m.id,
+                GREATEST(
+                    similarity(search_normalize(m.title_en), input.q),
+                    similarity(search_normalize(m.title_cz), input.q),
+                    word_similarity(input.q, search_normalize(m.title_en)),
+                    word_similarity(input.q, search_normalize(m.title_cz))
+                ) AS score,
+                CASE
+                    WHEN search_normalize(m.title_en) = input.q THEN 100
+                    WHEN search_normalize(m.title_cz) = input.q THEN 100
+                    WHEN search_normalize(m.title_en) LIKE input.q || '%' THEN 80
+                    WHEN search_normalize(m.title_cz) LIKE input.q || '%' THEN 80
+                    WHEN search_normalize(m.title_en) LIKE '%' || input.q || '%' THEN 60
+                    WHEN search_normalize(m.title_cz) LIKE '%' || input.q || '%' THEN 60
+                    ELSE 0
+                END AS exact_boost
+            FROM movie m
+            CROSS JOIN input
+            WHERE
+                m."isAdult" = false
+                AND m."providerId" IS NOT NULL
+                AND m.year IS NOT NULL
+                AND (${query.year ?? null}::int IS NULL OR m.year = ${query.year ?? null}::int)
+                AND (${query.providerType ?? null}::"ProviderType" IS NULL OR m."providerType" = ${query.providerType ?? null}::"ProviderType")
+                AND (
+                    ${query.genre ?? null}::text IS NULL
+                    OR EXISTS (
+                        SELECT 1
+                        FROM movie_genre mg
+                        JOIN genre g ON g.id = mg."genreId"
+                        WHERE mg."movieId" = m.id
+                        AND g.name = ${query.genre ?? null}::text
+                    )
+                )
+                AND (
+                    search_normalize(m.title_en) % input.q
+                    OR search_normalize(m.title_cz) % input.q
+                    OR search_normalize(m.title_en) LIKE '%' || input.q || '%'
+                    OR search_normalize(m.title_cz) LIKE '%' || input.q || '%'
+                    OR word_similarity(input.q, search_normalize(m.title_en)) > 0.35
+                    OR word_similarity(input.q, search_normalize(m.title_cz)) > 0.35
+                )
+        )
+        SELECT
+            id,
+            score,
+            COUNT(*) OVER() AS total
+        FROM ranked
+        ORDER BY
+            exact_boost DESC,
+            score DESC,
+            id DESC
+        LIMIT ${limit}
+        OFFSET ${offset};
+    `
+
+    const ids = rows.map((row) => row.id)
+    const total = Number(rows[0]?.total ?? 0)
+
+    if (ids.length === 0) {
+        return c.json({
+            success: true,
+            data: {
+                items: [],
+                total: 0,
+                limit,
+                offset,
+                hasMore: false,
+            },
+        })
+    }
+
+    const movies = await prisma.movie.findMany({
+        where: {
+            id: {
+                in: ids,
+            },
+        },
+        select: movieSelect,
+    })
+
+    const movieById = new Map(movies.map((movie) => [movie.id, movie]))
+
+    const items = ids
+        .map((id) => movieById.get(id))
+        .filter((movie): movie is NonNullable<typeof movie> => Boolean(movie))
+        .map(serializeMovie)
+
+    return c.json({
+        success: true,
+        data: {
+            items,
+            total,
+            limit,
+            offset,
+            hasMore: offset + items.length < total,
         },
     })
 }
